@@ -1,0 +1,131 @@
+\documentclass[a4paper,zihao=5]{ctexbook}
+\usepackage{geometry}
+\usepackage[inline]{enumitem} % inline enumerate
+\usepackage{lscape} % one page table
+\usepackage{booktabs}
+\usepackage{natbib}
+\usepackage{gbt7714}
+\usepackage{hyperref}
+\usepackage{fontspec}
+\usepackage{setspace}
+
+\geometry{left=2.5cm,right=2.5cm,top=3cm,bottom=2.5cm}
+\newCJKfontfamily{\huawenxingkai}[AutoFakeBold = {1.1}]{STXingkai}
+\newCJKfontfamily{\huawenzhongsong}{STZhongsong}
+\setmainfont{Times New Roman}
+\bibliographystyle{gbt7714-numerical}
+\begin{document}
+\input{titlepage}
+\chapter*{摘要}
+无膜栽培技术是解决南疆地区棉田残膜污染的有效手段.
+项目拟通过模型模拟定量评价种植密度和灌溉制度对无膜棉生长和产量的影响,
+以 Cotton2K 模型为基础, 重点解决棉花生长模拟过程中的两个关键科学问题:
+\begin{enumerate*}
+    \item 棉花不同发育阶段有效光合叶面积指数在冠层的空间分布不一致.
+    \item 光能截获、盐分和根系分布对水分运移的耦合影响和定量描述.
+\end{enumerate*}
+首先, 综合考虑热效应和光周期效应模拟物候学发育时间;
+其次, 建立有效面积指数在冠层空间分布比例与生理发育时间的分段函数方程, 改进光能截获模拟精度, 构建基于过程的棉花光合生产与干物质积累模型;
+再次, IRE 方法改进水分运移方程上下边界条件, 采用根系吸水与根长密度分布统一求解的方法, 分层计算盐分和根系分布对水分运移的影响, 建立考虑冠层光能截获、根系和盐分空间分布的水分运移模型;
+最后, 量化棉花各器官干物质分配、蕾铃发育与脱落过程, 构建棉花干物质分配与产量形成的模拟模型.
+
+\chapter{绪论}
+\section{研究背景及意义}
+新疆南部地区(南疆)日照时间长、光热资源丰富, 为优质棉花的生长提供了绝佳的自然条件.
+2017 年新疆棉花播种面积 2217 千公顷(全国 3195 千公顷), 产量 456 万吨(中国统计年鉴,2018), 是我国和世界最具发展前景的优质棉生产基地.
+上世纪 80 年代以来, 新疆在棉花种植上大范围推广使用地膜覆盖技术, 给新疆农业增产、农民增收带来了巨大效益.
+但随着地膜投入量的不断增加, 残留地膜回收率低, 土壤中残膜量逐步增加, 不仅造成土壤结构破坏、环境污染等一系列问题, 而且对棉花产量和纤维品质也有很大影响.
+中国工程院院士喻树迅团队初步实现了 “中棉 619” 早熟品种在南疆地区的无膜化种植目标, 连续 6 年亩产 320-350 公斤, 对减少新疆棉田残膜对生态环境和原棉的污染意义重大.
+然而, 无膜棉的种植与推广还有诸多问题需要解决, 如播种密度和肥水调控等问题急需深入研究.
+因此, 在南疆干旱区开展无膜棉生长和水分运移模拟研究,
+对指导无膜棉播种日期、播种量、精准灌溉和提高产量具有重要意义.
+项目将借鉴成熟的棉花生长模型理论, 重点解决以下关键科学问题:
+第一, 有效光合叶面积指数发芽后集中在冠层的底部, 成熟期集中在顶部, 而花期属于均匀分布, 解决有效光合叶面积指数不同发育阶段在棉花冠层分布不一致的问题, 提高光能截获和光合作用模拟精度.
+第二, 在南疆盐渍化严重的背景下, 光能截获、盐分和根系空间分布对水分运移的耦合影响和定量描述.
+应用价值: 通过模型模拟方法定量评价播种量和灌溉制度对产量的影响, 指导播种和精准灌溉.
+\section{国内外研究现状}
+\subsection{主要的棉花生长模型}
+作物生长模型通过数学方程将作物的生长发育、光合生产、器官建成和产量形成等过程及其所处环境和栽培管理技术体系连接成为一个整体,
+通过计算机定量计算并进行动态模拟, 成为掌握作物生长发育状况, 优化种植管理的重要手段.
+棉花生产系统模拟模型的开发与应用始于 1960 年代的美国, 现在已经扩展到全球主要棉花生产地区.
+国外发展比较成熟的棉花生长模型包括 GOSSYM\cite{baker1976}, Cotton2K\cite{cotton2kv4}, COTCO2\cite{wall1994}, OZCOT\cite{hearn1994} 和 CROPGRO-Cotton\cite{jones2003},
+另外, 一些通用的作物生长模型也被用于模拟棉花生长, 如 EPIC\cite{williams1989}, WOFOST\cite{WOFOST}, SUCROS\cite{vanittersum2003}, GRAMI\cite{ko2005}, CropSyst\cite{sommer2008}和 AquaCrop\cite{steduto2009}。
+
+\begin{table}
+    \caption{现有棉花生长模拟模型基本信息}
+    \small
+    \centering
+    \citestyle{authoryear}
+    \begin{tabular}{cp{0.14\linewidth}cccp{0.22\linewidth}}
+        \toprule
+        名称               & 父代模型         & 编程语言          & 时间步长 & 核心引用          & 支持决策工具 \\
+        \midrule
+        GOSSYM             & SIMCOTI SIMCOTII & Fortran           & 日       &                   & COMAX        \\
+        Cotton2K           & GOSSYM CALGOS    & $\mathrm{C^{++}}$ & 小时     &                   & 无           \\
+        COTCO2             & KUTUN ALFALFA    & Fortran           & 小时     &                   & 无           \\
+        OZCOT              & SIRATAC          & $\mathrm{C^{\#}}$ & 日       & \citet{hearn1994} & APSIM 生态   \\
+        CSM-CROPGRO-Cotton & CROPGRO-Soybean  & Fortran           & 日       &                   & DSSAT        \\
+        \bottomrule
+    \end{tabular}
+    \citestyle{numbers}
+\end{table}
+
+这些模型通过模拟气象、土壤水分和养分对植物生长发育的贡献来估算作物产量.
+然而, 用于模拟这些过程的方法、模拟细节和产量组分在现有作物模型中存在一定差异(表 \ref{tab:growdev})\cite{thorp2014}.
+但主要过程都包括了物候学、光能截获、碳(C)同化、呼吸作用、器官形成、生物量积累与分配和胁迫影响等.
+
+一些新发展的通用模型理论和方法也对棉花生长模拟的研究具有重要的推动作用.
+由联合国粮食及农业组织(FAO)支持的 AquaCrop 模型是模拟水资源管理产量响应的新型通用作物模型\cite{tan2018}.
+它基于植物生理学和土壤水分平衡的模拟, 取代了粮农组织以前的方法, 用于估算与供水有关的作物生产力.
+另外, 发展和参数化的 WALL 模型也通过聚焦水分在叶片运移用于仿真单叶的水分蒸发\cite{pachepsky2009}.
+2021 年最新版本的 SWAP 4.0 版本\cite{swap2021}综合考虑了水、热、冷和盐分胁迫对蒸发蒸腾的影响, 多尺度 SWAP 模型是否可以改进已提出的棉花模型的水分运移模拟值得深入分析和探讨。
+
+虽然中国的棉花生长模型研究起步较晚, 但作为棉花生产世界领先的国家,
+棉花生长模拟的研究发展较快, 比较有代表性的是潘学标等开发的 COTGROW\cite{pan1996} 模型, 此外, \citet{zhang2003}、\citet{chen2006}和\citet{ma2004}等也分别建立了棉花生长和品质形成模拟模型, 这些模型在借鉴国外模型理念基础上, 加入了我国特有的管理措施如化控、覆膜等.
+另外, 国内学者也开发了棉花发育阶段和蕾铃模拟模型\cite{ma2005}、棉籽生长、油和蛋白质含量模拟模型\cite{li2009}和基于气温、太阳辐照度和 N 效应的棉纤维长度和强度的模拟模型 \cite{zhao2012} 等.
+然而, 不同的模型的性能会随着研究的品种、种植模式、生长环境和使用目标的变化呈现一定的差异性.
+
+\begin{table}
+    \small
+    \caption{现有棉花生长模拟模型生长和发育阶段模拟}
+    \label{tab:growdev}
+    \begin{tabular}{p{0.14\linewidth}p{0.14\linewidth}p{0.14\linewidth}p{0.14\linewidth}p{0.14\linewidth}p{0.14\linewidth}}
+        \toprule
+                   & GOSSYM                                                                       & Cotton2K                                                                     & COTCO2                                                                   & OZCOT                                                                      & CROPGRO-Cotton                                                                                   \\
+        \midrule
+        物候学     & 根据积温发育叶枝果枝和坐果节, 计算果枝、蕾、铃、开铃、坐果节和脱落果实的数量 & 根据积温发育叶枝果枝和坐果节, 计算果枝、蕾、铃、开铃、坐果节和脱落果实的数量 & 根据积温发育分生组织、叶原基、叶柄，生长和成熟叶、节间茎段、蕾、铃和开铃 & 根据积温计算坐果节的数量，根据作物承载能力计算蕾、铃、开铃和脱落果实的数量 & 根据光热时间计算出苗、第一片叶、第一朵花、第一个种子、第一次开铃和 90\% 开铃、铃数和脱落果实数量 \\
+        植株映射   & 有                                                                           & 有                                                                           & 有                                                                       & 无                                                                         & 无                                                                                               \\
+        潜在碳同化 & 冠层尺度辐射截获                                                             & 冠层尺度辐射截获                                                             & 器官尺度生物化学驱动 \cite{farquhar1980}                                 & 冠层尺度辐射截获                                                           & 叶片尺度生物化学驱动 \cite{farquhar1980}                                                         \\
+        呼吸作用   & 使用生物量和温度的经验函数计算                                               & 计算生长和维持呼吸，以及光合呼吸                                             & 计算器官尺度的生长、维持和光合呼吸                                       & 使用基于坐果节数和气温的经验函数                                           & 计算生长和维持呼吸                                                                               \\
+        同化分配   & 分配碳同化产物到每个生长器官                                                 & 分配碳同化产物到每个生长器官                                                 & 分配碳同化产物到每个生长器官                                             & 将碳同化产物分配到用于棉铃发育的储存池                                     & 将碳同化产物分配到用于叶、茎、根和铃发育的单一存储池                                             \\
+        冠层尺寸   & 计算高度                                                                     & 计算高度                                                                     & 计算茎节长度                                                             & 无                                                                         & 计算高度和宽度                                                                                   \\
+        产量要素   & 根据棉铃的质量和尺寸计算纤维质量                                             & 计算纤维质量和种子棉质量                                                     & 计算棉铃质量                                                             & 根据棉铃的质量和尺寸计算纤维质量                                           & 计算棉铃质量、种子棉质量、种子数量和单位种子重量                                                 \\
+        胁迫       & 计算水、氮和气温胁迫                                                         & 计算水、氮和气温胁迫                                                         & 计算水和气温胁迫                                                         & 计算水、氮和气温胁迫                                                       & 计算水、氮和气温胁迫                                                                             \\
+        \bottomrule
+    \end{tabular}
+\end{table}
+
+\begin{table}
+    \citestyle{authoryear}
+    \small
+    \caption{现有棉花生长模拟模型大气和土壤模拟}
+    \label{tab:atmosoil}
+    \begin{tabular}{p{0.14\linewidth}p{0.14\linewidth}p{0.14\linewidth}p{0.14\linewidth}p{0.14\linewidth}p{0.14\linewidth}}
+        \toprule
+                                        & GOSSYM                                               & Cotton2K                                             & COTCO2                         & OZCOT                                     & CROPGRO-Cotton                            \\
+        \midrule
+        $\mathrm{CO_2}$对光合作用的影响 & 有                                                   & 有                                                   & 有                             & 无                                        & 有                                        \\
+        $\mathrm{CO_2}$对呼吸作用的影响 & 无                                                   & 无                                                   & 有                             & 无                                        & 有                                        \\
+        蒸腾作用                        & \citet{ritchie1972}                                  & CIMIS 中的改进的 Penman 公式                         & 叶片尺度能量平衡与气孔导度耦合 & \citet{ritchie1972}                       & \citet{priestley1972,fao56}               \\
+        土壤水分                        & 2D RHIZOS 模型 \citestyle{numbers}\cite{lambert1976} & 2D RHIZOS 模型 \citestyle{numbers}\cite{lambert1976} & 2D 模型                        & \citestyle{authoryear}\citet{ritchie1972} & \citet{ritchie1998,ritchie2009}           \\
+        土壤氮                          & 土壤和植物氮平衡的动态仿真                           & 土壤和植物氮平衡的动态仿真                           & 无                             & 统计和经验方法预测潜在氮吸收              & \citet{godwin1998} 或 \citet{gijsman2002} \\
+        土壤磷                          & 无                                                   & 无                                                   & 无                             & 无                                        & 有                                        \\
+        土壤盐分                        & 无                                                   & 有                                                   & 无                             & 无                                        & 无                                        \\
+        渍灾                            & 无                                                   & 无                                                   & 无                             & 有                                        & 有                                        \\
+        涝灾                            & 无                                                   & 无                                                   & 无                             & 无                                        & 有                                        \\
+        \bottomrule
+    \end{tabular}
+\end{table}
+
+\bibliography{thesis}
+\end{document}

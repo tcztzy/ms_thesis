@@ -1,0 +1,6 @@
+*
+!.gitignore
+!.latexmkrc
+!thesis.bib
+!thesis.tex
+!titlepage.tex
