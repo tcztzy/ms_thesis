@@ -1,10 +1,21 @@
+
+======================================================================
+starting package maintenance...
+installation directory: C:\Users\tcztz\AppData\Local\Programs\MiKTeX
+package repository: https://mirrors.cqu.edu.cn/CTAN/systems/win32/miktex/tm/packages/
+package repository digest: abcf797dfcd03b51c100d3e07c06b21e
+going to download 67652 bytes
+going to install 42 file(s) (1 package(s))
+downloading https://mirrors.cqu.edu.cn/CTAN/systems/win32/miktex/tm/packages/latexindent.tar.lzma...
+0.07 MB, 1.05 Mbit/s
+extracting files from latexindent.tar.lzma...
+======================================================================
 \documentclass[a4paper,zihao=5]{ctexbook}
 \usepackage{geometry}
 \usepackage[inline]{enumitem} % inline enumerate
 \usepackage{lscape} % one page table
 \usepackage{booktabs}
-\usepackage{natbib}
-\usepackage{gbt7714}
+\usepackage[backend=biber,style=gb7714-2015]{biblatex}
 \usepackage{hyperref}
 \usepackage{fontspec}
 \usepackage{setspace}
@@ -14,7 +25,8 @@
 \newCJKfontfamily{\huawenzhongsong}{STZhongsong}
 \setmainfont{Times New Roman}
 \setCJKmainfont{SimSun}  % Should be set here for cross platform.
-\bibliographystyle{gbt7714-numerical}
+
+\addbibresource{thesis.bib}
 \begin{document}
 \input{titlepage}
 \chapter*{摘要}
@@ -47,16 +59,15 @@
 \section{国内外研究现状}
 \subsection{主要的棉花生长模型}
 作物生长模型通过数学方程将作物的生长发育、光合生产、器官建成和产量形成等过程及其所处环境和栽培管理技术体系连接成为一个整体,
-通过计算机定量计算并进行动态模拟, 成为掌握作物生长发育状况, 优化种植管理的重要手段.
+通过计算机定量计算并进行动态模拟, 成为掌握作物生长发育状况, 优化种植管理的重要手段。
 棉花生产系统模拟模型的开发与应用始于 1960 年代的美国, 现在已经扩展到全球主要棉花生产地区.
 国外发展比较成熟的棉花生长模型包括 GOSSYM\cite{baker1976}, Cotton2K\cite{cotton2kv4}, COTCO2\cite{wall1994}, OZCOT\cite{hearn1994} 和 CROPGRO-Cotton\cite{jones2003},
-另外, 一些通用的作物生长模型也被用于模拟棉花生长, 如 EPIC\cite{williams1989}, WOFOST\cite{WOFOST}, SUCROS\cite{vanittersum2003}, GRAMI\cite{ko2005}, CropSyst\cite{sommer2008}和 AquaCrop\cite{steduto2009}。
+另外, 一些通用的作物生长模型也被用于模拟棉花生长, 如 EPIC\cite{williams1989}, WOFOST\cite{vanDiepen1989WOFOST}, SUCROS\cite{vanittersum2003}, GRAMI\cite{ko2005}, CropSyst\cite{sommer2008}和 AquaCrop\cite{steduto2009}。
 
 \begin{table}
     \caption{现有棉花生长模拟模型基本信息}
     \small
     \centering
-    \citestyle{authoryear}
     \begin{tabular}{cp{0.14\linewidth}cccp{0.22\linewidth}}
         \toprule
         名称               & 父代模型         & 编程语言 & 时间步长 & 核心引用          & 支持决策工具 \\
@@ -68,7 +79,6 @@
         CSM-CROPGRO-Cotton & CROPGRO-Soybean  & Fortran  & 日       &                   & DSSAT        \\
         \bottomrule
     \end{tabular}
-    \citestyle{numbers}
 \end{table}
 
 这些模型通过模拟气象、土壤水分和养分对植物生长发育的贡献来估算作物产量.
@@ -107,26 +117,25 @@
 \end{table}
 
 \begin{table}
-    \citestyle{authoryear}
+    %\citestyle{authoryear}
     \small
     \caption{现有棉花生长模拟模型大气和土壤模拟}
     \label{tab:atmosoil}
     \begin{tabular}{p{0.14\linewidth}p{0.14\linewidth}p{0.14\linewidth}p{0.14\linewidth}p{0.14\linewidth}p{0.14\linewidth}}
         \toprule
-                                        & GOSSYM                                               & Cotton2K                                             & COTCO2                         & OZCOT                                     & CROPGRO-Cotton                            \\
+                                        & GOSSYM                            & Cotton2K                          & COTCO2                         & OZCOT                        & CROPGRO-Cotton                            \\
         \midrule
-        $\mathrm{CO_2}$对光合作用的影响 & 有                                                   & 有                                                   & 有                             & 无                                        & 有                                        \\
-        $\mathrm{CO_2}$对呼吸作用的影响 & 无                                                   & 无                                                   & 有                             & 无                                        & 有                                        \\
-        蒸腾作用                        & \citet{ritchie1972}                                  & CIMIS 中的改进的 Penman 公式                         & 叶片尺度能量平衡与气孔导度耦合 & \citet{ritchie1972}                       & \citet{priestley1972,fao56}               \\
-        土壤水分                        & 2D RHIZOS 模型 \citestyle{numbers}\cite{lambert1976} & 2D RHIZOS 模型 \citestyle{numbers}\cite{lambert1976} & 2D 模型                        & \citestyle{authoryear}\citet{ritchie1972} & \citet{ritchie1998,ritchie2009}           \\
-        土壤氮                          & 土壤和植物氮平衡的动态仿真                           & 土壤和植物氮平衡的动态仿真                           & 无                             & 统计和经验方法预测潜在氮吸收              & \citet{godwin1998} 或 \citet{gijsman2002} \\
-        土壤磷                          & 无                                                   & 无                                                   & 无                             & 无                                        & 有                                        \\
-        土壤盐分                        & 无                                                   & 有                                                   & 无                             & 无                                        & 无                                        \\
-        渍灾                            & 无                                                   & 无                                                   & 无                             & 有                                        & 有                                        \\
-        涝灾                            & 无                                                   & 无                                                   & 无                             & 无                                        & 有                                        \\
+        $\mathrm{CO_2}$对光合作用的影响 & 有                                & 有                                & 有                             & 无                           & 有                                        \\
+        $\mathrm{CO_2}$对呼吸作用的影响 & 无                                & 无                                & 有                             & 无                           & 有                                        \\
+        蒸腾作用                        & \citet{ritchie1972}               & CIMIS 中的改进的 Penman 公式      & 叶片尺度能量平衡与气孔导度耦合 & \citet{ritchie1972}          & \citet{priestley1972,fao56}               \\
+        土壤水分                        & 2D RHIZOS 模型 \cite{lambert1976} & 2D RHIZOS 模型 \cite{lambert1976} & 2D 模型                        & \citet{ritchie1972}          & \citet{ritchie1998,ritchie2009}           \\
+        土壤氮                          & 土壤和植物氮平衡的动态仿真        & 土壤和植物氮平衡的动态仿真        & 无                             & 统计和经验方法预测潜在氮吸收 & \citet{godwin1998} 或 \citet{gijsman2002} \\
+        土壤磷                          & 无                                & 无                                & 无                             & 无                           & 有                                        \\
+        土壤盐分                        & 无                                & 有                                & 无                             & 无                           & 无                                        \\
+        渍灾                            & 无                                & 无                                & 无                             & 有                           & 有                                        \\
+        涝灾                            & 无                                & 无                                & 无                             & 无                           & 有                                        \\
         \bottomrule
     \end{tabular}
 \end{table}
-
-\bibliography{thesis}
+\printbibliography
 \end{document}
