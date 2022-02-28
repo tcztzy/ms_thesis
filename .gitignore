@@ -1,6 +1,7 @@
 *
 !.gitignore
 !.latexmkrc
+!Makefile
 !thesis.bib
 !thesis.tex
 !titlepage.tex
