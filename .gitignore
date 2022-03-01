@@ -1,6 +1,7 @@
 *
 !.gitignore
 !.latexmkrc
+!intro.tex
 !Makefile
 !thesis.bib
 !thesis.tex
