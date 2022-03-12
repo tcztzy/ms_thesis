@@ -1,6 +1,9 @@
 \documentclass[a4paper,zihao=5,AutoFakeBold]{ctexbook}
+\usepackage[ruled,linesnumbered]{algorithm2e}
+\usepackage{amsmath}
 \usepackage{geometry}
 \usepackage[inline]{enumitem} % inline enumerate
+\usepackage{longtable}
 \usepackage{lscape} % one page table
 \usepackage{booktabs}
 \usepackage[backend=biber,style=gb7714-2015]{biblatex}% chktex 8
@@ -14,12 +17,18 @@
 \setmainfont{Times New Roman}
 \setCJKmainfont{SimSun}  % Should be set here for cross platform.
 
+\SetAlgorithmName{算法}{算法列表}
+
 \addbibresource{thesis.bib}
 \pagestyle{plain}
 \begin{document}
+\SetKwInput{KwIn}{输入}
+\SetKwInput{KwOut}{输出}
+\SetKwRepeat{Repeat}{重复}{直到} 
 \input{titlepage}
 \include{abstract}
 \include{intro}
 \include{method}
+\include{model}
 \printbibliography
 \end{document}

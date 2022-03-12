@@ -1,0 +1,101 @@
+\chapter{基于 Cotton2K 模型的无膜棉花生长-土壤水盐胁迫建模}
+作物-土壤水-盐分是一个复杂的系统。
+土壤中的盐分和水分是影响作物生长和产量相互作用的两个变量，在盐渍化地区农业灌溉管理中很难将作物对水分、盐分的反应割裂开来，因此需借助作物-土壤水-盐系统模型来研究作物与土壤水盐之间复杂的动态过程和相互作用机制。
+\begin{table}
+    \caption{实测值与模拟值对比统计参数计算公式及描述}
+    \begin{tabular}{p{0.15\linewidth}p{0.7\linewidth}p{0.15\linewidth}}
+        \toprule
+        参数     & 计算公式                                                                                                                                                                      & 描述         \\
+        \midrule
+        $b$      & $$\frac{\sum_{i=1}^n (O_i - \overline{O}) (P_i - \overline{P})}{\sum_{i=1}^n (O_i - \overline{O})}$$                                                                          & 回归系数     \\
+        $R^2$    & $$\left \{ \frac{\sum_{i=1}^n (O_i - \overline{O}) (P_i - \overline{P})}{\sqrt{\sum_{i=1}^n (O_i - \overline{O})^2} \sqrt{\sum_{i=1}^n (P_i - \overline{P})^2}} \right \}^2$$ & 决定系数     \\
+        RMSE     & $$\sqrt{\frac{\sum_{i=1}^n (O_i - P_i)^2}{n}}$$                                                                                                                               & 均方根误差   \\
+        AAE      & $$\frac{\sum_{i=1}^n |O_i - P_i|}{n}$$                                                                                                                                        & 平均绝对误差 \\
+        EF       & $$1 - \frac{\sum_{i=1}^n (O_i - P_i)^2}{\sum_{i=1}^n (O_i - \overline{O})^2}$$                                                                                                & 模型有效性   \\
+        $d_{IA}$ & $$1 - \frac{\sum_{i=1}^n (O_i - P_i)^2}{\sum_{i=1}^n (|P_i - \overline{O}| + |O_i - \overline{O}|^2)}$$                                                                         & 拟合度       \\
+        \bottomrule
+    \end{tabular}
+\end{table}
+
+
+\begin{longtable}{llrrcrr}
+    \caption{Summary of the 12 cotton management scenarios evaluated with Cotton2K.
+        Field experiments were conducted within the fields at Alaer, Xinjiang, China in 2019 and 2020.}
+    \label{tab:parameters}                                                                     \\
+    \toprule
+    Parameter & Function                         & LB     & UB     & GSA & Original & Modified \\
+    \midrule\endfirsthead
+
+    \caption*{续表\ref{tab:parameters}}\endhead
+    VARPAR01  & Plant density effect on growth   & 0.00   & 0.08   & *   & 0.04344  & 0.03416  \\
+    VARPAR02  & Leaf growth at prefruiting nodes & 0.00   & 0.60   &     & 0.3      & 0.3      \\
+    VARPAR03  & Leaf growth at prefruiting nodes & 0.00   & 0.10   &     & 0.014    & 0.014    \\
+    VARPAR04  & Leaf growth at prefruiting nodes & 0.00   & 1.00   & *   & 0.138    & 0.646    \\
+    VARPAR05  & Leaf growth on mainstem nodes    & 0.50   & 3.00   &     & 1.6      & 1.6      \\
+    VARPAR06  & Leaf growth on mainstem nodes    & 0.00   & 0.02   &     & 0.010    & 0.010    \\
+    VARPAR07  & Leaf growth on mainstem nodes    & 18.0   & 28.0   &     & 24.0     & 24.0     \\
+    VARPAR08  & Leaf growth of fruiting branch   & 0.00   & 0.20   &     & 0.10     & 0.10     \\
+    VARPAR09  & Boll growth period               & 18.9   & 38.0   &     & 28.0     & 28.0     \\
+    VARPAR10  & Boll growth rate                 & 0.10   & 0.45   &     & 0.3293   & 0.3293   \\
+    VARPAR11  & Maximum dry boll mass            & 3.00   & 15.0   &     & 8.8      & 8.8      \\
+    VARPAR12  & Stem growth before first square  & 0.00   & 2.00   & *   & 0.284    & 0.590    \\
+    VARPAR13  & Stem growth before first square  & 0.00   & 2.00   &     & 0.040    & 0.040    \\
+    VARPAR14  & Stem growth before first square  & 0.00   & 0.08   &     & 0.014    & 0.014    \\
+    VARPAR15  & Stem growth after first square   & 1.00   & 4.00   & *   & 3.971    & 2.001    \\
+    VARPAR16  & Stem growth after first square   & 0.50   & 2.00   &     & 2.4      & 2.4      \\
+    VARPAR17  & Stem growth after first square   & 0.00   & 1.00   &     & 0.10     & 0.10     \\
+    VARPAR18  & Stem growth after first square   & 0.00   & 0.20   &     & 0.140    & 0.140    \\
+    VARPAR19  & Plant vertical height growth     & 0.00   & 0.50   &     & 0.20     & 0.20     \\
+    VARPAR20  & Plant vertical height growth     & 0.00   & 0.10   &     & 0.02     & 0.02     \\
+    VARPAR21  & Plant vertical height growth     & 10.0   & 18.0   & *   & 14.541   & 13.868   \\
+    VARPAR22  & Plant vertical height growth     & -4.00  & -2.00  & *   & -2.686   & -2.077   \\
+    VARPAR23  & Plant vertical height growth     & 0.09   & 0.12   &     & 0.10     & 0.10     \\
+    VARPAR24  & Plant vertical height growth     & 0.00   & 0.50   &     & 0.175    & 0.175    \\
+    VARPAR25  & Plant vertical height growth     & 1.00   & 4.00   &     & 2.20     & 2.20     \\
+    VARPAR26  & Plant vertical height growth     & 0.70   & 1.30   & *   & 1.2500   & 0.7500   \\
+    VARPAR27  & Mainstem node delay, C stress    & 0.50   & 1.00   & *   & 0.731    & 0.743    \\
+    VARPAR28  & Fruiting site delay, C stress    & 1.00   & 3.00   &     & 2.15     & 2.15     \\
+    VARPAR29  & Fruiting site delay, C stress    & 1.00   & 3.00   &     & 1.36     & 1.36     \\
+    VARPAR30  & Temperature effect on squaring   & 0.70   & 1.30   & *   & 1.281    & 1.249    \\
+    VARPAR31  & Prefruit node development        & 1.00   & 5.00   & *   & 3.210    & 2.175    \\
+    VARPAR32  & Prefruit node development        & 1.00   & 3.00   & *   & 1.625    & 1.664    \\
+    VARPAR33  & Prefruit node development        & 0.50   & 1.00   &     & 0.80     & 0.80     \\
+    VARPAR34  & Initial leaf area                & 0.01   & 0.10   & *   & 0.0407   & 0.0822   \\
+    VARPAR35  & Fruiting branch development      & -32.0  & -26.0  & *   & -26.118  & -27.108  \\
+    VARPAR36  & Fruiting site development        & -57.0  & -49.0  &     & -54.00   & -54.00   \\
+    VARPAR37  & Fruiting site development        & 0.00   & 2.00   &     & 0.80     & 0.80     \\
+    VARPAR38  & Defoliant effect on leaf age     & 0.00   & 5.00   &     & 3.20     & 3.20     \\
+    VARPAR39  & Temperature effect, dehiscence   & -306.0 & -240.0 &     & -292.0   & -292.0   \\
+    VARPAR40  & Temperature effect, dehiscence   & 0.70   & 1.30   &     & 1.08     & 1.08     \\
+    VARPAR41  & Temperature effect, turnout      & 45.0   & 60.0   & *   & 51.813   & 47.436   \\
+    VARPAR42  & Temperature effect, turnout      & 0.30   & 0.90   & *   & 0.844    & 0.341    \\
+    VARPAR43  & Shedding intensity, C stress     & 0.30   & 0.70   & *   & 0.514    & 0.601    \\
+    VARPAR44  & Shedding intensity, water stress & 0.30   & 0.70   &     & 0.48     & 0.48     \\
+    VARPAR45  & Probability of square abscission & 0.10   & 0.50   &     & 0.24     & 0.24     \\
+    VARPAR46  & Probability of square abscission & 0.00   & 0.15   &     & 0.08     & 0.08     \\
+    VARPAR47  & Probability of boll abscission   & 1.00   & 10.0   & *   & 3.833    & 6.439    \\
+    VARPAR48  & Probability of boll abscission   & 0.30   & 1.50   & *   & 0.532    & 0.554    \\
+    VARPAR49  & Probability of boll abscission   & 5.00   & 15.0   & *   & 7.714    & 6.867    \\
+    VARPAR50  & Probability of boll abscission   & 0.20   & 1.80   & *   & 1.610    & 1.216    \\
+    LIPAR01   & Light interception               & -1.60  & 0.00   & *   & -        & -3.347   \\
+    LIPAR02   & Light interception               & -1.60  & 0.00   & *   & -        & -2.199   \\
+    LIPAR03   & Light interception               & -1.60  & 0.00   & *   & -        & -2.788   \\
+    LIPAR04   & Light interception               & -1.60  & 0.00   & *   & -        & -1.262   \\
+    LIPAR05   & Light interception               & -1.60  & 0.00   & *   & -        & -0.253   \\
+    LIPAR06   & Light interception               & -1.60  & 0.00   & *   & -        & -1.602   \\
+    LIPAR07   & Light interception               & -1.60  & 0.00   & *   & -        & -1.251   \\
+    LIPAR08   & Light interception               & -1.60  & 0.00   & *   & -        & -3.464   \\
+    LIPAR09   & Light interception               & -1.60  & 0.00   & *   & -        & -0.207   \\
+    LIPAR10   & Light interception               & -1.60  & 0.00   & *   & -        & -0.776   \\
+    LIPAR11   & Light interception               & -1.60  & 0.00   & *   & -        & -0.758   \\
+    LIPAR12   & Light interception               & -1.60  & 0.00   & *   & -        & -1.110   \\
+    LIPAR13   & Light interception               & -1.60  & 0.00   & *   & -        & -2.517   \\
+    LIPAR14   & Light interception               & -1.60  & 0.00   & *   & -        & -1.871   \\
+    LIPAR15   & Light interception               & -1.60  & 0.00   & *   & -        & -2.984   \\
+    LIPAR16   & Light interception               & -1.60  & 0.00   & *   & -        & -0.166   \\
+    LIPAR17   & Light interception               & -1.60  & 0.00   & *   & -        & -3.303   \\
+    LIPAR18   & Light interception               & -1.60  & 0.00   & *   & -        & -1.743   \\
+    LIPAR19   & Light interception               & -1.60  & 0.00   & *   & -        & -1.504   \\
+    LIPAR20   & Light interception               & -1.60  & 0.00   & *   & -        & -2.155   \\
+    \bottomrule
+\end{longtable}
