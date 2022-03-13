@@ -1,9 +1,78 @@
 \chapter{材料与方法}
 
+
+% Drawing part, node distance is 1.5 cm and every node
+% is prefilled with white background
+\begin{tikzpicture}[
+        node distance=1cm,
+        every node/.style={fill=white, font=\sffamily},
+        align=center
+    ]
+    % Specification of nodes (position, etc.)
+    \node (start) [terminalStart] {开始};
+    \node (firstSampling) [data, below left=of start, xshift=-3cm] {对 70 个 Cotton2K \\参数进行 Sobol 取样};
+    \node (fieldData) [data, below=of start, yshift=-1.5cm] {田间数据};
+    \node (firstSimulation) [process, below=of firstSampling, yshift=-1.5cm] {Cotton2K 模拟};
+    \node (firstDatabase) [data, below=of firstSimulation] {12 个输出变量的\\评价指标数据库};
+    \node (sa) [process, below=of firstDatabase] {使用 SALib 进行\\Sobol 全局敏感性分析};
+    \node (influential) [decision, below=of sa] {S1 > 0.05};
+    \node (fixParam) [process, below=of start, yshift=-10cm] {固定参数为默认值};
+    \node (secondSampling) [data, below right=of start, xshift=3cm] {对 35 个 Cotton2K \\参数进行 Sobol 取样};
+    \node (secondSimulation) [process, below=of secondSampling, yshift=-1.5cm] {Cotton2K 模拟};
+    \node (secondDatabase) [data, below=of secondSimulation] {12 个输出变量的\\评价指标数据库};
+    \node (moo) [process, below=of secondDatabase] {求解 Pareto 解集};
+    \node (prune) [process, below=of moo] {对 Pareto 解集进行剪枝};
+    \node (compare) [process, below=of prune] {对不同修改进行统计分析};
+    \node (stop) [terminalStop, below=of start, yshift=-11.7cm] {结束};
+
+    \draw [-latex] (start) -| (firstSampling);
+    \draw [-latex] (firstSampling) -- (firstSimulation);
+    \draw [-latex] (firstSimulation) -- (firstDatabase);
+    \draw [-latex] (firstDatabase) -- (sa);
+    \draw [-latex] (sa) -- (influential);
+    \draw [-latex] (influential.east) -- (fixParam) node[pos=0.5, inner sep=0]{否};
+    \draw [-latex] (influential.west) -- +(-1.5cm,0) node[pos=0.5, inner sep=0]{是} -- +(-1.5cm, 13cm) -| (secondSampling);
+    \draw [-latex] (secondSampling) -- (secondSimulation);
+    \draw [-latex] (secondSimulation) -- (secondDatabase);
+    \draw [-latex] (secondDatabase) -- (moo);
+    \draw [-latex] (moo) -- (prune);
+    \draw [-latex] (prune) -- (compare);
+    \draw (fieldData) -| (firstSimulation);
+    \draw (fieldData) -| (secondSimulation);
+    \draw [-latex] (fixParam) |- (secondSimulation);
+    \draw [-latex] (compare) -- (stop);
+\end{tikzpicture}
+
+
+
 \section{实验观测}
+试验区位于南疆地区阿拉尔市塔里木大学灌溉试验站 (\ang{81;11;46}E, \ang{40;37;28}N)。
+灌溉实验按照田间实验设计，采用滴灌方式，根据 SWAP 模型\cite{swap2021}的精准灌溉工具，通过气象数据，土壤数据和棉花生长数据计算每日的实际蒸发蒸腾量 ($ET_c$)，按照水分需求进行灌溉。
+设计三个灌溉水平，标准亏损灌溉 75\% $ET_c$，90\% $ET_c$ 和 100\% $ET_c$。
+另外，设计一个经验灌溉水平，灌溉定额 $\mathrm{280 m^3 / 667m^2}$，生育期滴水总计 14 次。
+项目中不研究其他营养对棉花生长的影响，所以 N、P、K 肥按照经验值随滴灌施入，测土施肥，各小区施肥量统一，$N$-$P_2O_5$-$K_2O$ 按照 250-100-50 $\mathrm{kg/hm^2}$ 的量进行施肥。
+播种日期设计 2 个水平，分别为铺设地膜的棉花播种后第 10 和 15 天，根据出苗率补充到设计的种植密度，并记录补苗日期。
+第一年设计三个种植密度，理论密度分别为 15000, 16000 和 17000 株/$\mathrm{hm^2}$。
+第二年到第三年根据第一年的模拟结果进行适当调整。
+共 24 个处理，进行安全区组设计，每个小区 0.25 亩，每个实验三次重复。
 \subsection{土壤含水量}
 
 \subsection{棉花生理指标}
+试验记录内容主要包括:
+\begin{enumerate}
+    \item 生育期：详细记录棉花播种、出苗、现蕾、开花和吐絮期出现时间，均以全田 50\% 棉株达到发育要求为标准；
+    \item 株式图：每 10 天记录一次株式图，内容有株高、叶片数、果枝数、果节数、蕾、花、小铃、大铃及吐絮铃个数与部位等；
+    \item 叶面积指数和光合有效辐射：每 10 天结合干物质测定，取全株叶片，用扫描法测定冠层垂直方向 20 个深度和水平 8 个网格的叶面积指数。使用 SunScan冠层分析仪（Delta 公司，英国）测定不同垂直和水平方向的光合有效辐射 PAR 和叶面积指数；
+    \item 光合作用：每 10 天测试一次，使用 LI6400XT 便携式光合作用测试仪分层测试净光合速率、气孔导度、胞间 CO2 浓度和蒸腾速率以及光响应曲线；
+    \item 干物质积累和分配：每 10 天取样一次，每次取样在苗期取 10 株样品，开花期后每次取 5 株，样品在 80℃下烘干至恒重后，分别测定根、茎、叶、蕾、花、小铃和大铃等各器官的干物质重量；
+    \item 产量构成因素：测定棉花籽棉产量、衣分、铃重和纤维重量；
+    \item 根系：每隔 10 天取样，在 0-100cm 土壤深度和距棉行 0-40cm 内各 5cm间隔分别用根钻取带根土样，冲根器冲洗根后，用扫描仪扫描成 TIF 图像文件，再采用 DT-SCAN 图像分析软件，计算根系长度、密度、直径和表面积等指标；
+    \item 土壤水分：每周取样测定一次土壤容积含水量（20 $\times$ 8 网格），另外，使用矫正后的土壤水分和温度自动记录仪 (HOBO H21-002, United States) 分 10 层实时监测 0-100cm 深度的土壤水分含量；
+    \item 土壤盐分（电导率）：每周取样在实验室处理后采用 DDS-307 电导率仪测量，折算成土壤盐分含量；
+    \item 其他土壤参数：土壤田间持水率、容积密度、枯萎点含水率、饱和土壤含水率、土壤水响应曲线和渗透系数等可直接取样带回实验室进行测量，同步记录灌溉日期和灌溉量；
+    \item 土壤蒸发与棉花蒸腾：采用小型蒸渗仪测量蒸发，棉花蒸腾通过水量平衡原理计算；
+    \item 气象数据：由塔里木灌溉试验站气象数据提供，包括 15 分钟间隔的温度、湿度、辐射、风速、降雨和气压数据等。
+\end{enumerate}
 
 所获数据用 Python 进行统计分析，利用 Duncan 新复极差检验进行差异显著检验 $(p = 0.05)$。
 
@@ -58,6 +127,22 @@ $\Delta W$ 为土壤贮水量的减少量(mm)：
 
 \section{模型模拟}
 \subsection{模型改进}
+
+分析叶面积指数、叶倾角和方位角的空间分布规律及光能截获分布，冠层深度拟分为 20 层，每层占棉花总高度的 5\%，水平方向根据棉花冠幅考虑 8 个网格，共 160 个冠层空间。
+首先，计算每一层的有效叶面积指数，
+其次，定量化每一层与最顶部冠层的光合叶面积指数的比例（$PAI_{\%,i}$），重新积分计算有效总光合叶面积指数，
+最后，重新驱动 Cotton2K 模型，模拟干物质积累，每一层的 $PAI_{\%,i}$ 通过公式 \ref{eq:pai} 计算
+\begin{equation}
+    \label{eq:pai}
+    PAI_{\%,i} = 1 - (1 - x_i^\alpha)^\beta
+\end{equation}
+$PAI_{\%,i}$ 是第 $i$ 层截获 $PAI$ 与最顶部冠层 $PAI$ 的比值，$x_i$ 是冠层深度的百分比，
+研究中分 20 层，所以最顶层等于 0.05，最底层等于 1。$\alpha$ 和 $\beta$ 根据不同生长发育时期实际观测的每层 $PAI$ 和冠层顶部的 $PAI$ 确定，分段拟合。
+
+首先，IRE 方法改进水分运移方程的上下边界条件，与根系吸水模型耦合，研究土体 100cm，厚度分层 5cm，水平方向间距 5cm。
+其次，根据根长密度分布函数计算每个土层空间的根长密度，并使用 SWAP 模型推荐的方法计算潜在蒸发蒸腾量，分配到每一个土层空间。最后，以每小时时间步长应用 IRE 方法离散土壤蒸发、根系吸水和水盐运移过程。
+具体步骤如下：
+
 
 潜在作物蒸腾与土壤蒸发的计算如公式\ref{eq:E_p}和公式\ref{eq:T_p}
 \begin{equation}

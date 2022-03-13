@@ -1,15 +1,17 @@
 \documentclass[a4paper,zihao=5,AutoFakeBold]{ctexbook}
 \usepackage[ruled,linesnumbered]{algorithm2e}
 \usepackage{amsmath}
-\usepackage{geometry}
+\usepackage[backend=biber,style=gb7714-2015]{biblatex}% chktex 8
+\usepackage{booktabs}
 \usepackage[inline]{enumitem} % inline enumerate
+\usepackage{fontspec}
+\usepackage{geometry}
 \usepackage{longtable}
 \usepackage{lscape} % one page table
-\usepackage{booktabs}
-\usepackage[backend=biber,style=gb7714-2015]{biblatex}% chktex 8
 \usepackage{hyperref}
-\usepackage{fontspec}
 \usepackage{setspace}
+\usepackage{siunitx}
+\usepackage{tikz}
 
 \geometry{left=2.5cm,right=2.5cm,top=3cm,bottom=2.5cm}
 \newCJKfontfamily{\huawenxingkai}[AutoFakeBold = {1.1}]{STXingkai}
@@ -24,11 +26,23 @@
 \begin{document}
 \SetKwInput{KwIn}{输入}
 \SetKwInput{KwOut}{输出}
-\SetKwRepeat{Repeat}{重复}{直到} 
+\SetKwRepeat{Repeat}{重复}{直到}
+\usetikzlibrary{shapes, arrows.meta, positioning}
+\tikzset{%
+>={Latex[width=2mm,length=2mm]},
+% Specifications for style of nodes:
+base/.style = {draw, minimum width=2cm, minimum height=1cm, text centered},
+terminal/.style = {base, rounded rectangle},
+terminalStart/.style = {terminal},
+terminalStop/.style = {terminal},
+process/.style = {base, rectangle},
+data/.style = {base, trapezium, trapezium left angle=60, trapezium right angle=120},
+decision/.style = {base, diamond, aspect=2},
+}
 \input{titlepage}
-\include{abstract}
-\include{intro}
-\include{method}
-\include{model}
+\input{abstract}
+\input{intro}
+\input{method}
+\input{model}
 \printbibliography
 \end{document}
