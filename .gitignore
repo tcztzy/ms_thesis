@@ -2,10 +2,12 @@
 !.gitignore
 !.latexmkrc
 !abstract.tex
+!datav.py
 !intro.tex
 !Makefile
 !method.tex
 !model.tex
+!plots.py
 !README.md
 !result.tex
 !thesis.bib
