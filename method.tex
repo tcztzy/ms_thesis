@@ -150,7 +150,7 @@ $PAI_{\%,i}$ 是第 $i$ 层截获 $PAI$ 与最顶部冠层 $PAI$ 的比值，$x_
     T_p = \frac{
         (1 - W_{frac}) \{ V_c \frac{\Delta_v}{\lambda_w} (R_n - G) + \frac{p_1 \rho_a C_a}{\lambda_w} (\frac{e_{sat} - e_a}{r_{a,can}}) \}
     }{
-        \Delta_v + \gamma_a(1 + \frac{ r_{s,min} }{ r_{a,can} LAI_{eff} })
+        \Delta_v + \gamma_a(1 + \frac{ r_{s,\min} }{ r_{a,can} LAI_{eff} })
     }
 \end{equation}
 \begin{equation}
@@ -171,7 +171,88 @@ $PAI_{\%,i}$ 是第 $i$ 层截获 $PAI$ 与最顶部冠层 $PAI$ 的比值，$x_
 作物参数和水分胁迫参数由率定得到。
 
 \section{多目标优化}
-\begin{algorithm}
+NSGA-III 的基本框架类似于原始的 NSGA-II 算法 \cite{NSGA2}，其选择运算符有重大变化。
+但是，与 NSGA-II 不同的是， NSGA-III 中种群成员间多样性的维持是通过提供和自适应更新一些分布良好的参考点来帮助的。
+为了完整起见，首先对原始的 NSGA-II 算法进行简要描述。
+考虑 NSGA-II 算法的第 $t$ 代，假设这一代的父代种群为 $P_t$，其规模为 $N$ ，而由 $P_t$ 产生的子代种群为 $Q_t$，有 $N$ 个成员。
+第一步是从结合的亲代和子代种群 $R_t = P_t \cup Q_t$（大小为 $2N$ ）中选择最好的 $N$ 个成员，从而能够保留亲代种群的精英成员。
+为了实现这一目标，首先根据不同的非同源等级（$F_1$、$F_2$等）对组合群体 $R_t$ 进行排序。
+然后，从 $F_1$ 开始，每次选择一个非同化水平来构建一个新的种群 $S_t$ ，直到St的大小等于 $N$ 或首次超过 $N$。
+因此，从第 $(l+1)$ 级开始的所有解决方案都被拒绝在组合群体 $R_t$ 中。
+在这种情况下，只有那些能使第l层前面的多样性最大化的解决方案被选择。
+在 NSGA-II 中，这是通过一个计算效率高但近似的利基 (niche) 保护算子来实现的，该算子将每个最后一级成员的拥挤距离计算为两个相邻解决方案之间的客观归一化距离之和。
+此后，具有较大拥挤距离值的解决方案被选中。
+在 NSGA-III 中，用以下方法取代拥挤距离算子。
+
+\subsection{将种群按非支配等级分类}
+
+上述利用通常的支配原则\cite{chankong1983}识别非支配前沿的程序也被用于NSGA-III。
+如果 $|St|=N$ ，则不需要进一步的操作，下一代从$P_t+1=S_t$开始。
+对于 $|St|>N$，从一到 ($l-1$) 个前沿的成员已经被选中，即 $P_{t+1}= \cup_{i=1}^{l-1} F_i$ ，剩下的 $(K=N-|Pt+1|)$ 人口成员从最后的前沿 $F_l$ 中选择。
+在下面几个小节中描述其余的选择过程。
+
+\subsection{确定超平面上的参考点}
+
+如前所述， NSGA-III 使用一组预定义的参考点来确保获得的解决方案的多样性。
+所选择的参考点既可以以结构化的方式预定义，也可以由用户优先提供。
+在没有任何偏好信息的情况下，可以采用任何预定义的结构化的参考点放置，但实践中常常使用 Das和Dennis的\cite{das&dennis2000}系统方法1，
+将点放置在一个归一化的超平面--一个 ($M-1$) 维的单位单纯线上，该平面对所有目标轴的倾斜度相同，在每个轴的截距为1。
+如果沿每个目标考虑 $p$ 个划分，那么在一个 $M$ 目标问题中，参考点的总数 ($H$) 由以下公式给出
+
+\begin{equation}\label{eq:H}
+    H = \begin{pmatrix}
+        M + p - 1 \\
+        p
+    \end{pmatrix}
+\end{equation}
+
+例如，在一个三目标问题 ($M = 3$) 中，参考点被创建在一个三角形上，顶点在 $(1, 0, 0)$，$(0, 1, 0)$，$(0, 0, 1)$。
+如果为每个目标轴选择四个分部 $(p=4)$, $H = (\begin{smallmatrix}
+        3+4-1\\
+        4
+    \end{smallmatrix})$ 或 $15$ 个参考点将被创建。
+为清楚起见，这些参考点显示在图 \ref{fig:refPoints} 中。
+在 NSGA-III 中，除了强调非支配性的解决方案外，还强调在某种意义上与这些参考点中的每一个相关的人口成员。
+由于上述创建的参考点广泛分布在整个归一化超平面上，因此获得的解决方案也可能广泛分布在帕累托最优前沿或附近。
+在用户提供一组首选参考点的情况下，理想情况下，用户可以在归一化超平面上标记 $H$ 个点，或者为此给出任何 $H$ 个 $M$ 维的向量。
+所提出的算法有可能找到与所提供的参考点相对应的接近帕累托最优的解决方案，从而使这种方法可以更多地从决策和多目标优化的综合应用角度来使用。
+该程序在算法 \ref{alg:NSGA3} 中提出。
+\begin{figure}
+    \tdplotsetmaincoords{75}{135}
+    \centering
+    \begin{tikzpicture}
+        [tdplot_main_coords,
+            axis/.style={-stealth,thick},
+            vector/.style={-stealth,very thick}]
+        \draw[axis] (0,0,0) -- (5,0,0) node[anchor=east]{$f1$};
+        \draw[axis] (0,0,0) -- (0,5,0) node[anchor=west]{$f2$};
+        \draw[axis] (0,0,0) -- (0,0,5) node[anchor=west]{$f3$};
+        \filldraw[fill=gray,fill opacity=0.8] (0,0,4)--(4,0,0)--(0,4,0)--cycle;
+        \draw[-stealth,very thick] (0,3,3) node[anchor=west]{归一化平面} -- (0.5,1.25,2.25);
+        \draw[-stealth,very thick] (2,3,0) node[anchor=west]{理想点} -- (0,0,0);
+        \fill(4,0,0) circle (2pt) node[anchor=south] {1};
+        \fill(3,1,0) circle (2pt);
+        \fill(3,0,1) circle (2pt);
+        \fill(2,2,0) circle (2pt);
+        \fill(2,1,1) circle (2pt);
+        \fill(2,0,2) circle (2pt);
+        \fill(1,3,0) circle (2pt);
+        \fill(1,2,1) circle (2pt);
+        \fill(1,1,2) circle (2pt);
+        \fill(1,0,3) circle (2pt);
+        \draw[-stealth,very thick] (3,0,4) node[anchor=east]{参考点} -- (1,0,3);
+        \fill(0,4,0) circle (2pt) node[anchor=south] {1};
+        \fill(0,3,1) circle (2pt);
+        \fill(0,2,2) circle (2pt);
+        \fill(0,1,3) circle (2pt);
+        \fill(0,0,4) circle (2pt) node[anchor=south east] {1};
+        \draw[vector] (0,0,0) -- (3,1.5,1.5) node[anchor=south]{参考向量};
+    \end{tikzpicture}
+    \caption{15个结构化参考点显示在归一化参考平面上，适用于$p=4$的三目标问题}\label{fig:refPoints}
+\end{figure}
+
+
+\begin{algorithm}\label{alg:NSGA3}
     \caption{NSGA-III 第 t 代的过程}
     \KwIn{$H$ 构造的参考点 $Z^s$ 或提供的目标点 $Z^a$, 父代种群 $P_t$}
     \KwOut{$P_{t+1}$}
@@ -187,10 +268,242 @@ $PAI_{\%,i}$ 是第 $i$ 层截获 $PAI$ 与最顶部冠层 $PAI$ 的比值，$x_
     }{
     $P_{t+1} = \cup^{l-1}_{j=1} F_j$\\
     从 $F_l$ 中选点: $K = N - |P_{t+1}|$\\
-    归一化目标并创建参考集 $Z^r$: $\mathtt{Normalize}(\mathrm{f}^n, S_t, Z^r, Z^s, Z^a)$\\
-    Associate each member $\mathbf{s}$ of $S_t$ with a reference point: $[\pi(\mathbf{s}), d(\mathbf{s})] =\mathtt{Associate}(S_t, Z^r)$
-    \tcc{$\pi(\mathbf{s})$: closest reference point, $d$: distance between s and $\pi(\mathbf{s})$}
-    Compute niche count of reference point $j \in Z^r$: $\rho_j = \sum_{\mathbf{s}\in S_t/F_l}((\pi(\mathbf{s})) ? 1 : 0 )$\\
-    Choose $K$ members one at a time from $F_l$ to construct $P_{t+1}$: $\mathtt{Niching}(K, \rho_j, \pi, d, Z^r, F_l, P_{t+1})$
+    归一化目标并创建参考集 $Z^r$: $\mathtt{Normalize}(\mathbf{f}^n, S_t, Z^r, Z^s, Z^a)$\\
+    将 $S_t$ 的每个成员 $\mathbf{s}$ 与参考点相关联: $[\pi(\mathbf{s}), d(\mathbf{s})] =\mathtt{Associate}(S_t, Z^r)$
+    \tcc{$\pi(\mathbf{s})$: 最近参考点, $d$: $\mathbf{s}$ 与 $\pi(\mathbf{s})$ 之间的距离}
+    计算参考点的利基 (niche) 数 $j \in Z^r$: $\rho_j = \sum_{\mathbf{s}\in S_t/F_l}((\pi(\mathbf{s})) ? 1 : 0 )$\\
+    一次从 $F_l$ 选取 $K$ 个成员构建 $P_{t+1}$: $\mathtt{Niching}(K, \rho_j, \pi, d, Z^r, F_l, P_{t+1})$
     }
 \end{algorithm}
+\subsection{种群成员的适应性归一化}
+首先，$S_t$种群的理性点是由在$\cup_{\tau=0}^t S_{\tau}$中的每个目标函数$i =1,2,\dots,M$的最小值 ($z_i^{\min}$) 通过构建理想点%
+$\overline{z} = (z_1^{\min}, z_2^{\min},\dots,z_M^{\min})$ 来确定的。%
+然后，$S_t$ 的每个目标值通过用$z_i^{\min}$减去目标$f_i$来翻译，这样，翻译后的 $S_t$ 的理想点就成为一个零矢量。%
+接着，通过寻找使相应的成就标化函数 (由$f'_i(\mathbf{x}) = f_i(\mathbf{x}) - z_i^{\min}$和接近第$i$个目标轴的权重向量形成) 最小的解 $(x \in S_t)$，%
+来确定每个（第$i$个）目标轴中的极端点 ($z^{i,\max}$)。
+随后，这些$M$个极端向量被用来构成一个$M$维的超平面。%
+接下来可以计算出第$i$个目标轴和线性超平面的截距$a_i$（见图\ref{fig:formingHyperPlane}）。%
+\begin{figure}
+    \tdplotsetmaincoords{45}{120}
+    \centering
+    \begin{tikzpicture}
+        [tdplot_main_coords,
+            cube/.style={very thick,black},
+            grid/.style={very thin,gray},
+            axis/.style={-stealth,thick},
+            vector/.style={-stealth,very thick},
+            annotation/.style={fill=white,font=\footnotesize,inner sep=1pt}]
+        \draw[axis] (0,0,0) -- (6,0,0) node[anchor=east]{$f'_1$};
+        \draw[axis] (0,0,0) -- (0,6,0) node[anchor=west]{$f'_2$};
+        \draw[axis] (0,0,0) -- (0,0,6) node[anchor=west]{$f'_3$};
+        \foreach \coo in {2,4}
+            {
+                \draw (\coo, 0, 0) node[anchor=east] {\fpeval{\coo/2}} -- (\coo, 0.25, 0);
+                \draw (0, \coo, 0) node[anchor=south] {\fpeval{\coo/2}} -- (0.25, \coo, 0);
+                \draw (0, 0, \coo) node[anchor=east] {\fpeval{\coo/2}} -- (0, 0.25, \coo);
+            }
+        \foreach \coo in {1,3,5}
+            {
+                \draw (\coo, 0, 0) -- (\coo, 0.125, 0);
+                \draw (0, \coo, 0) -- (0.125, \coo, 0);
+                \draw (0, 0, \coo) -- (0, 0.125, \coo);
+            }
+        \draw[thick] (0,0,5.2)--(4.4,0,0)--(0,3.5,0)--cycle;
+        \draw (4.4,0,0)--(4.4,-1,0);
+        \draw (0,0,0)--(0,-1,0);
+        \draw (0,0,5.2)--(0,-1,5.2);
+        \draw (0,0,0)--(-1,0,0);
+        \draw (0,3.5,0)--(-1,3.5,0);
+        \draw[arrows=<->] (0,-0.8,0)--(2.2,-0.8,0) node[annotation] {$a_1$}--(4.4,-0.8,0);
+        \draw[arrows=<->] (-0.8,0,0)--(-0.8,1.75,0) node[annotation] {$a_2$}--(-0.8,3.5,0);
+        \draw[arrows=<->] (0,-0.8,0)--(0,-0.8,2.6) node[annotation] {$a_3$}--(0,-0.8,5.2);
+        \fill(\fpeval{4.4*0.1},\fpeval{3.5*0.1},\fpeval{5.2*0.8}) circle (2pt);
+        \fill(\fpeval{4.4*0.05},\fpeval{3.5*0.8},\fpeval{5.2*0.15}) circle (2pt);
+        \fill(\fpeval{4.4*0.8},\fpeval{3.5*0.1},\fpeval{5.2*0.1}) circle (2pt);
+        \draw[dash pattern=on 5pt off 5pt] (\fpeval{4.4*0.1},\fpeval{3.5*0.1},\fpeval{5.2*0.8}) node[anchor=south west] {$z^{3,\max}$}--(\fpeval{4.4*0.05},\fpeval{3.5*0.8},\fpeval{5.2*0.15}) node[anchor=south west] {$z^{2,\max}$}--(\fpeval{4.4*0.8},\fpeval{3.5*0.1},\fpeval{5.2*0.1}) node[anchor=west] {$z^{1,\max}$}--cycle;
+    \end{tikzpicture}
+    \caption{以三目标问题为例，计算截距，然后从极端点形成超平面的程序}\label{fig:formingHyperPlane}
+\end{figure}
+要特别注意处理退化的情况和非负的截距。%
+再然后，目标函数可以被规范化为
+\begin{equation}\label{eq:normalize}
+    f_i^n (\mathbf{x})= \frac{f_i'(x)}{a_i},\ \mathrm{for}\ i = 1, 2, \dots, M.
+\end{equation}
+请注意，现在每个归一化目标轴的截点都在$f_i^n = 1$，用这些截点构建的超平面将使$\sum^M_{i=1} f_i^n = 1$。
+在结构化参考点 (其中有$H$个) 的情况下，用Das和Dennis\cite{das&dennis2000}的方法计算的原始参考点已经位于这个归一化的超平面上。%
+在用户偏爱参考点的情况下，参考点只需使用 \ref{eq:normalize} 映射到上述构建的标准化超平面上。%
+由于归一化程序和超平面的创建是在每一代使用从模拟开始时发现的极端点来完成的，%
+因此 NSGA-III 程序在每一代都能自适应地保持 $S_t$ 成员所跨越空间的多样性。%
+这使得 NSGA-III 能够解决具有帕累托最优前沿的问题，其目标值可以有不同的比例。%
+该程序也在算法 \ref{alg:normalize} 中进行了描述。
+\begin{algorithm}
+    \caption{$\mathtt{Normalize}(\mathbf{f}^n, S_t, Z^r, Z^s, Z^a)$过程}\label{alg:normalize}
+    \KwIn{$S_t$, $Z^s$ (构造点) 或 $Z^a$ (提供点)}
+    \KwOut{$\mathbf{f}^n$, $Z^r$ (归一化的超平面上的参考点)}
+
+    \For{$j = 1 \mathbf{to} M$}{
+    计算理想点: $z_j^{\min} = \min_{\mathbf{S}\in S_t} f_j(s)$
+    翻译目标: $f_j'(\mathbf{s}) = f_j(\mathbf{s}) - z_j^{\min} \quad \forall \mathbf{s} \in S_t$
+    计算极点: $(\mathbf{z}^{j,\max}, j = 1, \dots, M)$ of $S_t$
+    }
+
+    计算截点 $a_j$ 对 $j = 1, \dots, M$
+    使用公式 \ref{eq:normalize} 归一化目标 ($\mathbf{f}^n$)
+
+    \eIf{是否提供 $Z^a$}{
+        使用公式 \ref{eq:normalize} 将每个（吸气）点映射到归一化的超平面上，并将这些点保存在集合 $Z^r$ 中。
+    }{
+        $Z^r=Z^s$
+    }
+\end{algorithm}
+\subsection{关联操作}
+在根据目标空间中$S_t$成员的范围自适应地对每个目标进行归一化后，需将每个群体成员与一个参考点联系起来。%
+为此，通过连接参考点和原点，在超平面上定义一条对应于每个参考点的参考线。%
+然后，计算$S_t$的每个人口成员与每条参考线的垂直距离。%
+在归一化目标空间中，参考线最接近人口成员的参考点被认为与该人口成员相关。%
+这在图\ref{fig:associate}中得到了说明。该程序在算法\ref{alg:associate}中提出。
+\begin{algorithm}
+    \caption{$\mathtt{Associate}(S_t,Z^r)$ 过程}\label{alg:associate}
+    \KwIn{$Z^r, S_t$}
+    \KwOut{$\pi(\mathbf{s} \in S_t), d(\mathrm{s} \in S_t)$}
+    \ForEach{每个参考点 $\mathbf{z} \in Z^r$}{
+        计算参考线 $\mathbf{w} = \mathbf{z}$
+    }
+    \ForEach{$\mathbf{s} \in S_t$}{
+    \ForEach{$\mathbf{w} \in Z^r$}{
+        计算 $d^{\bot}(\mathbf{s}, \mathbf{w}) = \parallel (\mathbf{s} - \mathbf{w}^T \mathbf{sw} /\parallel \mathbf{w} \parallel^2) \parallel $
+    }
+    $\pi(\mathbf{s}) = \mathbf{w} : \mathrm{argmin}_{\mathbf{w} \in Z^r} d^{\bot}(\mathbf{s}, \mathbf{w})$
+    $d(\mathbf{s}) = d^{\bot}(\mathbf{s},\pi(\mathbf{s}))$
+    }
+\end{algorithm}
+\begin{figure}
+    \tdplotsetmaincoords{45}{150}
+    \centering
+    \begin{tikzpicture}
+        [tdplot_main_coords,
+            cube/.style={very thick,black},
+            grid/.style={very thin,gray},
+            axis/.style={-stealth,thick},
+            vector/.style={-stealth,very thick},
+            annotation/.style={fill=white,font=\footnotesize,inner sep=1pt},
+            refPoints/.style={fill=gray},
+            sample/.style={fill=black},
+            dashedLine/.style={dash pattern=on 5pt off 5pt}]
+        \draw (0,6,0) -- (3,6,0) node[anchor=north west]{$f'_1$} -- (6,6,0);
+        \draw (6,0,0) -- (6,3,0) node[anchor=east]{$f'_2$} -- (6,6,0);
+        \draw (6,0,0) -- (6,0,3) node[anchor=west]{$f'_3$} -- (6,0,6);
+        \foreach \tick in {0,0.5,1,1.5} {
+                \draw (\fpeval{0+\tick*4},6,0) -- (\fpeval{0+\tick*4},6.25,0) node[anchor=north west] {\tick};
+                \draw (6,\fpeval{0+\tick*4},0) -- (6.25,\fpeval{0+\tick*4},0) node[anchor=north east] {\tick};
+                \draw (6,0,\fpeval{0+\tick*4}) -- (6,-0.25,\fpeval{0+\tick*4}) node[anchor=south east] {\tick};
+            }
+        \filldraw[fill=gray!30,fill opacity=0.6] (0,0,4)--(4,0,0)--(0,4,0)--cycle;
+        \fill[refPoints](4,0,0) circle (2pt);
+        \draw[dashedLine] (0,0,0) -- (5,0,0);
+        \fill[refPoints](\fpeval{8/3},\fpeval{4/3},0) circle (2pt);
+        \draw[dashedLine] (0,0,0) -- (\fpeval{8/3 * 5 / sqrt(80/9)},\fpeval{4/3 * 5 / sqrt(80/9)},0);
+        \fill[refPoints](\fpeval{4/3},\fpeval{8/3},0) circle (2pt);
+        \draw[dashedLine] (0,0,0) -- (\fpeval{4/3 * 5 / sqrt(80/9)},\fpeval{8/3 * 5 / sqrt(80/9)},0);
+        \fill[refPoints](0,4,0) circle (2pt);
+        \draw[dashedLine] (0,0,0) -- (0,5,0);
+        \fill[refPoints](\fpeval{8/3},0,\fpeval{4/3}) circle (2pt);
+        \draw[dashedLine] (0,0,0) -- (\fpeval{8/3 * 5 / sqrt(80/9)},0,\fpeval{4/3 * 5 / sqrt(80/9)});
+        \fill[refPoints](\fpeval{4/3},\fpeval{4/3},\fpeval{4/3}) circle (2pt);
+        \draw[dashedLine] (0,0,0) -- (\fpeval{4/3 * 5 / sqrt(16/3)},\fpeval{4/3 * 5 / sqrt(16/3)},\fpeval{4/3 * 5 / sqrt(16/3)});
+        \fill[refPoints](0,\fpeval{8/3},\fpeval{4/3}) circle (2pt);
+        \draw[dashedLine] (0,0,0) -- (0,\fpeval{8/3 * 5 / sqrt(80/9)},\fpeval{4/3 * 5 / sqrt(80/9)});
+        \fill[refPoints](0,\fpeval{4/3},\fpeval{8/3}) circle (2pt);
+        \draw[dashedLine] (0,0,0) -- (0,\fpeval{4/3 * 5 / sqrt(80/9)},\fpeval{8/3 * 5 / sqrt(80/9)});
+        \fill[refPoints](\fpeval{4/3},0,\fpeval{8/3}) circle (2pt);
+        \draw[dashedLine] (0,0,0) -- (\fpeval{4/3 * 5 / sqrt(80/9)},0,\fpeval{8/3 * 5 / sqrt(80/9)});
+        \fill[refPoints](0,0,4) circle (2pt);
+        \draw[dashedLine] (0,0,0) -- (0,0,5);
+
+        % sample points
+        \fill[sample](0.5,0,4) circle (2pt);
+        \draw (0.5,0,4)--(0.0,0.0,4.0);
+        \fill[sample](0.6,3.9,2.1) circle (2pt);
+        \draw (0.6,3.9,2.1)--(0.0,3.96,1.98);
+        \fill[sample](1,4,1) circle (2pt);
+        \draw (1,4,1)--(1.8,3.6,0.0);
+        \fill[sample](1.2,1.2,3.6) circle (2pt);
+        \draw (1.2,1.2,3.6)--(1.68,0.0,3.36);
+        \fill[sample](4,1,2) circle (2pt);
+        \draw (4,1,2)--(4.0,0.0,2.0);
+        \fill[sample](3.2,1,3) circle (2pt);
+        \draw (3.2,1,3)--(3.76,0.0,1.88);
+        \fill[sample](3.2,1.8,2.4) circle (2pt);
+        \draw (3.2,1.8,2.4)--(2.46667,2.46667,2.46667);
+    \end{tikzpicture}
+    \caption{展示了将种群成员与参考点关联}\label{fig:associate}
+\end{figure}
+
+\subsection{利基 (niche) 保护操作}
+值得注意的是，一个参考点可以有一个或多个种群成员与之相关联，或者不需要有任何种群成员与之相关联。%
+计算 $P_{t+1}=S_t/F_l$ 中与每个参考点相关的种群成员的数量。%
+第 $j$ 个参考点的这个利基计数记作 $\rho_j$。%
+首先，确定参考点集 $J_{\min} = \{j : \mathrm{argmin}_j \rho_{j}\}$ 具有最小$\rho_j$。%
+在有多个这样的参考点的情况下，随机选择一个 ($\overline{j} \in J_{\min}$)。%
+如果 $\rho_{\overline{j}}= 0$（意味着参考点 $\overline{j}$ 没有相关的$P_{t+1}$成员），在集合$F_l$中的 $\overline{j}$ 可能有两种情况。%
+首先， $F_l$ 中存在一个或多个与参考点 $\overline{j}$相关的成员。%
+在这种情况下，与参考线垂直距离最短的成员被添加到 $P_{t+1}$。%
+然后，参考点 $\overline{j}$ 的计数 $\rho_{\overline{j}}$递增1。%
+第二，前面的$F_l$没有任何与参考点 $\overline{j}$ 相关的成员。%
+在这种情况下，参考点被排除在当前一代的进一步考虑之外。%
+在 $\rho_{\overline{j}} \ge 1$ 的情况下（意味着$S_t/F_l$中已经有一个与参考点相关的成员存在），如果存在的话，从前面$F_l$中随机选择一个与参考点$\overline{j}$相关的成员被添加到$P_{t+1}$。%
+然后，$\rho_{\overline{j}}$的计数被增加1。%
+利基计数更新后，该程序共重复K次，以填补 $P_{t+1}$ 的所有空闲人口槽。%
+该程序在算法\ref{alg:niche}中提出。
+\begin{algorithm}
+    \caption{$\mathtt{Niching}(K, \rho_j, \pi, d, Z^r, F_l, P_{t+1})$过程}\label{alg:niche}
+    \KwIn{$K, \rho_j, \pi(\mathbf{s} \in S_t), d(\mathbf{s} \in S_t), Z^r, F_l$}
+    \KwOut{$P_{t+1}$}
+    $k = 1$
+    \While{$k \le K$}{
+    $J_{\min} = \{ j:\mathrm{agrmin}_{j \in Z^r} \rho_j \}$
+    $\overline{j}  = \mathrm{random}(J_{\min})$
+    $I_{\overline{j}} = \{ s: \pi(\mathbf{s}) = \overline{j}, s \in F_l \}$
+    \eIf{$I_{\overline{j}} \neq \emptyset$}{
+    \eIf{$\rho_{\overline{j}} = 0$}{
+    $P_{t+1} = P_{t+1} \cup ( \mathbf{s}: \mathrm{argmin}_{\mathbf{S} \in I_{\overline{j}}} d(\mathbf{s}) )$
+    }{
+    $P_{t+1} = P_{t+1} \cup \mathrm{random}(I_{\overline{j}})$
+    }
+    $\rho_{\overline{j}} = \rho_{\overline{j}} + 1, F_l = F_l \setminus \mathbf{s}$
+    $k = k + 1$
+    }{
+    $Z^r = Z^r / \{ \overline{j} \}$
+    }
+    }
+\end{algorithm}
+
+\subsection{创造后代群体的遗传操作}
+$P_{t+1}$ 形成后，再通过应用通常的遗传算子来创建一个新的子代群体 $Q_{t+1}$。%
+在NSGA-III中，已经对解决方案进行了仔细的精英选择，并试图通过强调最接近每个参考点参考线的解决方案来保持解决方案的多样性。%
+此外，为了达到快速计算的目的，设定 $N$ 几乎等于 $H$，从而期望在每个参考点对应的帕累托最优前线附近进化出一个群体成员。%
+由于所有这些原因，在处理仅有箱体约束的问题时，没有采用 NSGA-III 的任何明确的繁殖操作。%
+群体 $Q_{t+1}$ 是通过从 $P_{t+1}$ 中随机挑选父母，应用通常的交叉和变异操作来构建。%
+然而，为了使后代的解更接近父代的解，建议在SBX运算中使用一个相对较大的分布指数值，从而使后代接近其父代。
+
+\subsection{NSGA-III 中一代的计算复杂度}
+对具有 $M$ 维目标向量的 $2N$ 大小的群体进行非支配性排序（算法\ref{alg:NSGA3}的第4行）需要 $O(N \log ^{M-2} N)$次计算\cite{kung1975}。%
+算法\ref{alg:normalize}第2行中的理想点的识别总共需要 $O(MN)$ 次计算。%
+目标的转换（第3行）需要 $O(MN)$ 次计算。%
+然而，识别极端点（第4行）需要 $O(M^2N)$次计算。%
+确定截距（第6行）需要一个大小为 $M \times M$ 的矩阵反转，需要 $O(M^3)$ 次运算。%
+此后，对最大的 $2N$ 个人口成员进行归一化（第7行）需要 $O(N)$ 次计算。%
+算法\ref{alg:normalize}的第8行需要 $O(MH)$次计算。%
+算法\ref{alg:associate}中把最多2N个种群成员与H个参考点联系起来的所有操作都需要 $O(MNH)$计算。%
+此后，在算法\ref{alg:niche}的排队程序中，第3行将需要 $O(H)$ 次比较。假设 $L=|F_l|$，第5行需要 $O(L)$ 个检查。%
+第8行在最坏的情况下需要 $O(L)$ 次计算。其他操作的复杂度较小。%
+然而，在 $\mathtt{Niching}$ 算法中，上述计算最多需要执行L次，因此需要更大的$O(L^2)$或$O(LH)$计算。%
+在最坏的情况下（$S_t = F_1$，即第一个非支配阵线超过种群大小），$L \le 2N$。%
+在我们所有的模拟中，我们使用了$N \approx H$，通常 $N > M$。%
+考虑到上述所有的考虑和计算，NSGA-III一代的总体最坏情况下的复杂度为 $O(N^2 \log^{M-2} N)$ 或 $O(N^2M)$，以较大者为准。
+
+\subsection{NSGA-III 的无参数特性}
+与NSGA-II一样，NSGA-III算法不需要设置任何新的参数，除了通常的GA参数，如种群大小、终止参数、交叉和变异概率及其相关参数。%
+参考点的数量 $H$ 不是一个算法参数，因为这与期望的权衡点的数量直接相关。%
+人口规模 $N$ 取决于 $H$，因为$N \approx H$。%
+参考点的位置同样取决于用户对所获得的解决方案中的偏好信息。
