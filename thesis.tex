@@ -1,4 +1,4 @@
-\documentclass[a4paper,zihao=5,AutoFakeBold]{ctexbook}
+\documentclass[a4paper,oneside,zihao=5,AutoFakeBold]{ctexbook}
 \usepackage[ruled,linesnumbered]{algorithm2e}
 \usepackage{amsmath}
 \usepackage[backend=biber,style=gb7714-2015]{biblatex}% chktex 8
@@ -45,12 +45,12 @@ data/.style = {base, trapezium, trapezium left angle=60, trapezium right angle=1
 decision/.style = {base, diamond, aspect=2},
 }
 \ctexset{
-    chapter = {
-      number = \arabic{chapter},
-      format = \zihao{3} \heiti \bfseries \centering
-     },
-    section/format = \zihao{4} \songti \bfseries \raggedright,
-    subsection/format = \zihao{-4} \youyuan \bfseries
+  chapter = {
+    number = \arabic{chapter},
+    format = \zihao{3} \heiti \bfseries \centering
+   },
+  section/format = \zihao{4} \songti \bfseries \raggedright,
+  subsection/format = \zihao{-4} \youyuan \bfseries
 }
 \input{titlepage}
 \input{abstract}

@@ -1,7 +1,10 @@
+import pathlib
 import cartopy.crs as ccrs
 import cartopy.feature as cfeature
 import matplotlib.pyplot as plt
 import numpy as np
+import pandas as pd
+import tarfile
 from cartopy.mpl.gridliner import LATITUDE_FORMATTER, LONGITUDE_FORMATTER
 from datav import DataVGeoAtlasFeature
 from matplotlib.font_manager import FontProperties
@@ -10,7 +13,7 @@ from matplotlib.transforms import offset_copy
 SimSun = FontProperties(fname="/mnt/c/Windows/Fonts/simsun.ttc")
 
 
-def research_site(fontproperties: FontProperties, dpi=800):
+def research_site(fontproperties: FontProperties, path, dpi=800):
     proj = ccrs.PlateCarree()
     fig = plt.figure(figsize=(14, 7))
     main_box = (80.5, 82, 40.25, 41)
@@ -55,9 +58,7 @@ def research_site(fontproperties: FontProperties, dpi=800):
         )
     )
     ax_inset.add_feature(DataVGeoAtlasFeature(650000, facecolor="limegreen"))
-    ax_inset.add_feature(
-        DataVGeoAtlasFeature(652900, facecolor="green", edgecolor="none")
-    )
+    # ax_inset.add_feature(DataVGeoAtlasFeature(652900, facecolor="green", edgecolor="none"))
     ax_inset.add_feature(
         DataVGeoAtlasFeature(659002, facecolor="darkgreen", edgecolor="black")
     )
@@ -71,8 +72,29 @@ def research_site(fontproperties: FontProperties, dpi=800):
     ax_inset.set_xticks(xinset, crs=ccrs.PlateCarree())
     ax_inset.set_yticks(yinset, crs=ccrs.PlateCarree())
 
-    plt.savefig("research_site.png", dpi=dpi)
+    plt.savefig(path, dpi=dpi)
+
+
+def alar_gsod():
+    def g():
+        for year in (2019, 2020, 2021):
+            with tarfile.open(f"{year}.tar.gz", "r:gz") as tar:
+                yield pd.read_csv(
+                    tar.extractfile("51730099999.csv"),
+                    na_values=["999.9", "99.99", "9999.9"],
+                    parse_dates=[1],
+                    index_col=1,
+                )
+
+    return pd.concat(g())
 
 
 if __name__ == "__main__":
-    research_site(SimSun)
+    if not (research_site_path := pathlib.Path("research_site.png")).exists():
+        research_site(fontproperties=SimSun, path=research_site_path)
+    if not (gsod_path := pathlib.Path("alar.gsod.csv")).exists():
+        alar_climate = alar_gsod()
+        alar_climate.to_csv(gsod_path)
+    else:
+        alar_climate = pd.read_csv(gsod_path, index_col=0, parse_dates=[0])
+    print(alar_climate)
