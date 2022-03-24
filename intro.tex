@@ -129,13 +129,13 @@ Landivar 等人（2010）主要描述了模型的开发方法，没有对比现�
     \centering
     \begin{tabular}{cp{0.14\linewidth}cccp{0.22\linewidth}}
         \toprule
-        名称               & 父代模型         & 编程语言 & 时间步长 & 核心引用                  & 支持决策工具           \\
+        名称               & 父代模型         & 编程语言 & 时间步长 & 核心引用                    & 支持决策工具           \\
         \midrule
-        GOSSYM             & SIMCOTI SIMCOTII & Fortran  & 日       &                           & COMAX\cite{lemmon1986} \\
-        Cotton2K           & GOSSYM CALGOS    & C++      & 小时     &                           & 无                     \\
-        COTCO2             & KUTUN ALFALFA    & Fortran  & 小时     &                           & 无                     \\
-        OZCOT              & SIRATAC          & C\#      & 日       & \authornumcite{hearn1994} & APSIM 生态\cite{APSIM} \\
-        CSM-CROPGRO-Cotton & CROPGRO-Soybean  & Fortran  & 日       &                           & DSSAT                  \\
+        GOSSYM             & SIMCOTI SIMCOTII & Fortran  & 日       & \authoryearcite{baker1976}  & COMAX\cite{lemmon1986} \\
+        Cotton2K           & GOSSYM CALGOS    & C++      & 小时     & \authoryearcite{cotton2kv4} & 无                     \\
+        COTCO2             & KUTUN ALFALFA    & Fortran  & 小时     & \authoryearcite{wall1994}   & 无                     \\
+        OZCOT              & SIRATAC          & C\#      & 日       & \authoryearcite{hearn1994}  & APSIM 生态\cite{APSIM} \\
+        CSM-CROPGRO-Cotton & CROPGRO-Soybean  & Fortran  & 日       & \authoryearcite{jones2003}  & DSSAT                  \\
         \bottomrule
     \end{tabular}
 \end{table}
@@ -148,11 +148,15 @@ Landivar 等人（2010）主要描述了模型的开发方法，没有对比现�
 由联合国粮食及农业组织 (FAO) 支持的 AquaCrop 模型是模拟水资源管理产量响应的新型通用作物模型\cite{tan2018}。
 它基于植物生理学和土壤水分平衡的模拟，取代了粮农组织以前的方法，用于估算与供水有关的作物生产力。
 另外，发展和参数化的 WALL 模型也通过聚焦水分在叶片运移用于仿真单叶的水分蒸发\cite{pachepsky2009}。
-2021 年最新版本的 SWAP 4.0 版本\cite{swap2021}综合考虑了水、热、冷和盐分胁迫对蒸发蒸腾的影响，多尺度 SWAP 模型是否可以改进已提出的棉花模型的水分运移模拟值得深入分析和探讨。
+2021 年最新版本的 SWAP 4.0 版本\cite{swap2021}综合考虑了水、热、冷和盐分胁迫对蒸发蒸腾的影响，%
+多尺度 SWAP 模型是否可以改进已提出的棉花模型的水分运移模拟值得深入分析和探讨。
 
 虽然中国的棉花生长模型研究起步较晚，但作为棉花生产世界领先的国家，
-棉花生长模拟的研究发展较快，比较有代表性的是潘学标等开发的 COTGROW\cite{pan1996} 模型，此外，\authornumcite{zhang2003}、\authornumcite{chen2006}和\authornumcite{ma2004}等也分别建立了棉花生长和品质形成模拟模型，这些模型在借鉴国外模型理念基础上，加入了我国特有的管理措施如化控、覆膜等。
-另外，国内学者也开发了棉花发育阶段和蕾铃模拟模型\cite{ma2005}、棉籽生长、油和蛋白质含量模拟模型\cite{li2009}和基于气温、太阳辐照度和 N 效应的棉纤维长度和强度的模拟模型\cite{zhao2012}等。
+棉花生长模拟的研究发展较快，比较有代表性的是潘学标等开发的 COTGROW\cite{pan1996} 模型，%
+此外，\authornumcite{zhang2003}、\authornumcite{chen2006}和\authornumcite{ma2004}等也分别建立了棉花生长和品质形成模拟模型，%
+这些模型在借鉴国外模型理念基础上，加入了我国特有的管理措施如化控、覆膜等。
+另外，国内学者也开发了棉花发育阶段和蕾铃模拟模型\cite{ma2005}、棉籽生长、油和蛋白质含量模拟模型\cite{li2009}和基于气温、%
+太阳辐照度和 N 效应的棉纤维长度和强度的模拟模型\cite{zhao2012}等。
 然而，不同的模型的性能会随着研究的品种、种植模式、生长环境和使用目标的变化呈现一定的差异性。
 
 \begin{table}
@@ -198,24 +202,24 @@ Landivar 等人（2010）主要描述了模型的开发方法，没有对比现�
     \caption{现有的棉花模拟模型和其他应用所模拟的管理实践}\label{tab:agromanagement}
     \begin{tabular}{p{0.14\linewidth}p{0.14\linewidth}p{0.14\linewidth}p{0.14\linewidth}p{0.14\linewidth}p{0.14\linewidth}}
         \toprule
-                            & GOSSYM & Cotton2K & COTCO2 & OZCOT & CROPGRO-Cotton \\
+                     & GOSSYM & Cotton2K & COTCO2 & OZCOT & CROPGRO-Cotton \\
         \midrule
-        Sowing date         & X      & X        & X      & X     & X              \\
-        Cultivar selection  & X      & X        & X      & X     & X              \\
-        Row spacing         & X      & X        & X      & X     & X              \\
-        Skip rows           & X      & X        &        & X     &                \\
-        Planting density    & X      & X        & X      & X     & X              \\
-        Irrigation          & X      & X        & X      & X     & X              \\
-        Fertilizer          & X      & X        &        & X     & X              \\
-        Crop residue        &        &          &        &       & X              \\
-        Tillage             &        & X        &        &       & X              \\
-        Growth regulators   & X      & X        &        &       &                \\
-        Defoliation         & X      & X        &        &       &                \\
-        Insect damage       & X      & X        & X      & X     & X              \\
-        Disease impact      &        & X        &        &       & X              \\
-        Climate change      & X      &          & X      &       & X              \\
-        Cropping sequences  &        &          &        & X     & X              \\
-        Geospatial analysis &        & X        &        & X     & X              \\
+        播种日期     & X      & X        & X      & X     & X              \\
+        栽培品种选择 & X      & X        & X      & X     & X              \\
+        行间距       & X      & X        & X      & X     & X              \\
+        间隔行       & X      & X        &        & X     &                \\
+        种植密度     & X      & X        & X      & X     & X              \\
+        灌溉         & X      & X        & X      & X     & X              \\
+        施肥         & X      & X        &        & X     & X              \\
+        农作物残留物 &        &          &        &       & X              \\
+        耕作         &        & X        &        &       & X              \\
+        生长调节剂   & X      & X        &        &       &                \\
+        落叶剂       & X      & X        &        &       &                \\
+        虫害         & X      & X        & X      & X     & X              \\
+        病害         &        & X        &        &       & X              \\
+        气候变化     & X      &          & X      &       & X              \\
+        耕作顺序     &        &          &        & X     & X              \\
+        地理空间分析 &        & X        &        & X     & X              \\
         \bottomrule
     \end{tabular}
 \end{table}
@@ -241,7 +245,7 @@ Cotton2K 模型基于 GOSSYM 模型的过程公式，借鉴了 SIMCOTI ， SIMCO
 Cotton2K 模型是由耶路撒冷希伯来大学农学院的 Avishalom Marani 博士开发的。
 该模型的源代码是用C++编写的，可以免费下载 \cite{cotton2kv4}。
 Cotton2K 使用 GOSSYM \cite{baker1976,baker1983} 的基于过程的方程，其历史可以追溯到其他棉花建模工作，包括SIMCOTI \cite{baker1972}、SIMCOTII \cite{jones1974}, 和 CALGOS \cite{marani1992a,marani1992b,marani1992c}。
-Cotton2K 的主要目的是为如美国西部和以色列这样的干旱、灌溉环境下的棉花生产提供一个更有用的模型。 
+Cotton2K 的主要目的是为如美国西部和以色列这样的干旱、灌溉环境下的棉花生产提供一个更有用的模型。
 
 \authoryearcite{cotton2kv4} 对Cotton2K的历史、主要特征、科学原理和投入要求作了总体描述。
 Cotton2K 和 GOSSYM 的根本区别在于对天气数据的要求。
