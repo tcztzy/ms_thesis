@@ -60,7 +60,66 @@
 第一年设计三个种植密度，理论密度分别为 15000, 16000 和 17000 株/$\mathrm{hm^2}$。
 第二年到第三年根据第一年的模拟结果进行适当调整。
 共 24 个处理，进行安全区组设计，每个小区 0.25 亩，每个实验三次重复。
-\subsection{土壤含水量}
+
+\subsection{气象数据}
+
+该模型所需的每日气象数据包括太阳辐射 ($langley$)，最高和最低温度 (℃) 和降水 (mm) 以及2米高度的风速 (km/h)。
+
+\begin{table}
+    \caption{Cotton2K 模型所需输入每日气象数据}\label{tab:meteorology}
+    \small
+    \centering
+    \begin{tabular}{cccc}
+        \toprule
+        名称         & 解释                     & 单位                                              & 是否必须 \\
+        \midrule
+        太阳辐射强度 & 大气下垫面短波辐射强度   & $\mathrm{langley} = 0.04184\ \mathrm{MJ\ m^{-2}}$ & 是       \\
+        最高气温     & 2 m 最高气温             & ℃                                                 & 是       \\
+        最低气温     & 2 m 最低气温             & ℃                                                 & 是       \\
+        露点温度     & 空气冷却达到饱和时的温度 & ℃                                                 & 否       \\
+        降水         & 24 小时内降水            & mm                                                & 是       \\
+        风速         & 2 m 风速                 & km/h                                              & 否       \\
+        \bottomrule
+    \end{tabular}
+\end{table}
+
+当露点温度不可得时，可通过公式 \ref{eq:dewpoint} 估算而得。
+
+\begin{equation}\label{eq:dewpoint}
+    T_{dew} = \begin{cases}
+        SitePar_5                                                            & T_{\max} < 20        \\
+        \frac{(40 - T_{\max}) * SitePar_5 + (T_{\max} - 20) * SitePar_6}{20} & 20 \le T_{\max} < 40 \\
+        SitePar_6                                                            & T_{\max} \ge 40      \\
+    \end{cases}
+\end{equation}
+
+式中，$T_{dew}$ 为露点温度 (℃)，$T_{\max}$ 为最高气温 (℃)，$SitePar_5$ 与 $SitePar_6$ 为用户提供输入，与试验站相关。
+
+当每日风速数据不可得时，使用年平均风速代替。
+
+\begin{figure}
+    \centering
+    \includegraphics[scale=0.5]{climate.png}
+    \caption{2019-2021年试验站棉花生长期主要气象数据}
+\end{figure}
+
+冠层温湿度由精创 RC-4HA 收集，设置取样间隔为 0.5 小时。
+
+\subsection{光能截获率}
+
+在2019年使用LI-6400XT便携式光合作用系统，在2020年使用 LI-191R 线量子传感器和 LI-1500 光传感器在每10天的晴天中午13点至15点之间收集光截获数据。
+行内空间被划分为网格，5个水平列和根据植物高度分为6层，每个网格的宽度相等，高度为 20 厘米，然后用设备测量每个网格的照度。
+光截获量的计算方法是：同一水平层中各网格的平均光照度减去比率，参见公式\ref{eq:measured_li}。
+
+\begin{equation}\label{eq:measured_li}
+    LI_{i} = 1 - \frac{\sum^5_{j=1} I_{i,j}}{\sum^5_{j=1} I_{i+1,j}} \quad \mathrm{for} i \in {1,2,\dots,6}
+\end{equation}
+
+式中， $LI_{i}$ 为第 $i$ 层的光能截获率， $I_{i,j}$ 是第 $i$ 层第 $j$ 列网格的光照强度， $I_{i+1,j}$ 为上层网格的光照强度。
+
+\subsection{土壤含水量与温度}
+
+土壤温度由 Thermochron® iButton®器件(DS1921G) 收集，设置取样间隔为 2 小时。
 
 \subsection{棉花生理指标}
 试验记录内容主要包括:
