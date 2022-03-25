@@ -1,0 +1,49 @@
+\chapter{模型校正及验证}
+
+\section{研究方法}
+\begin{table}
+    \caption{对中国新疆阿拉尔市田间12种棉花管理方案的农业生态系统指标进行评估。
+        这12个指标按优先顺序列出，以便使用多目标优化技术对Cotton2K农业生态系统模型进行评价。}
+    \centering
+    \begin{tabular}{llll}
+        \toprule
+        指标 & 描述           & 单位                   & 数量 \\
+        \midrule
+        LY   & 皮棉产量       & $\mathrm{kg\ ha^{-1}}$ & 24   \\
+        TAGB & 地上总干物质量 & $\mathrm{kg\ ha^{-1}}$ & 240  \\
+        LAI  & 叶面积指数     & $\mathrm{m^2\ m^{-2}}$ & 240  \\
+        LI   & 光能截获率     & \%                     & 240  \\
+        SCY  & 籽棉产量       & $\mathrm{m^2\ m^{-2}}$ & 24   \\
+        PH   & 株高           & cm                     & 240  \\
+        MSN  & 主茎节点数     & 个                     & 240  \\
+        LDM  & 叶干物质量     & $\mathrm{m^2\ m^{-2}}$ & 240  \\
+        PDM  & 叶柄干物质量   & $\mathrm{m^2\ m^{-2}}$ & 240  \\
+        SDM  & 茎干物质量     & $\mathrm{m^2\ m^{-2}}$ & 240  \\
+        BLN  & 铃数           & 个                     & 240  \\
+        BDM  & 铃干物质量     & $\mathrm{m^2\ m^{-2}}$ & 240  \\
+        \bottomrule
+    \end{tabular}
+\end{table}
+
+\begin{table}
+    \caption{实测值与模拟值对比统计参数计算公式及描述}
+    \begin{tabular}{p{0.15\linewidth}p{0.7\linewidth}p{0.15\linewidth}}
+        \toprule
+        参数     & 计算公式                                                                                                                                                                      & 描述         \\
+        \midrule
+        $b$      & \[\frac{\sum_{i=1}^n (O_i - \overline{O}) (P_i - \overline{P})}{\sum_{i=1}^n (O_i - \overline{O})}\]                                                                          & 回归系数     \\
+        $R^2$    & \[\left \{ \frac{\sum_{i=1}^n (O_i - \overline{O}) (P_i - \overline{P})}{\sqrt{\sum_{i=1}^n (O_i - \overline{O})^2} \sqrt{\sum_{i=1}^n (P_i - \overline{P})^2}} \right \}^2\] & 决定系数     \\
+        RMSE     & \[\sqrt{\frac{\sum_{i=1}^n (O_i - P_i)^2}{n}}\]                                                                                                                               & 均方根误差   \\
+        AAE      & \[\frac{\sum_{i=1}^n |O_i - P_i|}{n}\]                                                                                                                                        & 平均绝对误差 \\
+        EF       & \[1 - \frac{\sum_{i=1}^n (O_i - P_i)^2}{\sum_{i=1}^n (O_i - \overline{O})^2}\]                                                                                                & 模型有效性   \\
+        $d_{IA}$ & \[1 - \frac{\sum_{i=1}^n (O_i - P_i)^2}{\sum_{i=1}^n (|P_i - \overline{O}| + |O_i - \overline{O}|^2)}\]                                                                       & 拟合度       \\
+        \bottomrule
+    \end{tabular}
+\end{table}
+\subsection{Python 中的多目标优化}
+本章采用 pymoo 框架提供的非支配排序遗传算法 (NSGA-III) 多目标优化算法确定参数最优值。该框架由美国密歇根州立大学的 Kalaynmoy Deb 教授带领的计算优化与创新实验室 (COIN) 的 Julian Blank 开发维护的。%
+在大多数情况下，pymoo 框架被用于解决连续问题， 但其他变量类型也可使用。%
+pymoo 框架中的算法 (如NSGA-III算法) 是模块化组织的，用户可以通过编写代码自定义采样、交叉和突变等模块，自行组装符合自身需求的算法。%
+
+\subsection{参数优化步骤}
+根据第 4 章模型敏感性参数分析结果，选择 10 个对模拟结果影响较大的参数。然 后再次使用 Monte Carlo 方法选择 Cotton2K 模型参数集，但仅在模型敏感性参数分析出 的影响较大的参数中进行，第二次选择的参数集没有进行敏感性分析。相反，第二次 Monte Carlo 方法采样后的模拟结果被用于模型参数优化，以识别在测量结果和模拟结 果之间提供最佳一致性的参数集。 具体步骤如下： （1）选择第 4 章对模型结果影响较大的 10 个品种，确定各参数的取值范围和均匀 分布形式。 （2）利用 Monte Carlo 方法对参数随机采样，取采样次数 5000 次（EFAST 方法认 为采样次数大于参数个数×65 的分析结果有效）。 (3）采用 Python 语言编写 Cotton2K 模型能够识别的输入文件并对上一步参数进行 批量处理，求得模型运算结果。 （4）从每次运行的模拟结果中提取模型输出结果，并将提取的模型输出结果整理 成文本格式。 （5）修改 pymoo 框架提供的多目标优化（NSGA-II算法）算法，包括采样、交叉 和突变等。 （6）运行程序获取最优解集，确定模型敏感性品种参数最优值。

@@ -1,50 +1,9 @@
-\chapter{基于 Cotton2K 模型的无膜棉花生长-土壤水盐胁迫建模}
-作物-土壤水-盐分是一个复杂的系统。
-土壤中的盐分和水分是影响作物生长和产量相互作用的两个变量，在盐渍化地区农业灌溉管理中很难将作物对水分、盐分的反应割裂开来，因此需借助作物-土壤水-盐系统模型来研究作物与土壤水盐之间复杂的动态过程和相互作用机制。
-\begin{table}
-    \caption{Agroecosystem metrics evaluated for 12 cotton management scenarios within field at Alaer, Xinjiang, China.
-        The 12 metrics are listed in priority order for evaluation of the Cotton2K agroecosystem model using multiobjective optimization techniques.}
-    \centering
-    \begin{tabular}{llll}
-        \toprule
-        Metric & Description                & Unit                   & n   \\
-        \midrule
-        LY     & Lint yield                 & $\mathrm{kg\ ha^{-1}}$ & 24  \\
-        TAGB   & Total above ground biomass & $\mathrm{kg\ ha^{-1}}$ & 240 \\
-        LAI    & Leaf area index            & $\mathrm{m^2\ m^{-2}}$ & 240 \\
-        LI     & Light interception         & \%                     & 240 \\
-        SCY    & Seed cotton yield          & $\mathrm{m^2\ m^{-2}}$ & 24  \\
-        PH     & Plant height               & cm                     & 240 \\
-        MSN    & Main stem nodes            & nodes                  & 240 \\
-        LDM    & Leaf dry matter            & $\mathrm{m^2\ m^{-2}}$ & 240 \\
-        PDM    & Petiole dry matter         & $\mathrm{m^2\ m^{-2}}$ & 240 \\
-        SDM    & Stem dry matter            & $\mathrm{m^2\ m^{-2}}$ & 240 \\
-        BLN    & Boll number                & bolls                  & 240 \\
-        BDM    & Boll dry matter            & $\mathrm{m^2\ m^{-2}}$ & 240 \\
-        \bottomrule
-    \end{tabular}
-\end{table}
+\chapter{模型敏感性分析}
 
-\begin{table}
-    \caption{实测值与模拟值对比统计参数计算公式及描述}
-    \begin{tabular}{p{0.15\linewidth}p{0.7\linewidth}p{0.15\linewidth}}
-        \toprule
-        参数     & 计算公式                                                                                                                                                                      & 描述         \\
-        \midrule
-        $b$      & $$\frac{\sum_{i=1}^n (O_i - \overline{O}) (P_i - \overline{P})}{\sum_{i=1}^n (O_i - \overline{O})}$$                                                                          & 回归系数     \\
-        $R^2$    & $$\left \{ \frac{\sum_{i=1}^n (O_i - \overline{O}) (P_i - \overline{P})}{\sqrt{\sum_{i=1}^n (O_i - \overline{O})^2} \sqrt{\sum_{i=1}^n (P_i - \overline{P})^2}} \right \}^2$$ & 决定系数     \\
-        RMSE     & $$\sqrt{\frac{\sum_{i=1}^n (O_i - P_i)^2}{n}}$$                                                                                                                               & 均方根误差   \\
-        AAE      & $$\frac{\sum_{i=1}^n |O_i - P_i|}{n}$$                                                                                                                                        & 平均绝对误差 \\
-        EF       & $$1 - \frac{\sum_{i=1}^n (O_i - P_i)^2}{\sum_{i=1}^n (O_i - \overline{O})^2}$$                                                                                                & 模型有效性   \\
-        $d_{IA}$ & $$1 - \frac{\sum_{i=1}^n (O_i - P_i)^2}{\sum_{i=1}^n (|P_i - \overline{O}| + |O_i - \overline{O}|^2)}$$                                                                       & 拟合度       \\
-        \bottomrule
-    \end{tabular}
-\end{table}
-
+\section{参数率定结果}
 
 \begin{longtable}{llrrcrr}
-    \caption{Summary of the 12 cotton management scenarios evaluated with Cotton2K.
-        Field experiments were conducted within the fields at Alaer, Xinjiang, China in 2019 and 2020.}
+    \caption{Cotton2K 参数列表及率定值}
     \label{tab:parameters}                                                                  \\
     \toprule
     参数     & 功能描述                         & 下限   & 上限   & GSA & 原版    & 改版    \\
@@ -55,7 +14,7 @@
     \midrule
     \endhead
     \bottomrule
-    \multicolumn{7}{r}{\textit{接下页}} \\
+    \multicolumn{7}{r}{\textit{接下页}}                                                     \\
     \endfoot
     \bottomrule
     \endlastfoot
