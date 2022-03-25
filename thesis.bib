@@ -220,6 +220,16 @@
   abstract = {Site-specific management of cotton (Gossypium hirsutum) cropping systems at the production-scale requires information regarding environmental interactions across the landscape. Landscape-scale cotton models could track these interactions and be integrated into future decision support tools designed to manage variable inputs; however, modeling of cotton systems across the landscape has not been evaluated. Cotton production in the Southern Texas High Plains is dependent on irrigation from the Ogallala Aquifer, and thus tracking soil water content across fields could help producers plan their use of diminishing aquifer resources. Our hypothesis was that the PALMScot model, a grid-based landscape-scale cotton model, would capture spatial and temporal variability and environmental interactions affecting soil water and plant growth within a 70-ha field throughout two contrasting growing seasons, without adjustment of input parameters for the model. Thus, our objective was to compare values of soil water content and crop height calculated by the PALMScot model with corresponding field measured values at multiple locations across a fine textured, pivot irrigated production cotton field during two growing seasons. The PALMScot model calculated values of soil water and crop height across the field with a root mean squared deviation (RMSD) for soil water content in the 1.0-m profile {$\leq$}0.032~m3/m3 and most Nash\textendash Sutcliffe efficiency (NSE) values {$\geq$}0.48. Values of RMSD for crop height were {$\leq$}0.10~m at all locations in 2010 and 2011. We conclude that PALMScot correctly and efficiently calculated soil water content and crop height across the field, throughout each season, and the model has potential as a site-specific management tool for cotton cropping systems.}
 }
 
+@article{campolongo2011,
+  title = {From Screening to Quantitative Sensitivity Analysis. {{A}} Unified Approach},
+  author = {Campolongo, Francesca},
+  date = {2011},
+  journaltitle = {Computer Physics Communications},
+  pages = {11},
+  abstract = {The present work is a sequel to a recent one published on this journal where the superiority of `radial design' to compute the `total sensitivity index' was ascertained. Both concepts belong to sensitivity analysis of model output. A radial design is the one whereby starting from a random point in the hyperspace of the input factors one step in turn is taken for each factor. The procedure is iterated a number of times with a different starting random point as to collect a sample of elementary shifts for each factor. The total sensitivity index is a powerful sensitivity measure which can be estimated based on such a sample. Given the similarity between the total sensitivity index and a screening test known as method of the elementary effects (or method of Morris), we test the radial design on this method. Both methods are best practices: the total sensitivity index in the class of the quantitative measures and the elementary effects in that of the screening methods. We find that the radial design is indeed superior even for the computation of the elementary effects method. This opens the door to a sensitivity analysis strategy whereby the analyst can start with a small number of points (screening-wise) and then \textendash{} depending on the results \textendash{} possibly increase the numeral of points up to compute a fully quantitative measure. Also of interest to practitioners is that a radial design is nothing else than an iterated `One factor At a Time' (OAT) approach. OAT is a radial design of size one. While OAT is not a good practice, modelers in all domains keep using it for sensitivity analysis for reasons discussed elsewhere (Saltelli and Annoni, 2010) [23]. With the present approach modelers are offered a straightforward and economic upgrade of their OAT which maintain OAT's appeal of having just one factor moved at each step.},
+  langid = {english}
+}
+
 @book{chankong1983,
   title = {Multiobjective Decision Making : Theory and Methodology},
   author = {Chankong, Vira and Haimes, Yacov Yosseph},
@@ -888,6 +898,20 @@
   keywords = {Educational institutions,evolutionary computation,Evolutionary computation,large dimension,many-objective optimization,Many-objective optimization,Measurement,multi-criterion optimization,multicriterion optimization,non-dominated sorting,nondominated sorting,NSGA-III,Optimization,Sociology,Statistics,Vectors,Zirconium}
 }
 
+@unpublished{owen2021,
+  title = {On Dropping the First {{Sobol}}' Point},
+  author = {Owen, Art B.},
+  date = {2021-12-11},
+  eprint = {2008.08051},
+  eprinttype = {arxiv},
+  primaryclass = {cs, math, stat},
+  url = {http://arxiv.org/abs/2008.08051},
+  urldate = {2022-03-24},
+  abstract = {Quasi-Monte Carlo (QMC) points are a substitute for plain Monte Carlo (MC) points that greatly improve integration accuracy under mild assumptions on the problem. Because QMC can give errors that are \$o(1/n)\$ as \$n\textbackslash to\textbackslash infty\$, changing even one point can change the estimate by an amount much larger than the error would have been and worsen the convergence rate. As a result, certain practices that fit quite naturally and intuitively with MC points are very detrimental to QMC performance. These include thinning, burn-in, and taking sample sizes such as powers of \$10\$, other than the ones for which the QMC points were designed. This article looks at the effects of a common practice in which one skips the first point of a Sobol' sequence. The retained points ordinarily fail to be a digital net and when scrambling is applied, skipping over the first point can increase the numerical error by a factor proportional to \$\textbackslash sqrt\{n\}\$ where \$n\$ is the number of function evaluations used.},
+  archiveprefix = {arXiv},
+  keywords = {Mathematics - Numerical Analysis,Statistics - Computation}
+}
+
 @article{pachepsky2009,
   title = {Pima Cotton Leaf Transpiration Analysis Using the {{WALL}} Model That Accounts for Liquid Water Movement},
   author = {Pachepsky, L. and Ferreyra, R. Andres and Sadeghi, A.},
@@ -1081,6 +1105,17 @@
   doi = {10.1016/j.cpc.2009.09.018},
   abstract = {Variance based methods have assessed themselves as versatile and effective among the various available techniques for sensitivity analysis of model output. Practitioners can in principle describe the sensitivity pattern of a model Y=f(X1,X2,\ldots,Xk) with k uncertain input factors via a full decomposition of the variance V of Y into terms depending on the factors and their interactions. More often practitioners are satisfied with computing just k first order effects and k total effects, the latter describing synthetically interactions among input factors. In sensitivity analysis a key concern is the computational cost of the analysis, defined in terms of number of evaluations of f(X1,X2,\ldots,Xk) needed to complete the analysis, as f(X1,X2,\ldots,Xk) is often in the form of a numerical model which may take long processing time. While the computational cost is relatively cheap and weakly dependent on k for estimating first order effects, it remains expensive and strictly k-dependent for total effect indices. In the present note we compare existing and new practices for this index and offer recommendations on which to use.},
   langid = {english}
+}
+
+@online{scipyAddStatsQMC2021,
+  title = {{{ENH}}: Add Stats.Qmc Module with Quasi {{Monte Carlo}} Functionality by Tupui {$\cdot$} {{Pull Request}} \#10844 {$\cdot$} Scipy/Scipy},
+  shorttitle = {{{ENH}}},
+  author = {{Scipy}},
+  url = {https://github.com/scipy/scipy/pull/10844},
+  urldate = {2022-03-24},
+  abstract = {Add scipy.stats.qmc. Reference issue Closes \#9695 What does this implement/fix? Provide a set of functions to create and assess quasi-Monte Carlo Design of Experiments. It provides a generic class ...},
+  langid = {english},
+  organization = {{GitHub}}
 }
 
 @article{shumway2012,

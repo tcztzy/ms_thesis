@@ -1,50 +1,5 @@
 \chapter{材料与方法}
 
-
-% Drawing part, node distance is 1.5 cm and every node
-% is prefilled with white background
-\begin{tikzpicture}[
-        node distance=1cm,
-        every node/.style={fill=white, font=\sffamily},
-        align=center
-    ]
-    % Specification of nodes (position, etc.)
-    \node (start) [terminalStart] {开始};
-    \node (firstSampling) [data, below left=of start, xshift=-3cm] {对 70 个 Cotton2K \\参数进行 Sobol 取样};
-    \node (fieldData) [data, below=of start, yshift=-1.5cm] {田间数据};
-    \node (firstSimulation) [process, below=of firstSampling, yshift=-1.5cm] {Cotton2K 模拟};
-    \node (firstDatabase) [data, below=of firstSimulation] {12 个输出变量的\\评价指标数据库};
-    \node (sa) [process, below=of firstDatabase] {使用 SALib 进行\\Sobol 全局敏感性分析};
-    \node (influential) [decision, below=of sa] {S1 > 0.05};
-    \node (fixParam) [process, below=of start, yshift=-10cm] {固定参数为默认值};
-    \node (secondSampling) [data, below right=of start, xshift=3cm] {对 35 个 Cotton2K \\参数进行 Sobol 取样};
-    \node (secondSimulation) [process, below=of secondSampling, yshift=-1.5cm] {Cotton2K 模拟};
-    \node (secondDatabase) [data, below=of secondSimulation] {12 个输出变量的\\评价指标数据库};
-    \node (moo) [process, below=of secondDatabase] {求解 Pareto 解集};
-    \node (prune) [process, below=of moo] {对 Pareto 解集进行剪枝};
-    \node (compare) [process, below=of prune] {对不同修改进行统计分析};
-    \node (stop) [terminalStop, below=of start, yshift=-11.7cm] {结束};
-
-    \draw [-latex] (start) -| (firstSampling);
-    \draw [-latex] (firstSampling) -- (firstSimulation);
-    \draw [-latex] (firstSimulation) -- (firstDatabase);
-    \draw [-latex] (firstDatabase) -- (sa);
-    \draw [-latex] (sa) -- (influential);
-    \draw [-latex] (influential.east) -- (fixParam) node[pos=0.5, inner sep=0]{否};
-    \draw [-latex] (influential.west) -- +(-1.5cm,0) node[pos=0.5, inner sep=0]{是} -- +(-1.5cm, 13cm) -| (secondSampling);
-    \draw [-latex] (secondSampling) -- (secondSimulation);
-    \draw [-latex] (secondSimulation) -- (secondDatabase);
-    \draw [-latex] (secondDatabase) -- (moo);
-    \draw [-latex] (moo) -- (prune);
-    \draw [-latex] (prune) -- (compare);
-    \draw (fieldData) -| (firstSimulation);
-    \draw (fieldData) -| (secondSimulation);
-    \draw [-latex] (fixParam) |- (secondSimulation);
-    \draw [-latex] (compare) -- (stop);
-\end{tikzpicture}
-
-
-
 \section{实验观测}
 试验区位于南疆地区阿拉尔市塔里木大学灌溉试验站 (\ang{81;11;46}E, \ang{40;37;28}N)。
 \begin{figure}
@@ -235,8 +190,110 @@ $PAI_{\%,i}$ 是第 $i$ 层截获 $PAI$ 与最顶部冠层 $PAI$ 的比值，$x_
 作物参数和水分胁迫参数由率定得到。
 
 \section{敏感性分析}
+Sobol' 敏感性分析方法是由俄罗斯科学家I. M. Sobol'首次提出的\cite{sobol2001}，基础是将模型输出方差分解为维度增加的输入参数方差的总和。
+Sobol' 敏感性分析的目的是确定模型输出的方差在多大程度上取决于每个输入参数，或者取决于单个参数或不同参数之间的相互作用。%
+Sobol' 敏感性分析中输出方差的分解采用了与因子设计中经典的方差分析相同的原理。%
+应该注意的是，Sobol' 敏感性分析的目的不是为了确定输入方差的原因。%
+它只是表明它对模型输出有什么影响，影响到什么程度。%
+因此，它不能用来确定方差的来源，如在棉花生产中，各农艺操作对棉花产量的影响来源。
 
-Sobol敏感性分析\cite{sobol2001}。
+任何敏感性分析的重要步骤之一，无论是局部还是整体，都是为了确定用于分析的适当模型输出。
+
+Sobol敏感性分析有以下几个特点。
+\begin{enumerate}
+    \item 模型输入和输出之间没有假设
+    \item 评估每个输入参数变化的全部范围和参数之间的相互作用
+    \item 主要缺点是计算强度高
+\end{enumerate}
+\subsection{取样方法}
+Sobol' 序列是一个应用广泛的准随机 (quasi-random) 低差值序列，%
+通常比完全随机的序列更均匀地对空间进行采样，用于生成参数空间的统一样本。%
+本文采用 \authoryearcite{saltelli2002} 拓展的 Sobol' 序列生成模型输入。%
+生成的输入样本有 $N * (2D + 2)$ 条，其中 $N$ 为采样数， $D$ 是参数的数量。参见算法\ref{alg:sobol}。
+
+Sobol序列的一般特征有
+\begin{enumerate}
+    \item Sobol' 序列是一种低差异的序列，也被称为 “准随机序列”。
+    \item 比伪随机数的分布更均匀
+    \item 准蒙特卡洛积分产生更快的收敛性和更好的准确性
+    \item 缺点是需要计算高维度的积分
+\end{enumerate}
+
+需要注意的是，Sobol' 序列的初始点有一些重复 (见\authornumcite{campolongo2011} 的表2)，%
+这可以通过设置 \texttt{skip\_values} 参数来避免，这样可以提高样本的均匀性。%
+然而，事实证明，简单地跳过数值可能会降低精度，增加实现收敛所需的样本数量\cite{owen2021}。
+建议将 \texttt{skip\_values} 和 $N$ 都设为 2 的幂，其中 $N$ 是所需的样本数 (进一步的背景见\authornumcite{owen2021}和\authornumcite{scipyAddStatsQMC2021}中的讨论)。%
+其中还建议 $\mathtt{skip\_values} \ge N$。%
+默认将 \texttt{skip\_values} 设置为不小于 $N$ 的 2 的幂。%
+如果提供了 \texttt{skip\_values}，该方法现在会在根据上述建议样本量可能不理想的情况下引发一个 \texttt{UserWarning}。
+
+\begin{algorithm}
+    \caption{Sobol' 序列取样方法}\label{alg:sobol}
+    \KwIn{$N, D$, 以及预定义的 $\mathbf{directions}$}
+    \KwOut{$N \times D$的数组 $\mathbf{result}$}
+    $scale = 31$\\
+    $L = \left\lceil \frac{\log N}{\log 2} \right\rceil$\\
+    \For{$i \in \{0,1,\dots,D-1\}$}{
+        $\mathbf{V} = \left. \begin{bmatrix}0\\0\\\vdots\\0\end{bmatrix} \right\} L+1$\\
+        \eIf{$i = 0$}{
+            $\mathbf{V} = \begin{bmatrix}0\\ 2^1\\ 2^2 \\ \vdots\\ 2^L \end{bmatrix}$
+        }{
+            $\mathbf{m} = directions_{i - 1}$\\
+            $a = m_0$\\
+            $s = len(\mathbf{m})$\\
+            \eIf{$L \le s$}{
+                $\mathbf{V} = \begin{bmatrix}0\\ m_1 \\ m_2 \\ \vdots\\ m_L \end{bmatrix}\circ \begin{bmatrix}0\\ 2^{scale - 1} \\ 2^{scale - 2} \\ \vdots\\ 2^{scale - L} \end{bmatrix}$
+            }{
+                $\mathbf{V} = \begin{bmatrix}0\\ m_1 \\ m_2 \\ \vdots\\ m_s \\ m_1 \\ m_2 \\ \vdots \\ m_{L - s} \end{bmatrix} \circ \begin{bmatrix}0\\ 2^{scale - 1} \\ 2^{scale - 2} \\ \vdots\\ 2^{scale - s} \\ 1 \\ 1 \\ \vdots \\ 1 \end{bmatrix}$\\
+                \For{$j \in \{s+1,s+2,\dots,L\}$}{
+                    $V_j = V_{j - s} \veebar (V_{j - s} >> s)$\\
+                    \For{$k \in \{s+1,s+2,\dots,L\}$}{
+                        $V_j = V_j \veebar ((a >> (s - 1 - k)) \land 1) \times V_{j-k}$
+                    }
+                }
+            }
+        }
+        $X = 0$\\
+        \For{$j \in \{1,2,\dots,N\}$}{
+            $X = X \veebar V_{\mathtt{最小显著零位的索引}(j-1)}$
+            $result_{ji} = \frac{X}{2^{scale}}$
+        }
+    }
+\end{algorithm}
+
+\begin{algorithm}
+    \caption{最小显著零位的索引}
+    \KwIn{$value$}
+    \KwOut{$index$}
+    $index = 1$\\
+    \While{$value \mod 2 \neq 0$}{
+        $value = value >> 1$\\
+        $index = index + 1$
+    }
+\end{algorithm}
+
+
+\subsection{分析方法}
+
+Sobol' 敏感性分析一般用于复杂的系统模型，它将输出方差与其资源进行定量分解：即来自单个参数或来自参数间的相互作用。%
+全局敏感性指数通常用于评估一个参数的总体贡献以及与其他参数的相互作用。%
+Sobol' 敏感性指数有几个特点:
+\begin{enumerate}
+    \item 全局/一阶/二阶敏感性指数为正值。
+    \item 敏感性指数大于0.05的参数被认为是显著的。
+    \item 所有敏感指数之和应等于1。
+    \item 全局敏感性指数大于一阶敏感性指数。
+\end{enumerate}
+
+进行可靠的Sobol' 敏感性分析所需的样本量取决于两个主要因素，\begin{enumerate*}
+    \item 模型的复杂性和
+    \item 评估的参数数量
+\end{enumerate*} 。尽管对生成的最佳参数集数量没有普遍共识，但一般的经验法则是，模型参数的数量越大，使用的参数集数量就越多。%
+例如，对于一个有大量不确定参数的复杂模型（如 20 个参数），至少要进行 100,000 次模型评估。%
+对于不那么复杂的模型，较少的评估次数（如1000次）可能就足够了。%
+但应该注意的是，随着评价数量的增加，计算成本也会增加。%
+选择的评价数量是否合适，可以用自举法置信区间来检验。%
+一般来说，最敏感的参数应该有较窄的置信区间，即小于敏感指数的10\%。
 
 \section{多目标优化}
 NSGA-III 的基本框架类似于原始的 NSGA-II 算法 \cite{NSGA2}，其选择运算符有重大变化。

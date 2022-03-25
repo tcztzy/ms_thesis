@@ -1,4 +1,4 @@
-\chapter{绪论}
+\chapter{绪论}\label{chap:intro}
 \section{研究背景及意义}
 
 % The development and application of cropping system simulation models for cotton production has a long and rich history, beginning in the southeastern U. S. in the 1960s and now expanded to major cotton production regions globally.
@@ -346,3 +346,89 @@ Cotton2K 模型与计量经济学模型一起使用，评估了棉花生产者�
 重点研究考虑冠层光合作用有效叶面积指数的水平、垂直分布比例的光能截获模拟，以及考虑冠层光能截获、根系和盐分空间分布影响的水分运移模拟，
 建立适合南疆干旱、盐渍化土壤特点的棉花生长模型，
 为无膜棉的播种日期、播种量的确定和灌溉制度提供定量化的分析手段。
+
+\section{研究内容和技术路线}
+
+\subsection{研究内容}
+\begin{enumerate}
+    \item 对 Cotton2K 模型进行修改\\%
+          参考 WOFOST-GTC 模型，将 Cotton2K 模型的冠层子模块修改为自上而下的层级结构，每层为 5 cm 高，共 20 层，分层对冠层的光合作用和干物质分配等生理过程进行模拟。%
+          同时也修正部分原版模型的错误，例如浮点数计算溢出、干重模拟值为负值等。
+    \item Cotton2K 模型的校准与验证\\%
+          参考相关文献中对 Cotton2K 模型参数敏感性分析结果，利用 2019 年与 2020 年两年的田间实验数据，使用修改后的 Thorp 方法\cite{thorp2019} 分别对原版模型和修改后的模型的参数进行校准。%
+          将 2021 年的田间实验数据作为验证集对校准后的 Cotton2K 进行验证，评估 Cotton2K 模型对中棉 619 的模拟精度。
+    \item 中棉 619 冠层光能截获分布规律\\%
+          利用 2019 年至 2020 年不同生育期冠层光合有效辐射数据，将棉花冠层分为 20 个等高的子层，研究棉花冠层垂直方向的的光能截获分布规律。
+\end{enumerate}
+
+\subsection{技术路线}
+
+研究总技术路线如图 \ref{fig:roadmap} 所示。%
+研究以 Cotton2K 模型为理论依据，利用中棉 619 的田间实验数据探究不同生育期光合有效辐射在冠层垂直方向分布的规律。%
+\begin{figure}
+    \begin{tikzpicture}[
+            node distance=1cm,
+            every node/.style={fill=white, font=\sffamily},
+            align=center
+        ]
+        % Specification of nodes (position, etc.)
+        \node (start) [terminalStart] {开始};
+        \node (firstSampling) [data, below left=of start, xshift=-3cm] {对 70 个 Cotton2K \\参数进行 Sobol 取样};
+        \node (fieldData) [data, below=of start, yshift=-1.5cm] {田间数据};
+        \node (firstSimulation) [process, below=of firstSampling, yshift=-1.5cm] {Cotton2K 模拟};
+        \node (firstDatabase) [data, below=of firstSimulation] {12 个输出变量的\\评价指标数据库};
+        \node (sa) [process, below=of firstDatabase] {使用 SALib 进行\\Sobol 全局敏感性分析};
+        \node (influential) [decision, below=of sa] {S1 > 0.05};
+        \node (fixParam) [process, below=of start, yshift=-10cm] {固定参数为默认值};
+        \node (secondSampling) [data, below right=of start, xshift=3cm] {对 35 个 Cotton2K \\参数进行 Sobol 取样};
+        \node (secondSimulation) [process, below=of secondSampling, yshift=-1.5cm] {Cotton2K 模拟};
+        \node (secondDatabase) [data, below=of secondSimulation] {12 个输出变量的\\评价指标数据库};
+        \node (moo) [process, below=of secondDatabase] {求解 Pareto 解集};
+        \node (prune) [process, below=of moo] {对 Pareto 解集进行剪枝};
+        \node (compare) [process, below=of prune] {对不同修改进行统计分析};
+        \node (stop) [terminalStop, below=of start, yshift=-11.7cm] {结束};
+
+        \draw [-latex] (start) -| (firstSampling);
+        \draw [-latex] (firstSampling) -- (firstSimulation);
+        \draw [-latex] (firstSimulation) -- (firstDatabase);
+        \draw [-latex] (firstDatabase) -- (sa);
+        \draw [-latex] (sa) -- (influential);
+        \draw [-latex] (influential.east) -- (fixParam) node[pos=0.5, inner sep=0]{否};
+        \draw [-latex] (influential.west) -- +(-1.5cm,0) node[pos=0.5, inner sep=0]{是} -- +(-1.5cm, 13cm) -| (secondSampling);
+        \draw [-latex] (secondSampling) -- (secondSimulation);
+        \draw [-latex] (secondSimulation) -- (secondDatabase);
+        \draw [-latex] (secondDatabase) -- (moo);
+        \draw [-latex] (moo) -- (prune);
+        \draw [-latex] (prune) -- (compare);
+        \draw (fieldData) -| (firstSimulation);
+        \draw (fieldData) -| (secondSimulation);
+        \draw [-latex] (fixParam) |- (secondSimulation);
+        \draw [-latex] (compare) -- (stop);
+    \end{tikzpicture}
+    \caption{技术路线图}\label{fig:roadmap}
+\end{figure}
+
+\subsection{论文结构}
+本论文共 6 章，各章节内容简介如下：
+
+第 \ref{chap:intro} 章，主要介绍了无膜栽培棉花的研究背景及意义、棉花生长模型的研究进展以及该论文的研究内容、技术路线以及论文结构。
+
+第 2 章，主要介绍了研究区域概括、田间试验设计、需要测量的实验数据和获取方 法、WOFOST 模型所需的数据和数据处理和统计方法。
+
+第 3 章，主要介绍了冠层光能截获的差异性和规律性，从不同生育期冠层 PAR 截获率分布规律和冠层不同区域 PAR 截获率随播种后时间的变化规律两个方面进行阐述。
+
+第 4 章，主要介绍了 Cotton2K 的校准与验证，利用 利用 2019 年与 2020 年两年的田间实验数据，使用修改 Thorp 方法对模型的参数进行校准。利用 2021 年的田间实验数据对校准后的 Cotton2K 进行验证。
+
+第 5 章，主要介绍了不同区域的棉花生长模拟结果，从不同地区的生育期长度、温 度对棉花生育期的影响、不同地区产量、不同地区生育期蒸腾量四个方面进行阐述。
+
+第 6 章，总结与展望。总结了实验的内容和实验结果，阐述了实验中的不足以及未来的改进方案。
+
+\section{本章小结}
+本小结从研究背景及意义入手，首先介绍了棉花在世界经济发展和我国种植业中的重要地位。%
+然后阐述了地膜栽培技术发展以及地膜技术的引用给我国农业发展带来的巨大经济效益。%
+地膜技术是一把双刃剑，它在给我国农业发展带来巨大经济效益的同时，也给我国带来了残膜污染的问题。%
+在可持续发展理念的号召下，解决残膜污染问题迫在眉睫。%
+各个学者在解决残膜污染方面探究了很多的方法，其中中国农业科学院棉花研究所成功培育出适用于无膜直播的特早熟棉花新品种中棉 619 的成功试行，为我们开辟了彻底解决残膜污染问题的新方向。%
+中棉 619 能否大面积的推广与应用，对彻底解决国内棉田残膜污染的问题，防止耕地资源质量下降，推动棉花产业向绿色可持续发展方向转型具有重要意义。%
+接着阐述了光合有效辐射和作物模型的研究进展。%
+最后介绍了本文的研究内容、技术路线以及论文结构。
