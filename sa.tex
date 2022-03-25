@@ -1,11 +1,25 @@
 \chapter{模型敏感性分析}\label{chap:sa}
+为了深入了解Cotton2K对模型输入参数调整的反应，使用Python中SALib包的算法进行了Sobol GSA。%
+精明的读者会注意到，通常先进行计算密集度较低的敏感性分析，然后再进行像Sobol GSA这样的密集型方法。%
+在这里，只使用了Sobol GSA，因为\begin{enumerate*}
+    \item 高性能计算资源的可用性确保了模拟的效率，
+    \item 工作流程的后续部分也纳入了Sobol GSA的Sobol采样方面
+\end{enumerate*} 。
 
+使用SALib软件包的算法，对 70 个输入参数和 12 个农业生态系统指标的每个组合计算了一阶、二阶和总的敏感性指数。%
+每个农业生态系统指标的 RMSE 统计量被用作敏感性指数计算的目标函数。%
+任何对 12 个农业生态系统指标中的任何一个具有一阶敏感性指数大于 0.05 的参数都被认为是有影响的参数，%
+并在随后的分析中保持灵活性 (表 \ref{tab:parameters})。%
+其他参数被认为是非影响性的，在剩余的分析中被固定为默认值。%
+Sobol GSA的总体目的是在使用多目标优化进行模型校准之前消除非影响性参数。
 \section{参数选择及取值范围}
 在原版 Cotton2K 模型中，所有参数都是以可更改的外部文件形式导入模型。%
 对于 Cotton2K 模型中 50 个品种参数而言，并非所有的参数对于模型输出结果都具有影响，需要通过敏感性分析选取其中敏感性较大的参数进行下一步校正。%
 本文根据公开的源码和相关参数对应公式，对品种参数取值范围进行了合理化的约束。%
 在修改后的 Cotton2K 模型中品种参数文件以 \texttt{cultivar\_parameters} 字段保存，模型参数服从均匀分布。%
-本文主要对 50 个原始品种参数和 20 个修改模型参数进行敏感性分析，原始模型参数的名称及取值范围如表 \ref{tab:saParameters} 所示。
+本文主要对 50 个原始品种参数和 20 个修改模型参数进行敏感性分析，原始模型参数的名称及取值范围如表 \ref{tab:saParameters} 所示。%
+根据第 \ref{chap:modelModification} 章的内容，本文还对模型进行了修改，增加了更为详细的分层的冠层子模块，因为这个改动，改版的 Cotton2K 模型比原版的模型多了 20 个参数，%
+为 LIPAR01 至 LIPAR20，取值范围根据 GOSSYM 模型和 WOFOST 模型中相关的参数范围扩大 100\% 而得。
 \begin{table}
     \caption{原版 Cotton2K 参数列表及率定值}\label{tab:saParameters}
     \small
@@ -41,3 +55,19 @@
         \bottomrule
     \end{tabular}
 \end{table}
+\section{研究方法}
+
+\subsection{Cotton2K 模型的运行}
+Cotton2K 模型需要输入的参数较多，模型结构较为复杂，在第 \ref{sec:io} 节中论述，本文对模型的输入输出格式进行了修改简化，提高了模型模拟效率。
+
+模型的需要如下的输入参数
+\begin{enumerate}
+    \item 关键农艺措施的时间，如播种日期等；
+    \item 试验站的地理信息，如经纬度、海拔等；
+    \item 土壤理化性质，包括砂份、壤份、土壤水分传导率、 Penman 公式参数等；
+    \item 气象数据，包括 2m 最高和最低气温、降水、风速、太阳净辐射强度等；
+    \item 灌溉和施肥的相关数据，包括日期、用量、是否随水施肥等；
+    \item 棉花品种参数，如表 \ref{tab:saParameters} 所示。
+\end{enumerate}
+
+\section{本章小结}

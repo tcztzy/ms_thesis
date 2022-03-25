@@ -1,127 +1,40 @@
 \chapter{绪论}\label{chap:intro}
 \section{研究背景及意义}
-
-% The development and application of cropping system simulation models for cotton production has a long and rich history, beginning in the southeastern U. S. in the 1960s and now expanded to major cotton production regions globally.
-棉花生产中种植系统模拟模型的开发和应用有着悠久而丰富的历史，从20世纪60年代在美国东南部开始，现已扩展到全球主要的棉花生产地区。%
-% This paper briefly reviews the history of cotton simulation models, examines applications of the models since the turn of the century, and identifies opportunities for improving models and their use in cotton research and decision support.
-本文简要回顾了棉花模拟模型的历史，研究了自世纪之交以来模型的应用，并确定了改进模型及其在棉花研究和决策支持中使用的机会。%
-% Cotton models reviewed include those specific to cotton (GOSSYM, Cotton2K, COTCO2, OZCOT, and CROPGRO-Cotton) and generic crop models that have been applied to cotton production (EPIC, WOFOST, SUCROS, GRAMI, CropSyst, and AquaCrop).
-回顾的棉花模型包括专门针对棉花的模型（GOSSYM、Cotton2K、COTCO2、OZCOT和CROPGRO-Cotton）和已经应用于棉花生产的通用作物模型（EPIC、WOFOST、SUCROS、GRAMI、CropSyst和AquaCrop）。%
-% Model application areas included crop water use and irrigation water management, nitrogen dynamics and fertilizer management, genetics and crop improvement, climatology, global climate change, precision agriculture, model integration with sensor data, economics, and classroom instruction.
-模型的应用领域包括作物用水和灌溉水管理、氮素动力学和肥料管理、遗传学和作物改良、气候学、全球气候变化、精准农业、模型与传感器数据整合、经济学和课堂教学。%
-%Generally, the literature demonstrated increased emphasis on cotton model development in the previous century and on cotton model application in the current century.
-一般来说，文献显示在上个世纪越来越重视棉花模型的开发，在本世纪越来越重视棉花模型的应用。%
-%Although efforts to develop cotton models have a 40-year history, no comparisons among cotton models were reported. Such efforts would be advisable as an initial step to evaluate current cotton simulation strategies.
-尽管开发棉花模型的努力已经有 40 年的历史，但没有报道棉花模型之间的比较。作为评估当前棉花模拟策略的第一步，这种努力是可取的。%
-%Increasingly, cotton simulation models are being applied by nontraditional crop modelers, who are not trained agronomists but wish to use the models for broad economic or life-cycle analyses.
-越来越多的棉花模拟模型被非传统的作物建模者应用，他们不是训练有素的农学家，但希望使用模型进行广泛的经济或生命周期分析。%
-%Although this trend demonstrates the growing interest in the models and their potential utility for a variety of applications, it necessitates the development of models with appropriate complexity and ease-of-use for a given application, and improved documentation and teaching materials are needed to educate potential model users.
-尽管这一趋势表明人们对模型的兴趣越来越大，而且模型在各种应用中都有潜在的效用，但这就需要为特定的应用开发具有适当复杂性和易用性的模型，而且需要改进文件和教材来教育潜在的模型用户。%
-%Spatial scaling issues are also increasingly prominent, as models originally developed for use at the field scale are being implemented for regional simulations over large geographic areas.
-空间尺度问题也越来越突出，因为最初为田间使用而开发的模型正被用于大面积的区域模拟。%
-%Research steadily progresses toward the advanced goal of model integration with variable-rate control systems, which use real-time crop status and environmental information to spatially and temporally optimize applications of crop inputs, while also considering potential environmental impacts, resource limitations, and climate forecasts.
-研究朝着模型与变速控制系统集成的高级目标稳步推进，该系统利用实时作物状态和环境信息，在空间和时间上优化作物投入的应用，同时也考虑潜在的环境影响、资源限制和气候预测。%
-%Overall, the review demonstrates a languished effort in cotton simulation model development, but the application of existing models in a variety of research areas remains strong and continues to grow.
-总的来说，审查表明在棉花模拟模型开发方面的努力停滞不前，但现有模型在各种研究领域的应用仍然强劲，并继续增长。%
-
-%Cotton (\textit{Gossypium hirsutum L.} and \textit{Gossypium barbadense L.}) is an important commodity crop globally, providing sources of fiber, feed, food, and potentially fuel for diverse industries.
-棉花 (\textit{Gossypium hirsutum L.} and \textit{Gossypium barbadense L.})是全球重要的商品作物，为不同行业提供纤维、饲料、食物和潜在的燃料来源。%
-%Cotton fiber is used in products ranging from textiles to paper, coffee filters, and fishing nets.
-棉花纤维被用于从纺织品到纸张、咖啡过滤器和渔网等产品。%
-%Cottonseed meal and hulls are used mainly for ruminant livestock feed. Cottonseed oil is currently refined as a vegetable oil for human consumption and has potential as a biofuel.
-棉籽粉和棉籽壳主要用于反刍牲畜饲料。棉籽油目前被提炼成植物油供人食用，并有可能成为生物燃料。%
-%From 2008 to 2012, China was the top cotton producer and averaged 33.1 million bales annually (USDAFAS, 2013), followed by India (25.1 million bales), the U.S. (14.7 million bales), Pakistan (9.3 million bales), Brazil (7.2 million bales), Uzbekistan (4.2 million bales), and Australia (3.2 million bales).
-%One bale contains 218 kg (480 lbs) of cotton fiber. In the 2010 to 2011 growing season, average global cotton fiber yield was 757 $\mathrm{kg\ ha^{-1}}$ and ranged from 1681 kg ha-1 in Australia to 200 $\mathrm{kg\ ha^{-1}}$ in some resource-limited countries.
-一包棉花含有218公斤（480磅）的棉花纤维。在2010至2011年的生长季节，全球棉花纤维平均产量为757公斤/公顷，从澳大利亚的1681公斤/公顷到一些资源有限国家的200公斤/公顷不等。%
-%A main issue for cotton in the developed world is the high cost of production, and improvements in cotton production practices are needed to keep cotton economically competitive with other commodity crops and alternative fiber sources.
-发达国家棉花的一个主要问题是生产成本高，需要改进棉花生产方式，以保持棉花在经济上对其他商品作物和替代纤维来源的竞争力。%
-%For cotton production to be sustainable, water and energy resource limitations also must be considered.
-为了使棉花生产具有可持续性，还必须考虑水和能源资源的限制。%
-%These goals for improved cotton production can be realized with smarter irrigation and nitrogen (N) fertilizer management, better understanding of climate impacts on cotton yield, further advancement in cotton breeding and genetics, greater adoption of precision agriculture technologies, and increased knowledge of cotton genetics by environment by management (GEM) interactions.
-通过更明智的灌溉和氮肥管理，更好地了解气候对棉花产量的影响，进一步推进棉花育种和遗传学，更多地采用精准农业技术，以及增加对棉花遗传学与环境管理（GEM）相互作用的了解，可以实现这些改进棉花生产的目标。
-
-%Many of the issues facing cotton industries can be better understood and perhaps mitigated by implementing process-based cropping system simulation models (Boote et al., 1996; Reddy et al., 1997a), which are important and powerful computer-based tools for guiding cotton management and research.
-通过实施基于过程的种植系统模拟模型（Boote等，1996；Reddy等，1997a），可以更好地理解并可能缓解棉花产业面临的许多问题，这些模型是指导棉花管理和研究的重要和强大的计算机工具。
-%Developers of these models synthesized the knowledge gained from decades of field, laboratory, and controlled-environment experiments and produced computer algorithms that simulate fundamental cropping system processes, including evapotranspiration (ET), soil water redistribution, nutrient dynamics, energy transfer, and crop growth and development.
-这些模型的开发者综合了几十年来在田间、实验室和受控环境实验中获得的知识，产生了模拟基本耕作系统过程的计算机算法，包括蒸发蒸腾（ET）、土壤水分再分配、养分动态、能量转移以及作物生长和发育。
-%Past model applications include assessing irrigation and N management alternatives for cotton (Hearn and Bange, 2002), analyzing potential global warming impacts on cotton production (Reddy et al., 2002a), and forecasting seed cotton yield (seed plus fiber) from satellite remote sensing images (Hebbar et al., 2008).
-过去的模型应用包括评估棉花的灌溉和氮素管理方案，分析全球变暖对棉花生产的潜在影响，以及根据卫星遥感图像预测籽棉产量（种子加纤维）。
-
-%In the U.S., early development and application of crop growth models was historically linked with the cotton industry.
-在美国，作物生长模型的早期开发和应用在历史上与棉花产业有关。%
-%By the mid-1970s, fundamental equations were developed to describe cotton growth and development (Baker et al., 1972; McKinion et al., 1975; Wanjura et al., 1973), cotton plant N balance (Jones et al., 1974), ET, and soil water balance (Ritchie, 1972; Shirazi et al., 1976).
-到20世纪70年代中期，开发了描述棉花生长和发育（Baker等，1972；McKinion等，1975；Wanjura等，1973）、棉花植物氮平衡（Jones等，1974）、蒸散发和土壤水分平衡（Ritchie，1972；Shirazi等，1976）的基本方程式。%
-%Also, the effects of leaf angle and leaf area vertical distribution on light penetration and cotton canopy photosynthesis had been examined using computer models (Fukai and Loomis, 1976).
-另外，利用计算机模型研究了叶角和叶面积垂直分布对光穿透和棉花冠层光合作用的影响（Fukai 和 Loomis，1976）。%
-%Approaches for simulating the development of cotton fruits, including squares, bolls, seed, and fiber, were investigated later (Jackson et al., 1988; Wanjura and Newton, 1981).
-后来又研究了模拟棉花果实发育的方法，包括方格、棉铃、种子和纤维（Jackson等人，1988；Wanjura和Newton，1981）。%
-%Notably, these initial efforts led to the development of the GOSSYM simulation model (Table 1) and the accompanying CrOp MAnagement eXpert system (COMAX), which was used across the U.S. Cotton Belt to guide on-farm cotton management in the 1980s (McKinion et al., 1989; Whisler et al., 1986).
-值得注意的是，这些最初的努力导致了GOSSYM模拟模型（表1）和配套的CrOp MAnagement eXpert系统（COMAX）的开发，该系统在20世纪80年代被用于整个美国棉花带，指导农场的棉花管理（McKinion等，1989；Whisler等，1986）。%
-
-%In addition to GOSSYM/COMAX, other simulation models for cotton production systems were developed more recently (Table 1): Cotton2K (Marani, 2004), COTCO2 (Wall et al., 1994), OZCOT (Hearn, 1994), and CROPGRO-Cotton (Jones et al., 2003; Pathak et al., 2007, 2012).
-%A variety of generic cropping system models, with reduced complexity for simulating a variety of crop types, were also recently evaluated for cotton production (Farahani et al., 2009; Sommer et al., 2008; Zhang et al., 2008).
-%The models vary greatly in details and approaches for simulating various plant and soil processes and management practices, and none have yet reached their full potential. Landivar et al. (2010) provided an excellent review of strategies for physiological simulation of cotton growth and development; however, “it [was] not the purpose of this chapter to compare cotton models.”
-%Landivar et al. (2010) mainly described model development approaches and did not contrast existing cotton models or review recent advances in cotton model applications.
-除GOSSYM/COMAX外，其他棉花生产系统的模拟模型最近还开发了其他模拟模型（表1）。Cotton2K (Marani, 2004)、COTCO2 (Wall et al., 1994)。OZCOT (Hearn, 1994), 和 CROPGRO-Cotton (Jones等人，2003；Pathak等人，2007，2012）。%
-A 各种通用的耕作系统模型，其复杂程度有所降低，可用于模拟不同的农业生产。复杂度降低，用于模拟各种 最近也对棉花生产进行了评估（Farahani 等，2009；Sommer 等，2008；Zhang 等，2008）。%
-这些模型在模拟各种植物和土壤过程以及管理实践的细节和方法上有很大的不同，而且没有一个模型能够发挥其全部潜力。Landivar 等人（2010）对棉花生长和发育的生理模拟策略进行了很好的回顾；但是，"本章的目的不是要比较棉花模型"。%
-Landivar 等人（2010）主要描述了模型的开发方法，没有对比现有的棉花模型，也没有回顾棉花模型应用的最新进展。%
-
-%The objective of this article was to review the state of the art in development and application of computer simulation models for cotton production systems. Because of its comprehensive scope, cotton researchers with diverse interests and levels of expertise should find useful information herein.
-%Given the trend for new cotton modeling efforts beyond traditional analyses of agronomic field experiments, the review also provides a resource for nontraditional and beginning modelers to learn about past and present cotton modeling efforts.
-%A brief history is presented of cotton model development and applications in the last century, from 1960 to 2000.
-%Descriptions and qualitative comparisons of existing cotton models are emphasized in this section.
-%Next, the review describes cotton model development and applications in the current century thus far.
-%Since year 2000, the literature has demonstrated a marked increase in journal articles that describe applications of the cotton models previously developed, and fewer articles focus on development of new models.
-%Finally, considering the reviewed literature holistically, a perspective is provided on anticipated future challenges and opportunities for the application of process-based simulation models to cotton production.
-这篇文章的目的是要回顾一下 棉花生产系统的计算机模拟模型的开发和应用情况。棉花生产系统的计算机模拟模型的发展和应用状况。由于文章内容全面，具有不同兴趣和专业水平的棉花研究人员 兴趣和专业水平不同的棉花研究人员应该 兴趣和专业水平的棉花研究人员都能在本文中找到有用的信息。
-鉴于新的趋势 棉花建模工作的趋势，超越了传统的农艺试验分析。鉴于新的棉花建模工作超越了传统的农艺田间试验分析，本综述也为 为非传统的和初学的建模者提供了一个资源。的资源，以了解过去和现在的棉花建模工作。
-简要介绍了上个世纪 1960-2000 年棉花模型的发展和应用历史。
-对现有棉花模型的描述和定性比较 本节强调了现有棉花模型的描述和定性比较。
-接下来，回顾描述了棉花模型的发展 迄今为止，本世纪的棉花模型发展和应用情况。
-自 2000 年以来，文献显示 叙述以前开发的棉花模型的应用的期刊文章明显增加，而关注新模型开发的文章较少。
-最后，从整体上考虑回顾的文献，对基于过程的模拟模型在棉花生产中应用的预期未来挑战和机会提供了一个视角。
-
-%Overview of Simulation Approaches.
-%The cotton models discussed herein are classified as mechanistic, dynamic, and deterministic.
-%The models are mechanistic as they describe processes with some level of understanding (e.g., plant growth based on calculations of intercepted radiation).
-%They are dynamic, because the time variable is explicit.
-%Thus, the models use partial differential equations to calculate how quantities vary with time (e.g., transpiration and plant growth).
-%The models are deterministic rather than stochastic, because the calculations are made without any associated probability distribution.
-%Although most cotton simulation models share these characteristics, different model design strategies have been explored.
-%For example, the cotton model of Plant et al. (1998) used qualitative categorical variables (e.g., HIGH, MODERATE, or LOW) rather than quantitative variables to describe plant and soil states.
-%The coarseness of the Plant et al. (1998) model improved simulation robustness at the expense of precision, but the model was arguably less mechanistic and dynamic than traditional cotton models.
-%Most cotton models simulate soil and plant processes explicitly and quantitatively in a mechanistic, dynamic, and deterministic fashion.
-仿真方法概述。
-这里讨论的棉花模型 这里讨论的棉花模型分为机械的、动态的和确定性的。
-这些 模型是机械性的，因为它们描述的过程有一定的理解程度（例如。基于截获辐射的计算的植物生长 辐射）。
-它们是动态的，因为时间 变量是明确的。
-因此，这些模型使用偏微分方程来计算 因此，模型使用偏微分方程来计算数量如何随时间变化（例如，蒸腾作用和植物生长）。
-这些模型是确定性的，而不是 随机的，因为计算是在没有任何相关概率分布的情况下进行的。没有任何相关的概率分布。
-尽管大多数棉花模拟模型都具有 虽然大多数棉花模拟模型具有这些特点，但不同的模型设计 的战略已经被探索出来。
-例如 Plant 等人（1998）的棉花模型使用定性的分类变量（如高、中、低），而不是定量的变量 来描述植物和土壤状态。
-粗糙的 的粗放性提高了模拟的稳健性，但却牺牲了精度。但与传统的棉花模型相比，该模型的机械性和动态性可能较差。但与传统的棉花模型相比，模型的机械性和动态性较差。
-大多数 棉花模型以明确的定量方式模拟土壤和植物过程 明确地、定量地模拟土壤和植物过程。动态的、决定性的方式模拟土壤和植物过程。
-
 新疆南部地区 (南疆) 日照时间长、光热资源丰富，为优质棉花的生长提供了绝佳的自然条件.
 2021 年新疆棉花播种面积 2506.1 千公顷 (全国 3028.1 千公顷)，产量 500.2 万吨 (全国 512.9 万吨) \cite{国家统计局关于2021年棉花产量的公告}，是我国和世界最具发展前景的优质棉生产基地。
 上世纪 80 年代以来，新疆在棉花种植上大范围推广使用地膜覆盖技术，给新疆农业增产、农民增收带来了巨大效益。
 但随着地膜投入量的不断增加，残留地膜回收率低，土壤中残膜量逐步增加，不仅造成土壤结构破坏、环境污染等一系列问题，而且对棉花产量和纤维品质也有很大影响。
 中国工程院院士喻树迅团队初步实现了 “中棉 619” 早熟品种在南疆地区的无膜化种植目标，连续 6 年亩产 320{-}350 公斤，对减少新疆棉田残膜对生态环境和原棉的污染意义重大\cite{yu2019}。
 然而，无膜棉的种植与推广还有诸多问题需要解决，如播种密度和肥水调控等问题急需深入研究。
-因此，在南疆干旱区开展无膜棉生长和水分运移模拟研究，
+因此，在南疆干旱区开展无膜棉生长和水分运移模拟研究，%
 对指导无膜棉播种日期、播种量、精准灌溉和提高产量具有重要意义。
-项目将借鉴成熟的棉花生长模型理论，重点解决以下关键科学问题：
-第一，有效光合叶面积指数发芽后集中在冠层的底部，成熟期集中在顶部，而花期属于均匀分布，解决有效光合叶面积指数不同发育阶段在棉花冠层分布不一致的问题，提高光能截获和光合作用模拟精度。
-第二，在南疆盐渍化严重的背景下，光能截获、盐分和根系空间分布对水分运移的耦合影响和定量描述。
-应用价值：通过模型模拟方法定量评价播种量和灌溉制度对产量的影响，指导播种和精准灌溉。
+有效光合叶面积指数发芽后集中在冠层的底部，成熟期集中在顶部，而花期属于均匀分布，%
+本文将借鉴成熟的棉花生长模型理论，集中解决有效光合叶面积指数不同发育阶段在棉花冠层分布不一致的问题，提高光能截获和光合作用模拟精度。
+
 \section{国内外研究现状}
 \subsection{主要的棉花生长模型}
+棉花 (\textit{Gossypium hirsutum L.} 与 \textit{Gossypium barbadense L.})是全球重要的商品作物，为不同行业提供纤维、饲料、食物和潜在的燃料来源。%
+棉花纤维被用于从纺织品到纸张、咖啡过滤器和渔网等产品。%
+棉籽粉和棉籽壳主要用于反刍牲畜饲料。棉籽油目前被提炼成植物油供人食用，并有可能成为生物燃料。%
+我国棉花生产的一个主要问题是生产成本高，需要改进棉花生产方式，以保持棉花在经济上对其他商品作物和替代纤维来源的竞争力。%
+为了使棉花生产具有可持续性，还必须考虑水和能源资源的限制。%
+通过更明智的灌溉和氮肥管理，更好地了解气候对棉花产量的影响，进一步推进棉花育种和遗传学，更多地采用精准农业技术，以及增加对棉花遗传学与环境管理（GEM）相互作用的了解，可以实现这些改进棉花生产的目标。
+
 作物生长模型通过数学方程将作物的生长发育、光合生产、器官建成和产量形成等过程及其所处环境和栽培管理技术体系连接成为一个整体，
 通过计算机定量计算并进行动态模拟，成为掌握作物生长发育状况，优化种植管理的重要手段。
-棉花生产系统模拟模型的开发与应用始于 1960 年代的美国，现在已经扩展到全球主要棉花生产地区。
-国外发展比较成熟的棉花生长模型包括 GOSSYM\cite{baker1976}，Cotton2K\cite{cotton2kv4}，COTCO2\cite{wall1994}，OZCOT\cite{hearn1994} 和 CROPGRO-Cotton\cite{jones2003}，
+棉花生产中种植系统模拟模型的开发和应用有着悠久而丰富的历史，从20世纪60年代在美国东南部开始，现已扩展到全球主要的棉花生产地区。%
+国外发展比较成熟的棉花生长模型包括 GOSSYM\cite{baker1976}，Cotton2K\cite{cotton2kv4}，COTCO2\cite{wall1994}，OZCOT\cite{hearn1994} 和 CROPGRO-Cotton\cite{jones2003}，%
 另外，一些通用的作物生长模型也被用于模拟棉花生长，如 EPIC\cite{williams1989}，WOFOST\cite{vanDiepen1989WOFOST}，SUCROS\cite{vanittersum2003}，GRAMI\cite{ko2005}，CropSyst\cite{sommer2008}和 AquaCrop\cite{steduto2009}。
+本节将对它们进行回顾。%
+模型的应用领域包括作物用水和灌溉水管理、氮素动力学和肥料管理、遗传学和作物改良、气候学、全球气候变化、精准农业、模型与传感器数据整合、经济学和课堂教学。%
+一般来说，文献显示在上个世纪越来越重视棉花模型的开发，在本世纪越来越重视棉花模型的应用。%
+尽管开发棉花模型的努力已经有 50 年的历史，但没有报道棉花模型之间的比较。作为评估当前棉花模拟策略的第一步，这种努力是可取的。%
+越来越多的棉花模拟模型被非传统的作物建模者应用，他们不是训练有素的农学家，但希望使用模型进行广泛的经济或生命周期分析。%
+尽管这一趋势表明人们对模型的兴趣越来越大，而且模型在各种应用中都有潜在的效用，但这就需要为特定的应用开发具有适当复杂性和易用性的模型，而且需要改进文件和教材来教育潜在的模型用户。%
+空间尺度问题也越来越突出，因为最初为田间使用而开发的模型正被用于大面积的区域模拟。%
+研究朝着模型与变速控制系统集成的高级目标稳步推进，该系统利用实时作物状态和环境信息，在空间和时间上优化作物投入的应用，同时也考虑潜在的环境影响、资源限制和气候预测。%
+总的来说，审查表明在棉花模拟模型开发方面的努力停滞不前，但现有模型在各种研究领域的应用仍然强劲，并继续增长。%
+
 
 \begin{table}
     \caption{现有棉花生长模拟模型基本信息}\label{tab:overview}
@@ -141,7 +54,7 @@ Landivar 等人（2010）主要描述了模型的开发方法，没有对比现�
 \end{table}
 
 这些模型通过模拟气象、土壤水分和养分对植物生长发育的贡献来估算作物产量。
-然而，用于模拟这些过程的方法、模拟细节和产量组分在现有作物模型中存在一定差异 (表~\ref{tab:growdev})\cite{thorp2014}。
+然而，用于模拟这些过程的方法、模拟细节和产量组分在现有作物模型中存在一定差异 (表 \ref{tab:growdev})\cite{thorp2014}。
 但主要过程都包括了物候学、光能截获、碳 (C) 同化、呼吸作用、器官形成、生物量积累与分配和胁迫影响等。
 
 一些新发展的通用模型理论和方法也对棉花生长模拟的研究具有重要的推动作用。
@@ -153,7 +66,7 @@ Landivar 等人（2010）主要描述了模型的开发方法，没有对比现�
 
 虽然中国的棉花生长模型研究起步较晚，但作为棉花生产世界领先的国家，
 棉花生长模拟的研究发展较快，比较有代表性的是潘学标等开发的 COTGROW\cite{pan1996} 模型，%
-此外，\authornumcite{zhang2003}、\authornumcite{chen2006}和\authornumcite{ma2004}等也分别建立了棉花生长和品质形成模拟模型，%
+此外，南京农业大学的曹卫星教授带领的博士 \authornumcite{zhang2003}、\authornumcite{ma2004}和\authornumcite{chen2006} 等也分别建立了棉花生长和品质形成模拟模型，%
 这些模型在借鉴国外模型理念基础上，加入了我国特有的管理措施如化控、覆膜等。
 另外，国内学者也开发了棉花发育阶段和蕾铃模拟模型\cite{ma2005}、棉籽生长、油和蛋白质含量模拟模型\cite{li2009}和基于气温、%
 太阳辐照度和 N 效应的棉纤维长度和强度的模拟模型\cite{zhao2012}等。
@@ -226,9 +139,9 @@ Landivar 等人（2010）主要描述了模型的开发方法，没有对比现�
 \subsection{棉花生长模型的应用研究}
 
 棉花生长模型最基本的目的是预测产量，近几年，国外已经再水分利用效率评价和灌溉管理\cite{baumhardt2014,booker2014,booker2015,modala2015,thorp2015,anapalli2016,attia2016,linker2016,tsakmakis2018,thorp2019,thorp2020,thorp2020a}、
-氮磷动态和施肥管理\cite{shumway2012,amin2017,arshad2017,zurweller2019}、
-气象变化响应、
-品质模拟、
+氮磷动态和施肥管理\cite{shumway2012,amin2017,arshad2017,zurweller2019}、%
+气象变化响应、%
+品质模拟\cite{ma2005}、%
 打顶和生产管理\cite{yang2008}等方面开展了大量研究。
 为了不同的研究目的，所选择的模型也存在较大的差异。
 国内学者也在产量预测、模型性能评价、水分使用效率评价、品质成分含量模拟、株高生长模拟、水氮耦合效应评价、水盐运移、根系生长模拟和模型敏感性与不确定性分析等方面开展了研究和探索。
@@ -298,37 +211,30 @@ Cotton2K 的输出被记录在文本文件、图表和土壤图 (soil map)。
 而土壤图是二维的的土壤水和氮含量、温度和其他变量的水平和垂直模拟值的图，每个变量都是关于时间的函数。
 
 Cotton2K模型已经被许多研究人员直接和间接地使用和测试。
+\authoryearcite{clouse2006} 使用模拟退火法优化了 Cotton2K 的参数，在空间上标定了 Cotton2K 在西德克萨斯州的试验点的土壤参数。
+校准后的模型被用来比较特定地点和统一灌溉管理策略。
+特定地点灌溉管理的模拟棉纤维产量更高，但产量增加并没有使特定地点灌溉更有利可图。
+\authoryearcite{haim2008} 使用Cotton2K模型对以色列的灌溉棉花进行了研究。报告说，在两种气候变化情况下，通过提前两周种植和增加灌溉，可以抵消气候变暖的负面影响。
 \authoryearcite{yang2008} 使用了Cotton2K模型，在田间条件下测试了剪枝和打顶的效果，
 \authoryearcite{yang2010} 和 \authoryearcite{nair2013} 在有限的水资源条件下优化灌溉分配。
 在有限的水资源条件下优化灌溉分配。
+\authoryearcite{yang2010} 使用Cotton2K 模型估计华北平原棉花的灌溉用水需求，使用20 年的农艺、水文和气候数据，估算华北平原棉花灌溉需水量。
+平均而言，灌溉的棉花生产占该地区总需水量的8\%。
+\authoryearcite{nair2011} 使用 Cotton2K 和一个经济模型生成的棉花纤维产量模拟，确定在不同次优灌溉水供应水平下，在棉花不同生长阶段分配灌溉水的经济最优策略。
+Cotton2K 还被用来评估将中心枢纽灌溉的棉田划分为灌溉和雨养部分的盈利能力\cite{nair2013}。
+这项研究表明，田间分割增加了赤字灌溉棉花的纤维产量和收益。
+Cotton2K 模型与计量经济学模型一起使用，评估了棉花生产者对风险的态度对德克萨斯州 高原地区中心枢纽灌溉棉花的最佳灌溉水分配决策的影响 \cite{nair2011}。
+结果表明，最佳灌溉水量分配既有增加利润的作用，也有降低风险的作用。
+\authoryearcite{nair2013} 模拟德克萨斯高原的德克萨斯州普莱恩维尤市 110 年 68 种不同的灌溉处理的棉花纤维产量，对 Cotton2K 在德克萨斯州高地的应用进行了评估，以分析将中心支流灌溉的棉田划分为灌溉田和旱田的和盈利的影响。
+通过对田间进行部分灌溉使得棉花纤维产量和盈利能力得到提高。当可用的灌溉水少和降雨量低的年份，经济效益更高。
+\authoryearcite{wang2013} 开发了一个理论框架，用于确定缺水灌溉下棉花的经济最优灌溉水分配，并将该经济模型与 Cotton2K 生成的纤维产量数据一起使用，分析了旨在提高高效灌溉系统采用率的成本分摊计划的节水潜力。
+他们得出结论，该计划没有为生产者提供任何节水的激励。
 \authoryearcite{booker2013} 将 Cotton2K 纳入一个景观规模的模型中并将其应用于德克萨斯高原主要土壤类型的棉花生产中。
 鉴于 Cotton2K 与 GOSSYM 和 CALGOS 模型的相似性，间接地， Cotton2K 中的一些算法已被评估用于广泛的土壤类型。
 \authoryearcite{staggenborg1996} 对广泛的土壤和环境条件进行了评估。
 \authoryearcite{clouse2006}, \authoryearcite{baumhardt2009} 等人对 Cotton2K 中的一些算法进行了评估。
-
-\authoryearcite{nair2013} 模拟德克萨斯高原的德克萨斯州普莱恩维尤市 110 年 68 种不同的灌溉处理的棉花纤维产量，对 Cotton2K 在德克萨斯州高地的应用进行了评估，以分析将中心支流灌溉的棉田划分为灌溉田和旱田的和盈利的影响。
-通过对田间进行部分灌溉使得棉花纤维产量和盈利能力得到提高。当可用的灌溉水少和降雨量低的年份，经济效益更高。
-
-\authoryearcite{yang2010} 使用Cotton2K 模型估计华北平原棉花的灌溉用水需求，使用20 年的农艺、水文和气候数据，估算华北平原棉花灌溉需水量。
-平均而言，灌溉的棉花生产占该地区总需水量的8\%。
-
-\authoryearcite{haim2008} 使用Cotton2K模型对以色列的灌溉棉花进行了研究。报告说，在两种气候变化情况下，通过提前两周种植和增加灌溉，可以抵消气候变暖的负面影响。
-
-\authoryearcite{clouse2006} 使用模拟退火法优化了 Cotton2K 的参数，在空间上标定了 Cotton2K 在西德克萨斯州的试验点的土壤参数。
-校准后的模型被用来比较特定地点和统一灌溉管理策略。
-特定地点灌溉管理的模拟棉纤维产量更高，但产量增加并没有使特定地点灌溉更有利可图。
-
-\authoryearcite{nair2011} 使用 Cotton2K 和一个经济模型生成的棉花纤维产量模拟，确定在不同次优灌溉水供应水平下，在棉花不同生长阶段分配灌溉水的经济最优策略。
-Cotton2K 还被用来评估将中心枢纽灌溉的棉田划分为灌溉和雨养部分的盈利能力\cite{nair2013}。
-这项研究表明，田间分割增加了赤字灌溉棉花的纤维产量和收益。
-
-Cotton2K 模型与计量经济学模型一起使用，评估了棉花生产者对风险的态度对德克萨斯州 高原地区中心枢纽灌溉棉花的最佳灌溉水分配决策的影响 \cite{nair2011}。
-结果表明，最佳灌溉水量分配既有增加利润的作用，也有降低风险的作用。
-
-\authoryearcite{wang2013} 开发了一个理论框架，用于确定缺水灌溉下棉花的经济最优灌溉水分配，并将该经济模型与 Cotton2K 生成的纤维产量数据一起使用，分析了旨在提高高效灌溉系统采用率的成本分摊计划的节水潜力。
-他们得出结论，该计划没有为生产者提供任何节水的激励。
-
 \authoryearcite{baumhardt2014} 研究了在厄尔尼诺-南方振荡影响下的棉花纤维产量对灌溉管理的响应。
+\authoryearcite{thorp2019} 开发了一套全新的方法用于比较模型中蒸发蒸腾算法的效果与性能，从 DSSAT 模型中借鉴 3 种算法，修改 Cotton2K 以替换原始的蒸发蒸腾算法。
 
 
 \subsection{发展动态和问题分析}
@@ -413,13 +319,13 @@ Cotton2K 模型与计量经济学模型一起使用，评估了棉花生产者�
 
 第 \ref{chap:intro} 章，主要介绍了无膜栽培棉花的研究背景及意义、棉花生长模型的研究进展以及该论文的研究内容、技术路线以及论文结构。
 
-第 2 章，主要介绍了研究区域概括、田间试验设计、需要测量的实验数据和获取方 法、WOFOST 模型所需的数据和数据处理和统计方法。
+第 2 章，主要从试验观测、模型模拟、敏感性分析和多目标优化角度介绍本研究采用的材料与方法。
 
-第 3 章，主要介绍了冠层光能截获的差异性和规律性，从不同生育期冠层 PAR 截获率分布规律和冠层不同区域 PAR 截获率随播种后时间的变化规律两个方面进行阐述。
+第 3 章，主要介绍了对 Cotton2K 模型的改进，修改了模型的输入输出、修正部分计算、跨操作系统编译以及增加分层的冠层子模块。
 
-第 4 章，主要介绍了 Cotton2K 的校准与验证，利用 利用 2019 年与 2020 年两年的田间实验数据，使用修改 Thorp 方法对模型的参数进行校准。利用 2021 年的田间实验数据对校准后的 Cotton2K 进行验证。
+第 4 章，主要介绍了 Cotton2K 的校准与验证，利用 利用 2019 年的田间实验数据，使用修改 Thorp 方法对模型的参数进行校准。利用 2020 年的田间实验数据对校准后的 Cotton2K 进行验证。
 
-第 5 章，主要介绍了不同区域的棉花生长模拟结果，从不同地区的生育期长度、温 度对棉花生育期的影响、不同地区产量、不同地区生育期蒸腾量四个方面进行阐述。
+第 5 章，主要介绍了棉花生长模拟结果。
 
 第 6 章，总结与展望。总结了实验的内容和实验结果，阐述了实验中的不足以及未来的改进方案。
 
@@ -430,5 +336,5 @@ Cotton2K 模型与计量经济学模型一起使用，评估了棉花生产者�
 在可持续发展理念的号召下，解决残膜污染问题迫在眉睫。%
 各个学者在解决残膜污染方面探究了很多的方法，其中中国农业科学院棉花研究所成功培育出适用于无膜直播的特早熟棉花新品种中棉 619 的成功试行，为我们开辟了彻底解决残膜污染问题的新方向。%
 中棉 619 能否大面积的推广与应用，对彻底解决国内棉田残膜污染的问题，防止耕地资源质量下降，推动棉花产业向绿色可持续发展方向转型具有重要意义。%
-接着阐述了光合有效辐射和作物模型的研究进展。%
+接着阐述了作物模型的研究进展。%
 最后介绍了本文的研究内容、技术路线以及论文结构。

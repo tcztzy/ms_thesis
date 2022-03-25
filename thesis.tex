@@ -5,6 +5,8 @@
 \usepackage[backend=biber,style=gb7714-2015]{biblatex}% chktex 8
 \usepackage{booktabs}
 \usepackage[inline]{enumitem} % inline enumerate
+\usepackage{fancyhdr}
+\usepackage{multirow}
 \usepackage{fontspec}
 \usepackage{geometry}
 \usepackage{longtable}
@@ -30,7 +32,8 @@
 
 \addbibresource{thesis.bib}
 \newcommand{\authoryearcite}[1]{\citeauthor{#1} (\citeyear{#1})}
-\pagestyle{plain}
+\pagestyle{fancy}
+\lhead{塔里木大学硕士学位论文}
 \begin{document}
 \SetKwInput{KwIn}{输入}
 \SetKwInput{KwOut}{输出}
@@ -69,16 +72,16 @@ decision/.style = {base, diamond, aspect=2},
   frame               =   lrtb,   % 显示边框
 }
 \lstdefinestyle{JSONSchema}{
-    language        =   Python, % 语言选Python
-    basicstyle      =   \zihao{-5}\ttfamily,
-    numberstyle     =   \zihao{-5}\ttfamily,
-    keywordstyle    =   \color{blue},
-    keywordstyle    =   [2] \color{teal},
-    stringstyle     =   \color{magenta},
-    commentstyle    =   \color{red}\ttfamily,
-    breaklines      =   true,   % 自动换行，建议不要写太长的行
-    columns         =   fixed,  % 如果不加这一句，字间距就不固定，很丑，必须加
-    basewidth       =   0.5em,
+  language        =   Python, % 语言选Python
+  basicstyle      =   \zihao{-5}\ttfamily,
+  numberstyle     =   \zihao{-5}\ttfamily,
+  keywordstyle    =   \color{blue},
+  keywordstyle    =   [2] \color{teal},
+  stringstyle     =   \color{magenta},
+  commentstyle    =   \color{red}\ttfamily,
+  breaklines      =   true,   % 自动换行，建议不要写太长的行
+  columns         =   fixed,  % 如果不加这一句，字间距就不固定，很丑，必须加
+  basewidth       =   0.5em,
 }
 \input{titlepage}
 \input{abstract}
@@ -91,10 +94,9 @@ decision/.style = {base, diamond, aspect=2},
 \input{model}
 \input{sa}
 \input{moo}
-\input{result}
 \input{conclusion}
 \printbibliography
-\chapter*{致谢}
+%\chapter*{致谢}
 
 
 
