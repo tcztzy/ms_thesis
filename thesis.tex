@@ -16,6 +16,8 @@
 \usepackage{tikz-3dplot}
 \usepackage{pgfplots}
 \usepackage{xfp}
+\usepackage{listings}
+\usepackage{xcolor}
 
 \geometry{left=2.5cm,right=2.5cm,top=3cm,bottom=2.5cm}
 \newCJKfontfamily{\huawenxingkai}[AutoFakeBold = {1.1}]{STXingkai}
@@ -53,6 +55,31 @@ decision/.style = {base, diamond, aspect=2},
   section/format = \zihao{4} \songti \bfseries \raggedright,
   subsection/format = \zihao{-4} \youyuan \bfseries
 }
+\lstset{
+  basicstyle          =   \sffamily,          % 基本代码风格
+  keywordstyle        =   \bfseries,          % 关键字风格
+  commentstyle        =   \rmfamily\itshape,  % 注释的风格，斜体
+  stringstyle         =   \ttfamily,  % 字符串风格
+  flexiblecolumns,                % 别问为什么，加上这个
+  numbers             =   left,   % 行号的位置在左边
+  showspaces          =   false,  % 是否显示空格，显示了有点乱，所以不现实了
+  numberstyle         =   \zihao{-5}\ttfamily,    % 行号的样式，小五号，tt等宽字体
+  showstringspaces    =   false,
+  captionpos          =   t,      % 这段代码的名字所呈现的位置，t指的是top上面
+  frame               =   lrtb,   % 显示边框
+}
+\lstdefinestyle{JSONSchema}{
+    language        =   Python, % 语言选Python
+    basicstyle      =   \zihao{-5}\ttfamily,
+    numberstyle     =   \zihao{-5}\ttfamily,
+    keywordstyle    =   \color{blue},
+    keywordstyle    =   [2] \color{teal},
+    stringstyle     =   \color{magenta},
+    commentstyle    =   \color{red}\ttfamily,
+    breaklines      =   true,   % 自动换行，建议不要写太长的行
+    columns         =   fixed,  % 如果不加这一句，字间距就不固定，很丑，必须加
+    basewidth       =   0.5em,
+}
 \input{titlepage}
 \input{abstract}
 \tableofcontents
@@ -61,9 +88,33 @@ decision/.style = {base, diamond, aspect=2},
 \setcounter{page}{1}
 \input{intro}
 \input{method}
+\input{model}
 \input{sa}
 \input{moo}
 \input{result}
 \input{conclusion}
 \printbibliography
+\chapter*{致谢}
+
+
+
+\chapter*{作者简介}
+
+唐梓涯，男，汉族，出生于 1992 年 3 月 13 日，江苏省如东县人。2010 年 9 月，就读于西北农林科技大学植物保护学院，植物保护专业。2014 年 6 月获得农学学士学位。2019 年 9 月，考入塔里木大学信息工程学院，农业电气化与自动化专业，攻读工学硕士学位。
+
+公开发表的论文：
+
+[1] 孟文博,王德胜,张楠楠,费浩,唐梓涯,王涛,白铁成.响应气候变化的棉花生长模拟与县域尺度产量评估[J].核农学报,2021,35(07):1648-1657.
+
+获得的奖励
+\begin{enumerate}
+  \item 2019 年“华为杯”第十六届数学建模竞赛三等奖。
+  \item 2019-2020 学年研究生学业奖学金二等奖。
+  \item 2020-2021 学年研究生学业奖学金三等奖。
+  \item 2021 年“华为杯”第十八届数学建模竞赛三等奖。
+  \item 2021 年第十二届蓝桥杯全国软件和信息技术专业人才大赛 Python 组全国总决赛三等奖。
+\end{enumerate}
+
+\appendix
+\input{appendix}
 \end{document}

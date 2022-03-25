@@ -1,0 +1,113 @@
+\chapter{Cotton2K 模型的改进}
+
+\section{模型输入输出}
+
+原版的 Cotton2K 模型输入输出是基于特定格式的文件的。考虑到模型的建立处于关系型数据库还未流行的年代，这种基于特定格式文件的输入输出方式是可以理解的。
+但这样的输入输出方式不利于 Cotton2K 结合到以 Python 为核心的现代化机器学习的生态中。
+所以本文对 Cotton2K 进行了重构，修改输出输出为结构化数据，方便与其他机器学习工具结合。
+具体的输入格式以 JSON Schema 的格式定义，参见附录\ref{appendix:inputSchema}，在此不再赘述。
+
+输出格式修改为 CSV 格式，改变模型代码以直接输出与土钻取土位置相对应的土壤含水量，全部字段见表 \ref{tab:output}。
+
+\begin{table}
+    \caption{修改后的 Cotton2K 模型输入}\label{tab:output}
+    \centering
+    \begin{tabular}{lll}
+        \toprule
+        字段名称                          & 含义           & 单位      \\
+        \midrule
+        \texttt{date}                     & 日期           & 天        \\
+        \texttt{light\_interception}      & 光能截获率     & \%        \\
+        \texttt{plant\_height}            & 株高           & cm        \\
+        \texttt{leaf\_area\_index}        & 叶面积指数     & 1         \\
+        \texttt{lai00} 到 \texttt{lai19}  & 分层叶面积指数 & 1         \\
+        \texttt{lint\_yield}              & 皮棉产量       & kg/hm$^2$ \\
+        \texttt{seed\_cotton\_yield}      & 籽棉产量       & kg/hm$^2$ \\
+        \texttt{leaf\_weight}             & 叶干物质量     & kg/hm$^2$ \\
+        \texttt{petiole\_weight}          & 叶柄干物质量   & kg/hm$^2$ \\
+        \texttt{stem\_weight}             & 茎干物质量     & kg/hm$^2$ \\
+        \texttt{square\_weight}           & 方铃干物质量   & kg/hm$^2$ \\
+        \texttt{boll\_weight}             & 铃干物质量     & kg/hm$^2$ \\
+        \texttt{root\_weight}             & 根干物质量     & kg/hm$^2$ \\
+        \texttt{plant\_weight}            & 地上总干物质量 & kg/hm$^2$ \\
+        \texttt{main\_stem\_nodes}        & 主茎节点数     & 个        \\
+        \texttt{number\_of\_squares}      & 方铃个数       & 个        \\
+        \texttt{number\_of\_green\_bolls} & 绿铃个数       & 个        \\
+        \texttt{number\_of\_open\_bolls}  & 开铃个数       & 个        \\
+        \texttt{swc}                      & 土壤含水量     & \%        \\
+        \bottomrule
+    \end{tabular}
+\end{table}
+
+\section{修正部分计算}
+一些参数集在运行时引起了下溢或溢出错误，这就需要对编码进行编辑，以限制某些状态变量的范围。
+例如，在 Cotton2K 中新叶生长的过程中，新叶的质量是固定的，且是由茎的质量转移而来，在极端的情况下，叶片生长速度过快会导致茎干重变为负数。
+
+\section{跨操作系统编译}
+\authoryearcite{thorp2019} 使用了 PALMScot 景观尺度棉花建模工具开发者维护的 Fortran 版本的 Cotton2K，主要是因为新版的 Cotton2K 高度依赖%
+Microsoft Windows 平台的 GUI 框架 MFC。本文作者通过将 Cotton2K 完全使用 Python 重构，成功解决了上述与 Microsoft Windows 平台绑定的问题。
+
+\section{全新的冠层子模块}
+Cotton2K 模型中的光能截获率计算是从 GOSSYM 模型中演进而来。
+计算光能截获率需要先计算两个因子：\begin{enumerate*}
+    \item $z$ 因子与
+    \item $l$ 因子
+\end{enumerate*}。
+
+$z$ 因子与株高和行间距比值成正比，参见公式 \ref{eq:z}。
+
+\begin{equation}\label{eq:z}
+    z = 1.0756 * H / ROWSPC
+\end{equation}
+式中 $H$ 为株高，单位是 cm， $ROWSPC$ 是行间距，单位是 cm。
+
+$l$ 因子在叶面积小于 0.5 时时一个关于叶面积的线性函数，在其他情况时是一个指数函数。参见公式 \ref{eq:l}。
+
+\begin{equation}\label{eq:l}
+    l = \begin{cases}
+        0.8 * LAI                 & LAI \le 0.5 \\
+        1 - e^{0.07 - 1.16 * LAI} & LAI > 0.5
+    \end{cases}
+\end{equation}
+式中 $LAI$ 为叶面积指数。
+
+当 $l$ 因子大于 $z$ 因子时，光能截获率是两者的平均值，在 $l$ 因子小于 $z$ 因子且当前叶面积指数小于最大叶面积指数
+(通常是发生了叶片的脱落) 时，为 $l$ 因子。在其他情况下为 $z$ 因子。参见公式 \ref{eq:li}。
+
+\begin{equation}\label{eq:li}
+    LI = \begin{cases}
+        \frac{l + z}{2} & l > z                   \\
+        l               & l\le z \, LAI<LAI_{\max} \\
+        z               & \text{其他情况}
+    \end{cases}
+\end{equation}
+
+受 WOFOST-GTC\cite{WOFOSTGTC} 启发，对模型进行修改，冠层的生长过程自顶向下，分层模拟。
+每层层高 5 cm，共 20 层，模拟冠层高度最高可达 1 米。
+叶片按展开时间和几何拓扑关系被分配到特定的层级中。
+自顶向下逐层进行光合作用过程的模拟。
+最终，光合作用产物的量为各层产物的量之和。
+
+\begin{equation}
+    LI_i = 1 - e^{p_i * LAI_i}
+\end{equation}
+
+\begin{equation}
+    LI = 1 - \prod^{n}_{i=1}e^{p_i * LAI_i}
+\end{equation}
+式中 $LI$ 是总光能截获率， $n$ 总冠层层数， $LI_i$ 是第 $i$ 层的光能截获率，$p_i$ 是第 $i$ 层的光能截获率公式参数，
+$LAI_i$ 是第 $i$ 层的叶面积指数。
+
+\begin{equation}%
+    P_{std} = 2.3908 + 1.37379 W + (-0.00054136) W^2%
+\end{equation}%
+式中 $P_{std}$ 是理论光合作用产物的量， $W$ 是地球接受到的辐射总量。%
+
+\begin{equation}%
+    P_{plant} = \sum^n_{i=1} P_{std} \times LI_i \times S_{plant} \times P_{tsred} \times P_{netcor} \times P_{tnfac} \times P_{agei}%
+\end{equation}%
+式中 $P_{plant}$ 是实际光合作用产物的量, $S_{plant}$ 每株棉花占地面积，单位是 $\mathrm{dm^2}$，%
+$P_{tsred}$ 是水分胁迫对光合作用效率的影响，%
+$P_{netcor}$ 是空气中 $\mathrm{CO_2}$ 含量对总光合作用效率的校正因子,%
+$P_{tnfac}$ 低叶片含氮量下的校正因子，%
+$P_{agei}$ 叶龄校正因子。

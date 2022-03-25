@@ -1,91 +1,43 @@
-\chapter{模型敏感性分析}
+\chapter{模型敏感性分析}\label{chap:sa}
 
-\section{参数率定结果}
-
-\begin{longtable}{llrrcrr}
-    \caption{Cotton2K 参数列表及率定值}
-    \label{tab:parameters}                                                                  \\
-    \toprule
-    参数     & 功能描述                         & 下限   & 上限   & GSA & 原版    & 改版    \\
-    \midrule\endfirsthead
-    \caption*{续表\ref{tab:parameters}}                                                     \\
-    \toprule
-    参数     & 功能描述                         & 下限   & 上限   & GSA & 原版    & 改版    \\
-    \midrule
-    \endhead
-    \bottomrule
-    \multicolumn{7}{r}{\textit{接下页}}                                                     \\
-    \endfoot
-    \bottomrule
-    \endlastfoot
-    VARPAR01 & Plant density effect on growth   & 0.00   & 0.08   & *   & 0.04344 & 0.03416 \\
-    VARPAR02 & Leaf growth at prefruiting nodes & 0.00   & 0.60   &     & 0.3     & 0.3     \\
-    VARPAR03 & Leaf growth at prefruiting nodes & 0.00   & 0.10   &     & 0.014   & 0.014   \\
-    VARPAR04 & Leaf growth at prefruiting nodes & 0.00   & 1.00   & *   & 0.138   & 0.646   \\
-    VARPAR05 & Leaf growth on mainstem nodes    & 0.50   & 3.00   &     & 1.6     & 1.6     \\
-    VARPAR06 & Leaf growth on mainstem nodes    & 0.00   & 0.02   &     & 0.010   & 0.010   \\
-    VARPAR07 & Leaf growth on mainstem nodes    & 18.0   & 28.0   &     & 24.0    & 24.0    \\
-    VARPAR08 & Leaf growth of fruiting branch   & 0.00   & 0.20   &     & 0.10    & 0.10    \\
-    VARPAR09 & Boll growth period               & 18.9   & 38.0   &     & 28.0    & 28.0    \\
-    VARPAR10 & Boll growth rate                 & 0.10   & 0.45   &     & 0.3293  & 0.3293  \\
-    VARPAR11 & Maximum dry boll mass            & 3.00   & 15.0   &     & 8.8     & 8.8     \\
-    VARPAR12 & Stem growth before first square  & 0.00   & 2.00   & *   & 0.284   & 0.590   \\
-    VARPAR13 & Stem growth before first square  & 0.00   & 2.00   &     & 0.040   & 0.040   \\
-    VARPAR14 & Stem growth before first square  & 0.00   & 0.08   &     & 0.014   & 0.014   \\
-    VARPAR15 & Stem growth after first square   & 1.00   & 4.00   & *   & 3.971   & 2.001   \\
-    VARPAR16 & Stem growth after first square   & 0.50   & 2.00   &     & 2.4     & 2.4     \\
-    VARPAR17 & Stem growth after first square   & 0.00   & 1.00   &     & 0.10    & 0.10    \\
-    VARPAR18 & Stem growth after first square   & 0.00   & 0.20   &     & 0.140   & 0.140   \\
-    VARPAR19 & Plant vertical height growth     & 0.00   & 0.50   &     & 0.20    & 0.20    \\
-    VARPAR20 & Plant vertical height growth     & 0.00   & 0.10   &     & 0.02    & 0.02    \\
-    VARPAR21 & Plant vertical height growth     & 10.0   & 18.0   & *   & 14.541  & 13.868  \\
-    VARPAR22 & Plant vertical height growth     & -4.00  & -2.00  & *   & -2.686  & -2.077  \\
-    VARPAR23 & Plant vertical height growth     & 0.09   & 0.12   &     & 0.10    & 0.10    \\
-    VARPAR24 & Plant vertical height growth     & 0.00   & 0.50   &     & 0.175   & 0.175   \\
-    VARPAR25 & Plant vertical height growth     & 1.00   & 4.00   &     & 2.20    & 2.20    \\
-    VARPAR26 & Plant vertical height growth     & 0.70   & 1.30   & *   & 1.2500  & 0.7500  \\
-    VARPAR27 & Mainstem node delay, C stress    & 0.50   & 1.00   & *   & 0.731   & 0.743   \\
-    VARPAR28 & Fruiting site delay, C stress    & 1.00   & 3.00   &     & 2.15    & 2.15    \\
-    VARPAR29 & Fruiting site delay, C stress    & 1.00   & 3.00   &     & 1.36    & 1.36    \\
-    VARPAR30 & Temperature effect on squaring   & 0.70   & 1.30   & *   & 1.281   & 1.249   \\
-    VARPAR31 & Prefruit node development        & 1.00   & 5.00   & *   & 3.210   & 2.175   \\
-    VARPAR32 & Prefruit node development        & 1.00   & 3.00   & *   & 1.625   & 1.664   \\
-    VARPAR33 & Prefruit node development        & 0.50   & 1.00   &     & 0.80    & 0.80    \\
-    VARPAR34 & Initial leaf area                & 0.01   & 0.10   & *   & 0.0407  & 0.0822  \\
-    VARPAR35 & Fruiting branch development      & -32.0  & -26.0  & *   & -26.118 & -27.108 \\
-    VARPAR36 & Fruiting site development        & -57.0  & -49.0  &     & -54.00  & -54.00  \\
-    VARPAR37 & Fruiting site development        & 0.00   & 2.00   &     & 0.80    & 0.80    \\
-    VARPAR38 & Defoliant effect on leaf age     & 0.00   & 5.00   &     & 3.20    & 3.20    \\
-    VARPAR39 & Temperature effect, dehiscence   & -306.0 & -240.0 &     & -292.0  & -292.0  \\
-    VARPAR40 & Temperature effect, dehiscence   & 0.70   & 1.30   &     & 1.08    & 1.08    \\
-    VARPAR41 & Temperature effect, turnout      & 45.0   & 60.0   & *   & 51.813  & 47.436  \\
-    VARPAR42 & Temperature effect, turnout      & 0.30   & 0.90   & *   & 0.844   & 0.341   \\
-    VARPAR43 & Shedding intensity, C stress     & 0.30   & 0.70   & *   & 0.514   & 0.601   \\
-    VARPAR44 & Shedding intensity, water stress & 0.30   & 0.70   &     & 0.48    & 0.48    \\
-    VARPAR45 & Probability of square abscission & 0.10   & 0.50   &     & 0.24    & 0.24    \\
-    VARPAR46 & Probability of square abscission & 0.00   & 0.15   &     & 0.08    & 0.08    \\
-    VARPAR47 & Probability of boll abscission   & 1.00   & 10.0   & *   & 3.833   & 6.439   \\
-    VARPAR48 & Probability of boll abscission   & 0.30   & 1.50   & *   & 0.532   & 0.554   \\
-    VARPAR49 & Probability of boll abscission   & 5.00   & 15.0   & *   & 7.714   & 6.867   \\
-    VARPAR50 & Probability of boll abscission   & 0.20   & 1.80   & *   & 1.610   & 1.216   \\
-    LIPAR01  & Light interception               & -1.60  & 0.00   & *   & -       & -3.347  \\
-    LIPAR02  & Light interception               & -1.60  & 0.00   & *   & -       & -2.199  \\
-    LIPAR03  & Light interception               & -1.60  & 0.00   & *   & -       & -2.788  \\
-    LIPAR04  & Light interception               & -1.60  & 0.00   & *   & -       & -1.262  \\
-    LIPAR05  & Light interception               & -1.60  & 0.00   & *   & -       & -0.253  \\
-    LIPAR06  & Light interception               & -1.60  & 0.00   & *   & -       & -1.602  \\
-    LIPAR07  & Light interception               & -1.60  & 0.00   & *   & -       & -1.251  \\
-    LIPAR08  & Light interception               & -1.60  & 0.00   & *   & -       & -3.464  \\
-    LIPAR09  & Light interception               & -1.60  & 0.00   & *   & -       & -0.207  \\
-    LIPAR10  & Light interception               & -1.60  & 0.00   & *   & -       & -0.776  \\
-    LIPAR11  & Light interception               & -1.60  & 0.00   & *   & -       & -0.758  \\
-    LIPAR12  & Light interception               & -1.60  & 0.00   & *   & -       & -1.110  \\
-    LIPAR13  & Light interception               & -1.60  & 0.00   & *   & -       & -2.517  \\
-    LIPAR14  & Light interception               & -1.60  & 0.00   & *   & -       & -1.871  \\
-    LIPAR15  & Light interception               & -1.60  & 0.00   & *   & -       & -2.984  \\
-    LIPAR16  & Light interception               & -1.60  & 0.00   & *   & -       & -0.166  \\
-    LIPAR17  & Light interception               & -1.60  & 0.00   & *   & -       & -3.303  \\
-    LIPAR18  & Light interception               & -1.60  & 0.00   & *   & -       & -1.743  \\
-    LIPAR19  & Light interception               & -1.60  & 0.00   & *   & -       & -1.504  \\
-    LIPAR20  & Light interception               & -1.60  & 0.00   & *   & -       & -2.155  \\
-\end{longtable}
+\section{参数选择及取值范围}
+在原版 Cotton2K 模型中，所有参数都是以可更改的外部文件形式导入模型。%
+对于 Cotton2K 模型中 50 个品种参数而言，并非所有的参数对于模型输出结果都具有影响，需要通过敏感性分析选取其中敏感性较大的参数进行下一步校正。%
+本文根据公开的源码和相关参数对应公式，对品种参数取值范围进行了合理化的约束。%
+在修改后的 Cotton2K 模型中品种参数文件以 \texttt{cultivar\_parameters} 字段保存，模型参数服从均匀分布。%
+本文主要对 50 个原始品种参数和 20 个修改模型参数进行敏感性分析，原始模型参数的名称及取值范围如表 \ref{tab:saParameters} 所示。
+\begin{table}
+    \caption{原版 Cotton2K 参数列表及率定值}\label{tab:saParameters}
+    \small
+    \begin{tabular}{llrr|llrr}
+        \toprule
+        参数     & 功能描述             & 下限  & 上限  & 参数     & 功能描述                   & 下限   & 上限   \\
+        \midrule
+        VARPAR01 & 种植密度对生长的影响 & 0.00  & 0.08  & VARPAR26 & 株高生长                   & 0.70   & 1.30   \\
+        VARPAR02 & 现蕾前的叶生长       & 0.00  & 0.60  & VARPAR27 & 碳胁迫下的主茎节点延迟     & 0.50   & 1.00   \\
+        VARPAR03 & 现蕾前的叶生长       & 0.00  & 0.10  & VARPAR28 & 碳胁迫下的坐果节点延迟     & 1.00   & 3.00   \\
+        VARPAR04 & 现蕾前的叶生长       & 0.00  & 1.00  & VARPAR29 & 碳胁迫下的坐果节点延迟     & 1.00   & 3.00   \\
+        VARPAR05 & 主茎叶生长           & 0.50  & 3.00  & VARPAR30 & 温度对方铃形成的影响       & 0.70   & 1.30   \\
+        VARPAR06 & 主茎叶生长           & 0.00  & 0.02  & VARPAR31 & 现蕾前节点的发育           & 1.00   & 5.00   \\
+        VARPAR07 & 主茎叶生长           & 18.0  & 28.0  & VARPAR32 & 现蕾前节点的发育           & 1.00   & 3.00   \\
+        VARPAR08 & 果汁页生长           & 0.00  & 0.20  & VARPAR33 & 现蕾前节点的发育           & 0.50   & 1.00   \\
+        VARPAR09 & 铃生长周期           & 18.9  & 38.0  & VARPAR34 & 初始叶面积                 & 0.01   & 0.10   \\
+        VARPAR10 & 铃生长速率           & 0.10  & 0.45  & VARPAR35 & 果枝发育                   & -32.0  & -26.0  \\
+        VARPAR11 & 最大铃干物质         & 3.00  & 15.0  & VARPAR36 & 坐果节点的发育             & -57.0  & -49.0  \\
+        VARPAR12 & 方铃展前茎生长       & 0.00  & 2.00  & VARPAR37 & 坐果节点的发育             & 0.00   & 2.00   \\
+        VARPAR13 & 方铃展前茎生长       & 0.00  & 2.00  & VARPAR38 & 落叶剂对不同叶龄叶片的影响 & 0.00   & 5.00   \\
+        VARPAR14 & 方铃展前茎生长       & 0.00  & 0.08  & VARPAR39 & 温度对吐絮的影响           & -306.0 & -240.0 \\
+        VARPAR15 & 方铃展后茎生长       & 1.00  & 4.00  & VARPAR40 & 温度对吐絮的影响           & 0.70   & 1.30   \\
+        VARPAR16 & 方铃展后茎生长       & 0.50  & 2.00  & VARPAR41 & 温度对衣份率的影响         & 45.0   & 60.0   \\
+        VARPAR17 & 方铃展后茎生长       & 0.00  & 1.00  & VARPAR42 & 温度对衣份率的影响         & 0.30   & 0.90   \\
+        VARPAR18 & 方铃展后茎生长       & 0.00  & 0.20  & VARPAR43 & 碳胁迫下的脱落强度         & 0.30   & 0.70   \\
+        VARPAR19 & 株高生长             & 0.00  & 0.50  & VARPAR44 & 水分胁迫下的脱落强度       & 0.30   & 0.70   \\
+        VARPAR20 & 株高生长             & 0.00  & 0.10  & VARPAR45 & 方铃脱落的概率             & 0.10   & 0.50   \\
+        VARPAR21 & 株高生长             & 10.0  & 18.0  & VARPAR46 & 方铃脱落的概率             & 0.00   & 0.15   \\
+        VARPAR22 & 株高生长             & -4.00 & -2.00 & VARPAR47 & 铃脱落的概率               & 1.00   & 10.0   \\
+        VARPAR23 & 株高生长             & 0.09  & 0.12  & VARPAR48 & 铃脱落的概率               & 0.30   & 1.50   \\
+        VARPAR24 & 株高生长             & 0.00  & 0.50  & VARPAR49 & 铃脱落的概率               & 5.00   & 15.0   \\
+        VARPAR25 & 株高生长             & 1.00  & 4.00  & VARPAR50 & 铃脱落的概率               & 0.20   & 1.80   \\
+        \bottomrule
+    \end{tabular}
+\end{table}
