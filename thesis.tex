@@ -1,4 +1,4 @@
-\documentclass[a4paper,oneside,zihao=5,AutoFakeBold]{ctexbook}
+\documentclass[a4paper,oneside,zihao=5,AutoFakeBold,fontset=windows]{ctexbook}
 \usepackage[ruled,linesnumbered]{algorithm2e}
 \usepackage{amsmath}
 \usepackage{amssymb}
@@ -24,9 +24,7 @@
 \geometry{left=2.5cm,right=2.5cm,top=3cm,bottom=2.5cm}
 \newCJKfontfamily{\huawenxingkai}[AutoFakeBold = {1.1}]{STXingkai}
 \newCJKfontfamily{\huawenzhongsong}{STZhongsong}
-\newCJKfontfamily{\youyuan}[AutoFakeBold = {1.1}]{YouYuan}
 \setmainfont{Times New Roman}
-\setCJKmainfont{SimSun}  % Should be set here for cross platform.
 
 \SetAlgorithmName{算法}{算法列表}
 
@@ -56,7 +54,10 @@ decision/.style = {base, diamond, aspect=2},
     format = \zihao{3} \heiti \bfseries \centering
    },
   section/format = \zihao{4} \songti \bfseries \raggedright,
-  subsection/format = \zihao{-4} \youyuan \bfseries
+  subsection/format = \zihao{-4} \youyuan \bfseries,
+  % 要求中四级标题是用的 “仿宋 GB2312”，Windows 7 以上电脑并不内置该字体
+  % 考虑到四级标题很少使用，这里直接使用 “仿宋” 字体
+  subsubsection/format = \zihao{-4} \fangsong \bfseries
 }
 \lstset{
   basicstyle          =   \sffamily,          % 基本代码风格
