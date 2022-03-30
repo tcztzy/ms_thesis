@@ -4,39 +4,92 @@
 \usepackage{amssymb}
 \usepackage[backend=biber,style=gb7714-2015]{biblatex}% chktex 8
 \usepackage{booktabs}
+\usepackage{caption}
 \usepackage[inline]{enumitem} % inline enumerate
 \usepackage{fancyhdr}
-\usepackage{multirow}
 \usepackage{fontspec}
 \usepackage{geometry}
+\usepackage{hyperref}
+\usepackage{listings}
 \usepackage{longtable}
 \usepackage{lscape} % one page table
-\usepackage{hyperref}
+\usepackage{multirow}
+\usepackage{pgfplots}
 \usepackage{setspace}
 \usepackage{siunitx}
 \usepackage{tikz}
 \usepackage{tikz-3dplot}
-\usepackage{pgfplots}
-\usepackage{xfp}
-\usepackage{listings}
 \usepackage{xcolor}
+\usepackage{xfp}
+\newcommand{\titleCN}{南疆盐渍区无膜栽培棉花生长模拟}
+\newcommand{\titleEN}{Simulation of non{-}mulched cultivated cotton growth in saline areas of South Xinjiang}
+\newcommand{\authorCN}{唐梓涯}
 
+% 页边距设置
 \geometry{left=2.5cm,right=2.5cm,top=3cm,bottom=2.5cm}
+% 页眉设置
+\lhead{\kaishu 塔里木大学硕士学位论文}
+% 字体设置，华文行楷和华文中宋只在封面使用
 \newCJKfontfamily{\huawenxingkai}[AutoFakeBold = {1.1}]{STXingkai}
 \newCJKfontfamily{\huawenzhongsong}{STZhongsong}
+% 设置英文字体，中文字体在 documentclass 的 option 设置过了
 \setmainfont{Times New Roman}
 
 \SetAlgorithmName{算法}{算法列表}
 
+% 导入参考文献库
 \addbibresource{thesis.bib}
+% 参考文献的导入方式
 \newcommand{\authoryearcite}[1]{\citeauthor{#1} (\citeyear{#1})}
-\pagestyle{fancy}
-\lhead{塔里木大学硕士学位论文}
+\ctexset{
+  chapter = {
+    beforeskip = -20pt,
+    number = \arabic{chapter},
+    format = \zihao{3} \heiti \bfseries \centering
+   },
+  section/format = \zihao{4} \songti \bfseries \raggedright,
+  subsection/format = \zihao{-4} \youyuan \bfseries,
+  % 要求中四级标题是用的 “仿宋 GB2312”，Windows 7 以上电脑并不内置该字体
+  % 考虑到四级标题很少使用，这里直接使用 “仿宋” 字体
+  subsubsection/format = \zihao{-4} \fangsong \bfseries
+}
+
+\usetikzlibrary{shapes, arrows.meta, positioning}
+% \lstset{
+%   basicstyle          =   \sffamily,          % 基本代码风格
+%   keywordstyle        =   \bfseries,          % 关键字风格
+%   commentstyle        =   \rmfamily\itshape,  % 注释的风格，斜体
+%   stringstyle         =   \ttfamily,  % 字符串风格
+%   flexiblecolumns,                % 别问为什么，加上这个
+%   numbers             =   left,   % 行号的位置在左边
+%   showspaces          =   false,  % 是否显示空格，显示了有点乱，所以不现实了
+%   numberstyle         =   \zihao{-5}\ttfamily,    % 行号的样式，小五号，tt等宽字体
+%   showstringspaces    =   false,
+%   captionpos          =   t,      % 这段代码的名字所呈现的位置，t指的是top上面
+%   frame               =   lrtb,   % 显示边框
+% }
+% \lstdefinestyle{JSONSchema}{
+%   language        =   Python, % 语言选Python
+%   basicstyle      =   \zihao{-5}\ttfamily,
+%   numberstyle     =   \zihao{-5}\ttfamily,
+%   keywordstyle    =   \color{blue},
+%   keywordstyle    =   [2] \color{teal},
+%   stringstyle     =   \color{magenta},
+%   commentstyle    =   \color{red}\ttfamily,
+%   breaklines      =   true,   % 自动换行，建议不要写太长的行
+%   columns         =   fixed,  % 如果不加这一句，字间距就不固定，很丑，必须加
+%   basewidth       =   0.5em,
+% }
 \begin{document}
+
+% 图表标题设置，主要为了图表标题后无冒号，改用空格分隔
+\captionsetup[figure]{name={图},labelsep=space}
+\captionsetup[table]{name={表},labelsep=space}
+% 算法中文化
 \SetKwInput{KwIn}{输入}
 \SetKwInput{KwOut}{输出}
 \SetKwRepeat{Repeat}{重复}{直到}
-\usetikzlibrary{shapes, arrows.meta, positioning}
+\begin{spacing}{\fpeval{25 / (12 * 1.2)}}
 \tikzset{%
 >={Latex[width=2mm,length=2mm]},
 % Specifications for style of nodes:
@@ -48,47 +101,12 @@ process/.style = {base, rectangle},
 data/.style = {base, trapezium, trapezium left angle=60, trapezium right angle=120},
 decision/.style = {base, diamond, aspect=2},
 }
-\ctexset{
-  chapter = {
-    number = \arabic{chapter},
-    format = \zihao{3} \heiti \bfseries \centering
-   },
-  section/format = \zihao{4} \songti \bfseries \raggedright,
-  subsection/format = \zihao{-4} \youyuan \bfseries,
-  % 要求中四级标题是用的 “仿宋 GB2312”，Windows 7 以上电脑并不内置该字体
-  % 考虑到四级标题很少使用，这里直接使用 “仿宋” 字体
-  subsubsection/format = \zihao{-4} \fangsong \bfseries
-}
-\lstset{
-  basicstyle          =   \sffamily,          % 基本代码风格
-  keywordstyle        =   \bfseries,          % 关键字风格
-  commentstyle        =   \rmfamily\itshape,  % 注释的风格，斜体
-  stringstyle         =   \ttfamily,  % 字符串风格
-  flexiblecolumns,                % 别问为什么，加上这个
-  numbers             =   left,   % 行号的位置在左边
-  showspaces          =   false,  % 是否显示空格，显示了有点乱，所以不现实了
-  numberstyle         =   \zihao{-5}\ttfamily,    % 行号的样式，小五号，tt等宽字体
-  showstringspaces    =   false,
-  captionpos          =   t,      % 这段代码的名字所呈现的位置，t指的是top上面
-  frame               =   lrtb,   % 显示边框
-}
-\lstdefinestyle{JSONSchema}{
-  language        =   Python, % 语言选Python
-  basicstyle      =   \zihao{-5}\ttfamily,
-  numberstyle     =   \zihao{-5}\ttfamily,
-  keywordstyle    =   \color{blue},
-  keywordstyle    =   [2] \color{teal},
-  stringstyle     =   \color{magenta},
-  commentstyle    =   \color{red}\ttfamily,
-  breaklines      =   true,   % 自动换行，建议不要写太长的行
-  columns         =   fixed,  % 如果不加这一句，字间距就不固定，很丑，必须加
-  basewidth       =   0.5em,
-}
 \input{titlepage}
 \input{abstract}
 \tableofcontents
 \thispagestyle{empty}
 \newpage
+\pagestyle{fancy}
 \setcounter{page}{1}
 \input{intro}
 \input{method}
@@ -97,8 +115,7 @@ decision/.style = {base, diamond, aspect=2},
 \input{moo}
 \input{conclusion}
 \printbibliography
-%\chapter*{致谢}
-
+\chapter*{致谢}
 
 
 \chapter*{作者简介}
@@ -112,12 +129,13 @@ decision/.style = {base, diamond, aspect=2},
 获得的奖励
 \begin{enumerate}
   \item 2019 年“华为杯”第十六届数学建模竞赛三等奖。
-  \item 2019-2020 学年研究生学业奖学金二等奖。
-  \item 2020-2021 学年研究生学业奖学金三等奖。
+  \item 2019{-}2020 学年研究生学业奖学金二等奖。
+  \item 2020{-}2021 学年研究生学业奖学金三等奖。
   \item 2021 年“华为杯”第十八届数学建模竞赛三等奖。
   \item 2021 年第十二届蓝桥杯全国软件和信息技术专业人才大赛 Python 组全国总决赛三等奖。
 \end{enumerate}
 
-\appendix
-\input{appendix}
+%\appendix
+%\input{appendix}
+\end{spacing}
 \end{document}

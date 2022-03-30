@@ -220,8 +220,7 @@ NSGA-III 算法进行了 200 代，为每种模型确定了 22 个元素的非�
 结果如表 \ref{tab:stats}，每个指标的统计学上的更优的方法以加粗突出显示。
 
 \begin{table}
-    \label{tab:stats}
-    \caption{修改前后的 Cotton2K 模型模拟结果方差分析结果}
+    \caption{修改前后的 Cotton2K 模型模拟结果方差分析结果}\label{tab:stats}
     \centering
     \begin{tabular}{lrlrr}
         \toprule
@@ -250,10 +249,10 @@ SDM 的不理想可能是由于修改后的模型修改了叶片与茎的生长�
 
 使用修改后的 Cotton2K 模型依据对 2019 年的田间实验数据对不同灌水处理分别运行模拟，模拟的叶面积指数的时空分布如图 \ref{fig:laiDist} 所示。
 
-\begin{figure}\label{fig:laiDist}
+\begin{figure}
     \centering
     \includegraphics[scale=0.6]{lai_dist_2019.png}
-    \caption{不同水分处理下得叶面积指数时空分布}
+    \caption{不同水分处理下得叶面积指数时空分布}\label{fig:laiDist}
 \end{figure}
 
 可以看出，总体上，随着灌水定额的增加，叶面积指数在空间上，各层级分布更多，分布的层级更高；时间上，叶面积指数增长的时间更早，减少的时间更晚。%

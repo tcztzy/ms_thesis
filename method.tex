@@ -288,8 +288,8 @@ NSGA-III 的基本框架类似于原始的 NSGA-II 算法 \cite{NSGA2}，其选�
 \end{figure}
 
 
-\begin{algorithm}\label{alg:NSGA3}
-    \caption{NSGA-III 第 t 代的过程}
+\begin{algorithm}
+    \caption{NSGA-III 第 t 代的过程}\label{alg:NSGA3}
     \KwIn{$H$ 构造的参考点 $Z^s$ 或提供的目标点 $Z^a$, 父代种群 $P_t$}
     \KwOut{$P_{t+1}$}
 
@@ -523,7 +523,7 @@ $P_{t+1}$ 形成后，再通过应用通常的遗传算子来创建一个新的�
 然而，为了使后代的解更接近父代的解，建议在SBX运算中使用一个相对较大的分布指数值，从而使后代接近其父代。
 
 \subsection{NSGA-III 中一代的计算复杂度}
-对具有 $M$ 维目标向量的 $2N$ 大小的群体进行非支配性排序（算法\ref{alg:NSGA3}的第4行）需要 $O(N \log ^{M-2} N)$次计算\cite{kung1975}。%
+对具有 $M$ 维目标向量的 $2N$ 大小的群体进行非支配性排序（算法 \ref{alg:NSGA3} 的第4行）需要 $O(N \log ^{M-2} N)$次计算\cite{kung1975}。%
 算法\ref{alg:normalize}第2行中的理想点的识别总共需要 $O(MN)$ 次计算。%
 目标的转换（第3行）需要 $O(MN)$ 次计算。%
 然而，识别极端点（第4行）需要 $O(M^2N)$次计算。%
