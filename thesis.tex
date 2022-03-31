@@ -29,10 +29,6 @@
 \geometry{left=2.5cm,right=2.5cm,top=3cm,bottom=2.5cm}
 % 页眉设置
 \lhead{\kaishu 塔里木大学硕士学位论文}
-% 章节首页也需要页眉，但默认章节首页是plain的，所以用fancy覆盖
-\fancypagestyle{plain}{
-  \pagestyle{fancy}
-}
 % 字体设置，华文行楷和华文中宋只在封面使用
 \newCJKfontfamily{\huawenxingkai}[AutoFakeBold = {1.1}]{STXingkai}
 \newCJKfontfamily{\huawenzhongsong}{STZhongsong}
@@ -110,10 +106,20 @@ decision/.style = {base, diamond, aspect=2},
 \SetKwInput{KwOut}{输出}
 \SetKwRepeat{Repeat}{重复}{直到}
 \pagestyle{empty}
+\frontmatter
 \input{titlepage}
 \input{abstract}
+% 目录首页不需要页码，但默认目录首页是plain的，所以用empty覆盖
+\fancypagestyle{plain}{
+  \pagestyle{empty}
+}
 \tableofcontents
 \newpage
+\mainmatter
+% 章节首页也需要页眉，但默认章节首页是plain的，所以用fancy覆盖
+\fancypagestyle{plain}{
+  \pagestyle{fancy}
+}
 \pagestyle{fancy}
 \setcounter{page}{1}
 \begin{spacing}{\fpeval{25 / (12 * 1.2)}}
