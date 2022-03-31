@@ -29,6 +29,10 @@
 \geometry{left=2.5cm,right=2.5cm,top=3cm,bottom=2.5cm}
 % 页眉设置
 \lhead{\kaishu 塔里木大学硕士学位论文}
+% 章节首页也需要页眉，但默认章节首页是plain的，所以用fancy覆盖
+\fancypagestyle{plain}{
+  \pagestyle{fancy}
+}
 % 字体设置，华文行楷和华文中宋只在封面使用
 \newCJKfontfamily{\huawenxingkai}[AutoFakeBold = {1.1}]{STXingkai}
 \newCJKfontfamily{\huawenzhongsong}{STZhongsong}
@@ -43,18 +47,34 @@
 \newcommand{\authoryearcite}[1]{\citeauthor{#1} (\citeyear{#1})}
 \ctexset{
   chapter = {
-    beforeskip = -20pt,
+    beforeskip = 0pt,
+    afterskip = 0pt,
     number = \arabic{chapter},
     format = \zihao{3} \heiti \bfseries \centering
    },
   section/format = \zihao{4} \songti \bfseries \raggedright,
+  section/beforeskip = 0pt,
+  section/afterskip = 0pt,
   subsection/format = \zihao{-4} \youyuan \bfseries,
+  subsection/beforeskip = 0pt,
+  subsection/afterskip = 0pt,
   % 要求中四级标题是用的 “仿宋 GB2312”，Windows 7 以上电脑并不内置该字体
   % 考虑到四级标题很少使用，这里直接使用 “仿宋” 字体
   subsubsection/format = \zihao{-4} \fangsong \bfseries
 }
 
 \usetikzlibrary{shapes, arrows.meta, positioning}
+\tikzset{%
+>={Latex[width=2mm,length=2mm]},
+% Specifications for style of nodes:
+base/.style = {draw, minimum width=2cm, minimum height=1cm, text centered},
+terminal/.style = {base, rounded rectangle},
+terminalStart/.style = {terminal},
+terminalStop/.style = {terminal},
+process/.style = {base, rectangle},
+data/.style = {base, trapezium, trapezium left angle=60, trapezium right angle=120},
+decision/.style = {base, diamond, aspect=2},
+}
 % \lstset{
 %   basicstyle          =   \sffamily,          % 基本代码风格
 %   keywordstyle        =   \bfseries,          % 关键字风格
@@ -89,53 +109,42 @@
 \SetKwInput{KwIn}{输入}
 \SetKwInput{KwOut}{输出}
 \SetKwRepeat{Repeat}{重复}{直到}
-\begin{spacing}{\fpeval{25 / (12 * 1.2)}}
-\tikzset{%
->={Latex[width=2mm,length=2mm]},
-% Specifications for style of nodes:
-base/.style = {draw, minimum width=2cm, minimum height=1cm, text centered},
-terminal/.style = {base, rounded rectangle},
-terminalStart/.style = {terminal},
-terminalStop/.style = {terminal},
-process/.style = {base, rectangle},
-data/.style = {base, trapezium, trapezium left angle=60, trapezium right angle=120},
-decision/.style = {base, diamond, aspect=2},
-}
+\pagestyle{empty}
 \input{titlepage}
 \input{abstract}
 \tableofcontents
-\thispagestyle{empty}
 \newpage
 \pagestyle{fancy}
 \setcounter{page}{1}
-\input{intro}
-\input{method}
-\input{model}
-\input{sa}
-\input{moo}
-\input{conclusion}
-\printbibliography
-\chapter*{致谢}
+\begin{spacing}{\fpeval{25 / (12 * 1.2)}}
+  \input{intro}
+  \input{method}
+  \input{model}
+  \input{sa}
+  \input{moo}
+  \input{conclusion}
+  \printbibliography
+  \chapter*{致谢}
 
 
-\chapter*{作者简介}
+  \chapter*{作者简介}
 
-唐梓涯，男，汉族，出生于 1992 年 3 月 13 日，江苏省如东县人。2010 年 9 月，就读于西北农林科技大学植物保护学院，植物保护专业。2014 年 6 月获得农学学士学位。2019 年 9 月，考入塔里木大学信息工程学院，农业电气化与自动化专业，攻读工学硕士学位。
+  唐梓涯，男，汉族，出生于 1992 年 3 月 13 日，江苏省如东县人。2010 年 9 月，就读于西北农林科技大学植物保护学院，植物保护专业。2014 年 6 月获得农学学士学位。2019 年 9 月，考入塔里木大学信息工程学院，农业电气化与自动化专业，攻读工学硕士学位。
 
-公开发表的论文：
+  公开发表的论文：
 
-[1] 孟文博,王德胜,张楠楠,费浩,唐梓涯,王涛,白铁成.响应气候变化的棉花生长模拟与县域尺度产量评估[J].核农学报,2021,35(07):1648-1657.
+  [1] 孟文博,王德胜,张楠楠,费浩,唐梓涯,王涛,白铁成.响应气候变化的棉花生长模拟与县域尺度产量评估[J].核农学报,2021,35(07):1648-1657.
 
-获得的奖励
-\begin{enumerate}
-  \item 2019 年“华为杯”第十六届数学建模竞赛三等奖。
-  \item 2019{-}2020 学年研究生学业奖学金二等奖。
-  \item 2020{-}2021 学年研究生学业奖学金三等奖。
-  \item 2021 年“华为杯”第十八届数学建模竞赛三等奖。
-  \item 2021 年第十二届蓝桥杯全国软件和信息技术专业人才大赛 Python 组全国总决赛三等奖。
-\end{enumerate}
+  获得的奖励
+  \begin{enumerate}
+    \item 2019 年“华为杯”第十六届数学建模竞赛三等奖。
+    \item 2019{-}2020 学年研究生学业奖学金二等奖。
+    \item 2020{-}2021 学年研究生学业奖学金三等奖。
+    \item 2021 年“华为杯”第十八届数学建模竞赛三等奖。
+    \item 2021 年第十二届蓝桥杯全国软件和信息技术专业人才大赛 Python 组全国总决赛三等奖。
+  \end{enumerate}
 
-%\appendix
-%\input{appendix}
+  %\appendix
+  %\input{appendix}
 \end{spacing}
 \end{document}
