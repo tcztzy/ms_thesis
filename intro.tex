@@ -272,6 +272,7 @@ Cotton2K 模型与计量经济学模型一起使用，评估了棉花生产者�
 研究总技术路线如图 \ref{fig:roadmap} 所示。%
 研究以 Cotton2K 模型为理论依据，利用中棉 619 的田间实验数据探究不同生育期光合有效辐射在冠层垂直方向分布的规律。%
 \begin{figure}
+    \centering
     \begin{tikzpicture}[
             node distance=1cm,
             every node/.style={fill=white, font=\sffamily},
@@ -285,14 +286,14 @@ Cotton2K 模型与计量经济学模型一起使用，评估了棉花生产者�
         \node (firstDatabase) [data, below=of firstSimulation] {12 个输出变量的\\评价指标数据库};
         \node (sa) [process, below=of firstDatabase] {使用 SALib 进行\\Sobol 全局敏感性分析};
         \node (influential) [decision, below=of sa] {S1 > 0.05};
-        \node (fixParam) [process, below=of start, yshift=-10cm] {固定参数为默认值};
-        \node (secondSampling) [data, below right=of start, xshift=3cm] {对 35 个 Cotton2K \\参数进行 Sobol 取样};
+        \node (fixParam) [process, below=of start, right=of influential] {固定参数为默认值};
+        \node (secondSampling) [data, below right=of start, xshift=3cm] {对 35 个 Cotton2K \\参数进行多目标优化};
         \node (secondSimulation) [process, below=of secondSampling, yshift=-1.5cm] {Cotton2K 模拟};
         \node (secondDatabase) [data, below=of secondSimulation] {12 个输出变量的\\评价指标数据库};
         \node (moo) [process, below=of secondDatabase] {求解 Pareto 解集};
         \node (prune) [process, below=of moo] {对 Pareto 解集进行剪枝};
         \node (compare) [process, below=of prune] {对不同修改进行统计分析};
-        \node (stop) [terminalStop, below=of start, yshift=-11.7cm] {结束};
+        \node (stop) [terminalStop, below=of start, left=of compare] {结束};
 
         \draw [-latex] (start) -| (firstSampling);
         \draw [-latex] (firstSampling) -- (firstSimulation);
