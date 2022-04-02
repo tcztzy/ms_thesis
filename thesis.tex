@@ -107,8 +107,8 @@ decision/.style = {base, diamond, aspect=2},
 \SetKwRepeat{Repeat}{重复}{直到}
 \pagestyle{empty}
 \frontmatter
-\input{titlepage}
-\input{abstract}
+\include{titlepage}
+\include{abstract}
 % 目录首页不需要页码，但默认目录首页是plain的，所以用empty覆盖
 \fancypagestyle{plain}{
   \pagestyle{empty}
@@ -123,12 +123,13 @@ decision/.style = {base, diamond, aspect=2},
 \pagestyle{fancy}
 \setcounter{page}{1}
 \begin{spacing}{\fpeval{25 / (12 * 1.2)}}
-  \input{intro}
-  \input{method}
-  \input{model}
-  \input{sa}
-  \input{moo}
-  \input{conclusion}
+  \include{intro}
+  \include{method}
+  \include{model}
+  \include{sa}
+  \include{moo}
+  \include{conclusion}
+  \backmatter
   \printbibliography
   \chapter*{致谢}
 
