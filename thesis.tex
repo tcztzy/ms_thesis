@@ -1,4 +1,5 @@
 \documentclass[a4paper,oneside,zihao=5,AutoFakeBold,fontset=windows]{ctexbook}
+\usepackage{afterpage}
 \usepackage[ruled,linesnumbered]{algorithm2e}
 \usepackage{amsmath}
 \usepackage{amssymb}
@@ -10,6 +11,7 @@
 \usepackage{fontspec}
 \usepackage{geometry}
 \usepackage{hyperref}
+\hypersetup{hidelinks} 
 \usepackage{listings}
 \usepackage{longtable}
 \usepackage{lscape} % one page table
@@ -33,6 +35,7 @@
 % 字体设置，华文行楷和华文中宋只在封面使用
 \newCJKfontfamily{\huawenxingkai}[AutoFakeBold = {1.1}]{STXingkai}
 \newCJKfontfamily{\huawenzhongsong}{STZhongsong}
+\newCJKfontfamily{\huawenxinwei}{STXinwei}
 % 设置英文字体，中文字体在 documentclass 的 option 设置过了
 \setmainfont{Times New Roman}
 
@@ -72,6 +75,9 @@ process/.style = {base, rectangle},
 data/.style = {base, trapezium, trapezium left angle=60, trapezium right angle=120},
 decision/.style = {base, diamond, aspect=2},
 }
+\newcommand\dunderline[3][-1pt]{{%
+  \sbox0{#3}%
+  \ooalign{\copy0\cr\rule[\dimexpr#1-#2\relax]{\wd0}{#2}}}}
 \begin{document}
 
 % 图表标题设置，主要为了图表标题后无冒号，改用空格分隔
@@ -84,6 +90,7 @@ decision/.style = {base, diamond, aspect=2},
 \pagestyle{empty}
 \frontmatter
 \include{titlepage}
+%\include{review_titlepage}
 \includepdf{学位论文独创性声明.pdf}
 \include{abstract}
 % 目录首页不需要页码，但默认目录首页是plain的，所以用empty覆盖
@@ -108,23 +115,28 @@ decision/.style = {base, diamond, aspect=2},
   \include{conclusion}
   \backmatter
   \printbibliography
-  % \chapter*{致谢}
+  \chapter*{致谢}
 
+  时光荏苒，岁月如梭，一转眼来到塔里木大学已经三年。在论文完稿之际，谨对在本论文撰写过程中，给予我帮助的导师和亲爱的家人表示最诚挚的感谢！%
+  首先要感谢我的导师周保平老师，高山仰止，景行行止，无论是为人还是治学，他都是我一生学习的榜样。%
+  同时也感谢白铁成老师，王德胜老师，张楠楠老师以及所有指导过我的老师们，没有你们的指导我不能顺利完成这篇论文的写作。%
+  也感谢师弟师妹王昱、王君、高浚、于晗、王城坤、杨甜甜、李家毅在生活上、实验上的帮助。%
+  最后要感谢我的家人尤其是我的妻子，正是你们的默默支持才让我可以专心完成学业。
 
-  % \chapter*{作者简介}
-  % 唐梓涯，男，汉族，出生于 1992 年 3 月 13 日，江苏省如东县人。2010 年 9 月，就读于西北农林科技大学植物保护学院，植物保护专业。2014 年 6 月获得农学学士学位。2019 年 9 月，考入塔里木大学信息工程学院，农业电气化与自动化专业，攻读工学硕士学位。
+  \chapter*{作者简介}
+  唐梓涯，男，汉族，出生于 1992 年 3 月 13 日，江苏省如东县人。2010 年 9 月，就读于西北农林科技大学植物保护学院，植物保护专业。2014 年 6 月获得农学学士学位。2019 年 9 月，考入塔里木大学信息工程学院，农业电气化与自动化专业，攻读工学硕士学位。
 
-  % 公开发表的论文：
+  公开发表的论文：
 
-  % [1] 孟文博,王德胜,张楠楠,费浩,唐梓涯,王涛,白铁成.响应气候变化的棉花生长模拟与县域尺度产量评估[J].核农学报,2021,35(07):1648-1657.
+  [1] 孟文博,王德胜,张楠楠,费浩,唐梓涯,王涛,白铁成.响应气候变化的棉花生长模拟与县域尺度产量评估[J].核农学报,2021,35(07):1648-1657.
 
-  % 获得的奖励
-  % \begin{enumerate}
-  %   \item 2019 年“华为杯”第十六届数学建模竞赛三等奖。
-  %   \item 2019{-}2020 学年研究生学业奖学金二等奖。
-  %   \item 2020{-}2021 学年研究生学业奖学金三等奖。
-  %   \item 2021 年“华为杯”第十八届数学建模竞赛三等奖。
-  %   \item 2021 年第十二届蓝桥杯全国软件和信息技术专业人才大赛 Python 组全国总决赛三等奖。
-  % \end{enumerate}
+  获得的奖励
+  \begin{enumerate}
+    \item 2019 年“华为杯”第十六届数学建模竞赛三等奖。
+    \item 2019{-}2020 学年研究生学业奖学金二等奖。
+    \item 2020{-}2021 学年研究生学业奖学金三等奖。
+    \item 2021 年“华为杯”第十八届数学建模竞赛三等奖。
+    \item 2021 年第十二届蓝桥杯全国软件和信息技术专业人才大赛 Python 组全国总决赛三等奖。
+  \end{enumerate}
 \end{spacing}
 \end{document}

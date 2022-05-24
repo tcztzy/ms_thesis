@@ -15,26 +15,26 @@
 其次，基于过程的棉花光合作用产量和干物质积累模型的建立。
 最后，将计算干物质分布、枝条数、方格数、棉铃数、开铃数、结实部位和流产果实数，从而建立一个棉花生长模型。
 
-在修改后的模型中，叶重、LAI和叶柄重量在生长季节的后期有所下降。
+在修改后的模型中，叶重、叶面积指数和叶柄重量在生长季节的后期有所下降。
 作为对比，原始模型没有这种下降。
 在 Cotton2K 中，嫩叶从茎部生长，这意味着当叶子出现时，茎部重量将减去叶子的重量。
 在原始模型的模拟中，茎的重量为负值，因为叶片的生长速度被明显高估了。
 而且没有对正数重量进行验证。
-当测量的 LAI $\ge 1.5$ 时，模拟的LAI大多被高估，而当 LAI 小于 1.5 时，则被低估。
-当使用原版模型时，当 LAI 小于 1.5 时，模拟的LAI大多被高估，这样的行为与 \authoryearcite{thorp2019} 报告相似。
-改版之后的模型模拟中，LAI 的 NRMSE从65.88\% 下降到31.99\%，在大多数情况下略微低估了。
-大多数情况下，当 LAI 大于 3 时，分散性显示出增加的迹象。
+当测量的叶面积指数大于 1.5 时，模拟的叶面积指数大多被高估，而当叶面积指数小于 1.5 时，则被低估。
+当使用原版模型时，当叶面积指数小于 1.5 时，模拟的叶面积指数大多被高估，这样的行为与 \authoryearcite{thorp2019} 报告相似。
+改版之后的模型模拟中，叶面积指数的NRMSE从65.88\% 下降到31.99\%，在大多数情况下略微低估了。
+大多数情况下，当叶面积指数 大于 3 时，分散性显示出增加的迹象。
 因此，该模型在充分灌溉条件下对植物生长条件的响应能力较弱，正如它所声称的那样
 该模型侧重于干旱地区和亏损灌溉策略。
-尽管修改后的模型模拟的结果较差，但模拟的SCY的准确度是中等的。
-总的来说，用Cotton2K模型模拟的LAI和SCY比用附近的差分模型处理的要差。
+尽管修改后的模型模拟的结果较差，但模拟的籽棉产量的准确度是中等的。
+总的来说，用Cotton2K模型模拟的叶面积指数和籽棉产量比用附近的差分模型处理的要差。
 原有模型模拟的光能截获率的值系统地偏高，在测量值只有 0.6 左右的情况下因为超过 1 而被截断。
 修改后的模型模拟中的光能截获率表现更好，NRMSE从 29.78\% 下降到21.90\%。
 这充分表明对冠层分层模拟的有效性。
-修改后的模型所模拟的 SCY 在所有的模拟情况下都被低估了，
+修改后的模型所模拟的籽棉产量在所有的模拟情况下都被低估了，
 这使得 NRMSE 大于原始模型的模拟结果。
 这可能是由于模拟中晚期灌溉减少而导致的过度的棉铃脱落。
-Cotton2K模拟的LI、LAI、TAGB和SCY的NRMSE在测量和模拟数据之间的范围为
+Cotton2K模拟的光能截获率、叶面积指数、地上总干物质的量和籽棉产量的NRMSE在测量和模拟数据之间的范围为
 21.90\% 至 29.78\%，28.92\% 至 29.90\%，44.84\% 至 62.28\%，15.90\%至16.26\%。
 基于来自南疆不同地点的数据，这些指标的结果低于不同的棉花模拟模型。
 一个可能的原因是栽培品种 “中棉 619” 的早熟特性，而Cotton2K中硬编码的经验回归公式是基于在其他地点和使用其他变种的实验。
@@ -63,7 +63,7 @@ Secondly, the process-based cotton photosynthetic production and dry matter accu
 Finally, the dry matter distribution, the number of branches, squares, bolls, open bolls, fruiting sites and aborted fruits will be calculated, thereby establishing a cotton growth model.
 The decline of normalized root mean squared error (NRMSE) for canopy related metrics shows that modifications significantly ($p < 0.05$) improved the accuracies of simulation.
 
-Leaf weight, LAI and petiole weight were falling at the later part of growing season with modification model.
+Leaf weight, Leaf area index (aka. LAI) and petiole weight were falling at the later part of growing season with modification model.
 In contract, original model do not have this decline.
 Young leaves were growing from stem in Cotton2K, which means that when leaves emerge, stem weight will minus the weight of them.
 Stem weight goes negative in the simulation with original model because leaf growing rate was remarkably overestimated,
