@@ -1,4 +1,4 @@
-\documentclass[a4paper,oneside,zihao=5,AutoFakeBold,fontset=windows]{ctexbook}
+\documentclass[a4paper,oneside,zihao=-4,AutoFakeBold,fontset=windows]{ctexbook}
 \usepackage{afterpage}
 \usepackage[ruled,linesnumbered]{algorithm2e}
 \usepackage{amsmath}
@@ -30,6 +30,11 @@
 
 % 页边距设置
 \geometry{left=2.5cm,right=2.5cm,top=3cm,bottom=2.5cm}
+% 页眉边距23mm，页脚边距18mm。
+% 1 inch + \voffset = 23 mm
+\setlength{\voffset}{-1.4mm}
+\setlength{\headheight}{4mm}
+\setlength{\headsep}{3mm}
 % 页眉设置
 \lhead{\kaishu 塔里木大学硕士学位论文}
 % 字体设置，华文行楷和华文中宋只在封面使用
@@ -106,6 +111,17 @@ decision/.style = {base, diamond, aspect=2},
 }
 \pagestyle{fancy}
 \setcounter{page}{1}
+%答辩意见
+%王德胜
+%1. 摘要首句要修改措辞
+%2. 参考文献从2号开始，摘要不能有参考文献
+%李旭
+%1. 结论太少
+%张晓
+%1. 图片格式
+%孟洪兵
+%1. 需要在文中体现盐渍化
+%2. 露点温度的获取
 \begin{spacing}{\fpeval{25 / (12 * 1.2)}}
   \include{intro}
   \include{method}
@@ -137,6 +153,11 @@ decision/.style = {base, diamond, aspect=2},
   老师们不仅对我的实验、论文都提供了不可或缺的支持和帮助，%
   也教育了我很多人生的道理和社会的规则，%
   没有老师们的悉心帮助指导我不可能顺利完成这篇论文的写作。%
+
+  感谢 Avishalom Marani 教授，感谢您无私的分享了 Cotton2K 模型的源码和数据，给予了我莫大的帮助，%
+  感谢 Kelly R Thorp 工程师，您开发的评估农业生态系统模型的方法行之有效，对我的启发很大，%
+  也要感谢 \textit{Computers and Electronics in Agriculture} 期刊的编辑和评审专家，虽然我的投稿未能被录用，但你们给了我一针见血的修改意见，%
+  对我的学位论文写作至关重要。
 
   感谢师姐李艳慧，师兄高黎明、孟文博，同门朱航飞，师弟王昱、王君、高浚、王城坤、李家毅，师妹于晗、杨甜甜，感谢所有相识在塔大的同学伙伴，%
   与你们共同奋斗的岁月是最美好的时光，而今一别不知何时再聚，惟愿千里共婵娟，各自在祖国最需要的岗位发光发热。%
