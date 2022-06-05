@@ -32,9 +32,9 @@
 \geometry{left=2.5cm,right=2.5cm,top=3cm,bottom=2.5cm}
 % 页眉边距23mm，页脚边距18mm。
 % 1 inch + \voffset = 23 mm
-\setlength{\voffset}{-1.4mm}
-\setlength{\headheight}{4mm}
-\setlength{\headsep}{3mm}
+% \setlength{\voffset}{-1.4mm}
+% \setlength{\headheight}{4mm}
+% \setlength{\headsep}{3mm}
 % 页眉设置
 \lhead{\kaishu 塔里木大学硕士学位论文}
 % 字体设置，华文行楷和华文中宋只在封面使用
@@ -94,8 +94,9 @@ decision/.style = {base, diamond, aspect=2},
 \SetKwRepeat{Repeat}{重复}{直到}
 \pagestyle{empty}
 \frontmatter
-\include{titlepage}
+%\include{titlepage}
 %\include{review_titlepage}
+\includepdf{titlepage.pdf}
 \includepdf{学位论文独创性声明.pdf}
 \include{abstract}
 % 目录首页不需要页码，但默认目录首页是plain的，所以用empty覆盖
@@ -110,6 +111,7 @@ decision/.style = {base, diamond, aspect=2},
   \pagestyle{fancy}
 }
 \pagestyle{fancy}
+\renewcommand{\headrule}{\hrule height 1pt \vspace{1pt}\hrule height 1pt}
 \setcounter{page}{1}
 %答辩意见
 %王德胜
@@ -133,17 +135,6 @@ decision/.style = {base, diamond, aspect=2},
   \printbibliography
   \chapter*{致谢}
 
-  时光荏苒，岁月如梭，一转眼来到塔里木大学已经三年。%
-  忆往昔，满怀对美好未来的期盼，来到了这所沙漠学府。%
-  三年如同白驹过隙，吉光片羽，恰同学少年，风华正茂；书生意气，挥斥方遒。%
-  再回首，已是而立之年，唏嘘感慨，时光不再。  
-
-  在这三年的求学生涯中，最大的收获是悟道。%
-  书山有路勤为径，学海无涯苦作舟。%
-  研究生作为科研工作者，求真务实乃是本分。%
-  吾生也有涯，而知也无涯，精力是最最重要的资源，需要分配给最最重要的事业。%
-  世界万物皆有其道，以有涯随无涯，殆已，做研究需要聚焦，从一个核心的出发点发散，所做工作皆是围绕这个点。%
-
   在论文完稿之际，谨对在求学过程中，给予我帮助的导师和亲爱的家人表示最诚挚的感谢！%
   首先要感谢我的导师周保平老师，高山仰止，景行行止，老师平时的言传身教、耳提面命让我受益良多，%
   老师对我的科研生活都十分关心，提供了最大的帮助和支持，%
@@ -159,11 +150,19 @@ decision/.style = {base, diamond, aspect=2},
   也要感谢 \textit{Computers and Electronics in Agriculture} 期刊的编辑和评审专家，虽然我的投稿未能被录用，但你们给了我一针见血的修改意见，%
   对我的学位论文写作至关重要。
 
-  感谢师姐李艳慧，师兄高黎明、孟文博，同门朱航飞，师弟王昱、王君、高浚、王城坤、李家毅，师妹于晗、杨甜甜，感谢所有相识在塔大的同学伙伴，%
+  感谢师姐李艳慧，见贤思齐，您是我学习的楷模，%
+  感谢师兄孟文博，您在实验和论文都给了我至关重要的帮助，%
+  感谢师兄高黎明，同门朱航飞，师弟王昱、王君、高浚、王城坤、李家毅，师妹于晗、杨甜甜，感谢所有相识在塔大的同学伙伴，%
   与你们共同奋斗的岁月是最美好的时光，而今一别不知何时再聚，惟愿千里共婵娟，各自在祖国最需要的岗位发光发热。%
+  
+  感谢老东家 Microsoft 公司，你们开源的 Visual Studio Code 工具是我最得心应手的开发工具。%
+  感谢 GitHub 给本文相关代码提供的代码托管与持续集成服务，这些服务大大提高了我的工作效率。%
+  感谢 JetBrains 公司的开源许可证，感谢你们对我修改的 Cotton2K Python 版项目的支持。%
+  %感谢 CSDN，如果没有你们纵容的抄袭行为，我不会认识到我自己工作的重要性。
+  感谢全体开源界的同行们，你们的开源精神鼓舞着我，吾道不孤。
 
-  同时要感谢我的家人，尤其是我的妻子，万里求学，正是你的默默支持才让我可以专心完成学业，%
-  也感谢我的孩子，你的快乐是我最好的精神食量。%
+  最后要感谢我的家人，尤其是我的妻子，万里求学，正是你的默默支持才让我可以专心完成学业，%
+  也感谢我的孩子，你的快乐是我最好的精神食量，爸爸永远爱你！%
 
   临文涕零，不知所言。愿师长安康，同窗如意。
 
