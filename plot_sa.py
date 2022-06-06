@@ -6,8 +6,7 @@ import pandas as pd
 import seaborn as sns
 from SALib.analyze import sobol
 
-mpl.rc("font", family="SimSun")
-mpl.rc("axes", unicode_minus=False)
+mpl.rc("font", family="Microsoft YaHei")
 climate = pd.read_csv("climate.csv")
 
 sa_problem = pd.read_csv("sa.csv")
